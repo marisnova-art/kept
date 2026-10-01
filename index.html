@@ -1613,6 +1613,63 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .qa-date input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
 @media (max-width:900px){.quick-add .qa-date{flex:1 1 auto;justify-content:center}}
 
+/* =====================================================================
+   v1.6.2 — readability first (bigger type, stronger contrast, text-size setting), calmer card, dock
+   ===================================================================== */
+/* type scale: larger base sizes + one multiplier for the Settings › Text size choice */
+:root{--fz:1;
+  --t-h1:calc(30px*var(--fz));--t-h2:calc(19px*var(--fz));--t-body:calc(16px*var(--fz));--t-sub:calc(14.5px*var(--fz));--t-cap:calc(13px*var(--fz));--t-read:calc(18px*var(--fz))}
+@media (max-width:900px){:root{--t-h1:calc(28px*var(--fz));--t-h2:calc(19px*var(--fz));--t-body:calc(17px*var(--fz));--t-sub:calc(15px*var(--fz));--t-cap:calc(13.5px*var(--fz));--t-read:calc(18.5px*var(--fz))}}
+:root[data-fs="l"]{--fz:1.12}
+:root[data-fs="xl"]{--fz:1.25}
+/* secondary text was too faint for tired eyes — lift contrast (dark ≈ 7:1 / 4.8:1, light ≈ 6:1 / 4.6:1) */
+:root,:root[data-theme="dark"]{--text-2:#b4b5bc;--text-3:#8b8c94}
+:root[data-theme="light"]{--text-2:#55555c;--text-3:#76767d}
+/* Korean wraps between words, never mid-word; headings balance their lines */
+html[lang="ko"] body,:lang(ko){word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,.statement,.cap-q{text-wrap:balance}
+.ed-typesel span{font-size:var(--t-sub)!important}
+.dots i{flex-basis:6px}
+
+/* ---------- Today question card: compact, the question sits right under the label ---------- */
+.today-v .capture{min-height:0!important;justify-content:flex-start;padding:26px 30px 28px}
+.today-v .capture .kicker{margin:0 0 14px;font-size:var(--t-sub);opacity:.92}
+.today-v .cap-main{gap:14px}
+.today-v .capture h2{margin:0 0 10px;font-size:clamp(32px,3.6vw,44px);line-height:1.2;max-width:none}
+@media (max-width:900px){
+  .today-v .capture{padding:20px 20px 20px;border-radius:26px}
+  .today-v .capture .kicker{margin-bottom:10px}
+  .today-v .capture h2{font-size:clamp(25px,7vw,30px);line-height:1.3;margin-bottom:6px}
+  .today-v .cap-fake{min-height:88px}
+  .today-v .cap-row .chip-t{height:36px;padding:0 13px;font-size:var(--t-sub)}
+}
+
+/* ---------- week strip: fixed-size day chips, centred — no stretched blocks on wide screens ---------- */
+.tg .week{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:4px;margin:0}
+.tg .wk-track{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;justify-items:center}
+.tg .wd{width:100%;max-width:64px;min-height:70px;padding:9px 0 8px;border-radius:18px;gap:3px;justify-content:center}
+.tg .wd .w{font-size:var(--t-cap);color:var(--text-2)}
+.tg .wd .n{font-size:calc(19px*var(--fz));font-weight:600;line-height:1.1}
+.tg .wd.sun .w,.tg .wd.sun .n{color:var(--c-red)}
+.tg .wd:not(.sel):hover{background:var(--surface-2)}
+.tg .wd.is-today:not(.sel){background:color-mix(in oklab,var(--accent) 14%,transparent)}
+.tg .wd.is-today:not(.sel) .n{color:var(--accent)}
+.tg .wd.sel .w{opacity:.8}
+.tg .week .nav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--text-2)}
+.tg .week .nav:hover{background:var(--surface-2);color:var(--text)}
+@media (hover:none){.tg .week{grid-template-columns:minmax(0,1fr)}.tg .week .nav{display:none}}
+@media (max-width:900px){.tg .wd{min-height:64px;border-radius:16px}.tg .wk-track{gap:2px}}
+
+/* ---------- dock: labelled, a home icon, sitting lower ---------- */
+#dock{bottom:calc(6px + env(safe-area-inset-bottom) * .4)}
+.dock-seg{padding:5px;gap:2px;border-radius:30px}
+.dock-seg a{width:64px!important;height:56px!important;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.dock-seg a{text-decoration:none}
+.dock-seg a span{font-size:12px;font-weight:600;line-height:1;letter-spacing:-.01em}
+.dock-seg a svg.i{width:22px!important;height:22px!important}
+.dock-new{width:62px!important;height:62px!important}
+@media (max-width:380px){.dock-seg a{width:56px!important}}
+
 </style>
 </head>
 <body>
@@ -2345,7 +2402,7 @@ Object.assign(I18N.en, {
   'ed.options': 'Options', 'ed.optionsHide': 'Hide options', 'ed.typeH': 'Type', 'ed.detailsH': 'Details', 'ed.organizeH': 'Organize', 'ed.focus': 'Focus',
   'ed.keepWriting': 'Keep writing',
   'stat.streak': 'Day streak', 'stat.records': 'Records', 'stat.doneWeek': 'Done this week', 'stat.places': 'Places saved',
-  'today.planH': 'Schedule', 'today.openCal': 'Calendar', 'today.notesH': 'Records', 'today.keepH': 'Pinned & favorites', 'today.addEvent': 'Event', 'today.addTask': 'To-do'
+  'today.planH': 'Schedule', 'nav.home': 'Home', 'dock.all': 'Records', 'set.textSize': 'Text size', 'set.textSizeSub': 'Make everything easier to read.', 'fs.m': 'Standard', 'fs.l': 'Large', 'fs.xl': 'Extra large', 'today.openCal': 'Calendar', 'today.notesH': 'Records', 'today.keepH': 'Pinned & favorites', 'today.addEvent': 'Event', 'today.addTask': 'To-do'
 });
 Object.assign(I18N.ko, {
   'prop.repeat': '반복', 'repeat.none': '반복 안 함', 'repeat.weekly': '매주', 'repeat.monthly': '매월', 'repeat.yearly': '매년',
@@ -2354,7 +2411,7 @@ Object.assign(I18N.ko, {
   'ed.options': '옵션', 'ed.optionsHide': '옵션 닫기', 'ed.typeH': '종류', 'ed.detailsH': '세부 정보', 'ed.organizeH': '정리', 'ed.focus': '집중',
   'ed.keepWriting': '이어서 쓰기',
   'stat.streak': '연속 기록', 'stat.records': '전체 기록', 'stat.doneWeek': '이번 주 완료', 'stat.places': '저장한 위치',
-  'today.planH': '일정', 'today.openCal': '캘린더', 'today.notesH': '기록', 'today.keepH': '고정 · 즐겨찾기', 'today.addEvent': '일정', 'today.addTask': '할 일'
+  'today.planH': '일정', 'nav.home': '홈', 'dock.all': '기록', 'set.textSize': '글자 크기', 'set.textSizeSub': '눈이 편하도록 화면 전체 글자를 키웁니다.', 'fs.m': '보통', 'fs.l': '크게', 'fs.xl': '아주 크게', 'today.openCal': '캘린더', 'today.notesH': '기록', 'today.keepH': '고정 · 즐겨찾기', 'today.addEvent': '일정', 'today.addTask': '할 일'
 });
 
 /* ---- core.js ---- */
@@ -2364,7 +2421,7 @@ Object.assign(I18N.ko, {
    ===================================================================== */
 const CFG = Object.assign({ SUPABASE_URL:'', SUPABASE_ANON_KEY:'', DONATE:{}, PRIVACY_CONTACT:'', OPERATOR:'' }, window.KEPT_CONFIG || {});
 const LIMITS = { entries: 20000, entryChars: 200000, categories: 200, tagsPerEntry: 30, tagLen: 40 };
-const APP_VERSION = '1.6.1';
+const APP_VERSION = '1.6.2';
 
 /* ---------- small utils ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -2702,6 +2759,7 @@ function applyPrefs() {
   const sysDark = matchMedia('(prefers-color-scheme: dark)').matches;
   const th = S.prefs.theme === 'system' ? (sysDark ? 'dark' : 'light') : S.prefs.theme;
   document.documentElement.dataset.theme = th;
+  document.documentElement.dataset.fs = S.prefs.textSize || 'm';
   document.documentElement.style.setProperty('--accent', S.prefs.accent);
   const light = ['#e5e5e5', '#f5b301'].includes(S.prefs.accent);
   document.documentElement.style.setProperty('--accent-ink', light ? '#111' : '#fff');
@@ -4645,6 +4703,7 @@ function viewSettings() {
   ${sec('account', 'user', t('set.account'), rowH(esc(t('avatar.title')), esc(t('avatar.sub')), `<span class="avatar-lg">${avatarHTML('avatar')}</span><button class="btn sm" data-act="avatarPick">${icon('camera')}${esc(t('avatar.choose'))}</button>${validAvatar(p.avatar) ? `<button class="btn sm ghost" data-act="avatarDel">${esc(t('common.remove'))}</button>` : ''}`) + account + rowH(esc(t('set.displayName')), esc(t('set.displayNameSub')), `<input class="input" style="width:220px;height:38px" maxlength="40" data-chg="displayName" value="${esc(p.displayName || '')}">`))}
   ${sec('appearance', 'palette', t('set.appearance'),
     rowH(esc(t('set.language')), '', `<div class="seg">${[['ko', '한국어'], ['en', 'English']].map(([v, l]) => `<button class="${LANG === v ? 'on' : ''}" data-act="setLang" data-v="${v}">${l}</button>`).join('')}</div>`) +
+    rowH(esc(t('set.textSize')), esc(t('set.textSizeSub')), `<div class="seg">${['m', 'l', 'xl'].map(v => `<button class="${(p.textSize || 'm') === v ? 'on' : ''}" data-act="setFs" data-v="${v}"><span style="font-size:${v === 'm' ? 14 : v === 'l' ? 16 : 18}px;font-weight:600">가</span>${esc(t('fs.' + v))}</button>`).join('')}</div>`) +
     rowH(esc(t('set.theme')), '', `<div class="seg">${[['system', 'monitor'], ['light', 'sun'], ['dark', 'moon']].map(([v, ic]) => `<button class="${p.theme === v ? 'on' : ''}" data-act="setTheme" data-v="${v}">${icon(ic)}${esc(t('theme.' + v))}</button>`).join('')}</div>`) +
     rowH(esc(t('set.accent')), esc(t('set.accentSub')), `<div class="swatches">${ACCENTS.map(c => `<button class="swatch ${p.accent === c ? 'on' : ''}" style="--s:${c}" data-act="setAccent" data-v="${c}" aria-label="${c}"></button>`).join('')}<label class="swatch" style="--s:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);position:relative;overflow:hidden" title="${esc(t('set.custom'))}"><input type="color" data-chg="accent" value="${esc(p.accent)}" style="opacity:0;position:absolute;inset:0;cursor:pointer"></label></div>`) +
     rowH(esc(t('set.aurora')), esc(t('set.auroraSub')), `<div class="au-picks"><button class="au-pick auto ${(p.aurora || 'auto') === 'auto' ? 'on' : ''}" data-act="setAurora" data-v="auto">${esc(t('set.auroraAuto'))}</button>${AURORAS.map(a => `<button class="au-pick aurora ${p.aurora === a ? 'on' : ''}" data-au="${a}" style="${Aurora.style(Aurora.fixed(a))}" data-act="setAurora" data-v="${a}" title="${esc(t('au.' + a))}" aria-label="${esc(t('au.' + a))}"></button>`).join('')}</div>`) +
@@ -4800,7 +4859,7 @@ function sidebarHTML() {
   const custom = (S.prefs.customTypes || []);
   return `<div class="sb-head"><a href="#/today" class="wordmark" style="text-decoration:none">kept<i></i></a></div>
   <nav class="sb-nav scroll" aria-label="${esc(t('nav.main'))}">
-    ${a('today', 'sun-medium', t('nav.today'), isA('today'))}
+    ${a('today', 'home', t('nav.home'), isA('today'))}
     ${a('all', 'inbox', t('nav.all'), isA('all'), cnt(() => true))}
     ${a('recent', 'clock', t('nav.recent'), isA('recent'))}
     ${a('favorites', 'heart', t('nav.favorites'), isA('favorites'), cnt(e => e.favorite))}
@@ -4842,8 +4901,8 @@ function shell() {
     <main id="view" tabindex="-1"></main>
   </div>`;
   $('#dock').innerHTML = `<nav class="dock-seg" aria-label="${esc(t('nav.main'))}">
-    <a href="#/today" data-r="today" aria-label="${esc(t('nav.today'))}">${icon('sun-medium')}</a><a href="#/all" data-r="all" aria-label="${esc(t('nav.all'))}">${icon('inbox')}</a>
-    <a href="#/tasks" data-r="tasks" aria-label="${esc(t('nav.tasks'))}">${icon('check-square')}</a><a href="#/calendar" data-r="calendar" aria-label="${esc(t('nav.calendar'))}">${icon('calendar')}</a></nav>
+    <a href="#/today" data-r="today" aria-label="${esc(t('nav.home'))}">${icon('home')}<span>${esc(t('nav.home'))}</span></a><a href="#/all" data-r="all" aria-label="${esc(t('nav.all'))}">${icon('inbox')}<span>${esc(t('dock.all'))}</span></a>
+    <a href="#/tasks" data-r="tasks" aria-label="${esc(t('nav.tasks'))}">${icon('check-square')}<span>${esc(t('nav.tasks'))}</span></a><a href="#/calendar" data-r="calendar" aria-label="${esc(t('nav.calendar'))}">${icon('calendar')}<span>${esc(t('nav.calendar'))}</span></a></nav>
     <button class="dock-new" data-act="new" aria-label="${esc(t('common.newRecord'))}">${icon('plus')}</button>`;
   const mq = matchMedia('(max-width:900px)'); const fixMenu = () => $('#menuBtn').style.display = mq.matches ? '' : 'none'; mq.addEventListener('change', fixMenu); fixMenu();
   const q = $('#q');
@@ -5058,6 +5117,7 @@ const ACT = {
     l.forEach(e => e.type = 'note'); if (l.length) await saveEntries(l); savePrefs({ customTypes: S.prefs.customTypes.filter(x => x.id !== ty.id), defaultType: S.prefs.defaultType === ty.id ? 'note' : S.prefs.defaultType }); render(); },
   setLang: el => { savePrefs({ lang: el.dataset.v }); shell(); applyI18n(); Editor.init(); render(); },
   setTheme: el => { savePrefs({ theme: el.dataset.v }); renderView(); },
+  setFs: el => { savePrefs({ textSize: el.dataset.v }); applyPrefs(); renderView(); },
   setAccent: el => { savePrefs({ accent: el.dataset.v }); renderView(); },
   setJump: (el, ev) => { ev.preventDefault(); $('#set-' + el.dataset.id)?.scrollIntoView({ behavior: 'smooth' }); },
   notifyReq: async () => { const p = await Reminders.request(); toast(t('notif.perm.' + p)); renderView(); },
