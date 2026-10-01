@@ -1670,6 +1670,81 @@ h1,h2,h3,.statement,.cap-q{text-wrap:balance}
 .dock-new{width:62px!important;height:62px!important}
 @media (max-width:380px){.dock-seg a{width:56px!important}}
 
+/* calendar week view: .cal.week must not inherit the Today week-strip grid (.week = 28px|1fr|28px) */
+.cal.week{display:block!important;grid-template-columns:none!important;touch-action:pan-y}
+.cal.week .week-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;min-height:380px}
+.cal.week .wcol{min-width:0;display:flex;flex-direction:column;gap:8px;padding:12px 8px;border-left:1px solid var(--line);border-radius:0}
+.cal.week .wcol:first-child{border-left:0}
+.cal.week .wcol.sel{background:var(--surface-2);border-radius:16px}
+.cal.week .wcol .wh{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin:0 0 4px}
+.cal.week .wcol .wh b{font-size:calc(22px*var(--fz));font-weight:600;line-height:1.1}
+.cal.week .wcol .wh span{font-size:var(--t-cap);color:var(--text-2)}
+.cal.week .wcol.today .wh b{color:var(--accent)}
+.cal.week .wcol .none{font-size:var(--t-cap);color:var(--text-3)}
+.cal.week .wcol .ev{font-size:var(--t-cap)}
+@media (max-width:900px){
+  .cal.week .week-cols{grid-template-columns:minmax(0,1fr);min-height:0}
+  .cal.week .wcol{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;align-items:start;border-left:0;border-top:1px solid var(--line);padding:12px 8px}
+  .cal.week .wcol:first-child{border-top:0}
+  .cal.week .wcol .wh{align-items:center;margin:0}
+}
+
+.cal.week .wcol .evs{display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:left;width:100%}
+.cal.week .wcol .none{text-align:left;align-self:flex-start}
+.cal.week .wcol .ev{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;white-space:normal;padding:6px 8px;line-height:1.35}
+.cal.week .wcol .ev .x{flex:1 1 100%;min-width:0;white-space:normal;overflow-wrap:anywhere;-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;color:var(--text)}
+.cal.week .wcol .ev .t{font-weight:600}
+.cal.week .wcol .ev .rp{display:inline-grid}
+@media (max-width:900px){.cal.week .wcol .ev .x{flex:1 1 auto}}
+
+/* ---------- gradient v4: soft, layered light — no hard stops, nothing glaring ----------
+   dark base in oklab + three wide glows whose alpha eases out over many stops (no visible seams),
+   hot colours pulled toward the deep tone so the brightest area stays behind white text comfortably */
+.aurora,#editor.skin-capture .ed-panel.aurora{
+  --hot:color-mix(in oklab,var(--g1) 74%,var(--g4));
+  --warm:color-mix(in oklab,var(--g2) 62%,var(--g4));
+  --echo:color-mix(in oklab,var(--g2) 40%,var(--g3));
+  background:
+    linear-gradient(180deg,rgba(6,7,10,.10) 0%,rgba(6,7,10,.04) 40%,rgba(6,7,10,.26) 100%),
+    radial-gradient(120% 95% at var(--gx) var(--gy),
+      color-mix(in oklab,var(--hot) 70%,transparent) 0%,
+      color-mix(in oklab,var(--hot) 61%,transparent) 10%,
+      color-mix(in oklab,var(--hot) 47%,transparent) 22%,
+      color-mix(in oklab,var(--hot) 32%,transparent) 34%,
+      color-mix(in oklab,var(--hot) 19%,transparent) 46%,
+      color-mix(in oklab,var(--hot) 9%,transparent) 58%,
+      color-mix(in oklab,var(--hot) 3%,transparent) 70%,
+      transparent 82%),
+    radial-gradient(105% 85% at var(--hx) var(--hy),
+      color-mix(in oklab,var(--warm) 46%,transparent) 0%,
+      color-mix(in oklab,var(--warm) 38%,transparent) 14%,
+      color-mix(in oklab,var(--warm) 25%,transparent) 30%,
+      color-mix(in oklab,var(--warm) 13%,transparent) 46%,
+      color-mix(in oklab,var(--warm) 5%,transparent) 62%,
+      transparent 78%),
+    radial-gradient(95% 80% at var(--kx) var(--ky),
+      color-mix(in oklab,var(--echo) 30%,transparent) 0%,
+      color-mix(in oklab,var(--echo) 20%,transparent) 22%,
+      color-mix(in oklab,var(--echo) 9%,transparent) 44%,
+      transparent 70%),
+    linear-gradient(var(--ga),var(--g3) 0%,color-mix(in oklab,var(--g3) 50%,var(--g4)) 35%,var(--g4) 65%,var(--g5) 100%)!important}
+@supports (background:linear-gradient(in oklab,red,blue)){
+  .aurora,#editor.skin-capture .ed-panel.aurora{
+    background:
+      linear-gradient(180deg,rgba(6,7,10,.10) 0%,rgba(6,7,10,.04) 40%,rgba(6,7,10,.26) 100%),
+      radial-gradient(120% 95% at var(--gx) var(--gy) in oklab,color-mix(in oklab,var(--hot) 70%,transparent) 0%,color-mix(in oklab,var(--hot) 61%,transparent) 10%,color-mix(in oklab,var(--hot) 47%,transparent) 22%,color-mix(in oklab,var(--hot) 32%,transparent) 34%,color-mix(in oklab,var(--hot) 19%,transparent) 46%,color-mix(in oklab,var(--hot) 9%,transparent) 58%,color-mix(in oklab,var(--hot) 3%,transparent) 70%,transparent 82%),
+      radial-gradient(105% 85% at var(--hx) var(--hy) in oklab,color-mix(in oklab,var(--warm) 46%,transparent) 0%,color-mix(in oklab,var(--warm) 38%,transparent) 14%,color-mix(in oklab,var(--warm) 25%,transparent) 30%,color-mix(in oklab,var(--warm) 13%,transparent) 46%,color-mix(in oklab,var(--warm) 5%,transparent) 62%,transparent 78%),
+      radial-gradient(95% 80% at var(--kx) var(--ky) in oklab,color-mix(in oklab,var(--echo) 30%,transparent) 0%,color-mix(in oklab,var(--echo) 20%,transparent) 22%,color-mix(in oklab,var(--echo) 9%,transparent) 44%,transparent 70%),
+      linear-gradient(var(--ga) in oklab,var(--g3) 0%,color-mix(in oklab,var(--g3) 50%,var(--g4)) 35%,var(--g4) 65%,var(--g5) 100%)!important}
+}
+/* fine grain dithers any remaining 8-bit banding */
+.aurora::after,#editor.skin-capture .ed-panel::after{opacity:.24!important}
+/* white text keeps a soft lift off any light behind it */
+.aurora .cap-q,.aurora .kicker,.aurora h2{text-shadow:0 1px 18px rgba(0,0,0,.28)}
+.aurora .cap-fake,.aurora .cap-box{background:rgba(12,14,18,.30)!important;border-color:rgba(255,255,255,.14)!important}
+.aurora .chip-t{background:rgba(12,14,18,.28);color:rgba(255,255,255,.92)}
+.aurora .chip-t:hover{background:rgba(12,14,18,.42)}
+
 </style>
 </head>
 <body>
@@ -2421,7 +2496,7 @@ Object.assign(I18N.ko, {
    ===================================================================== */
 const CFG = Object.assign({ SUPABASE_URL:'', SUPABASE_ANON_KEY:'', DONATE:{}, PRIVACY_CONTACT:'', OPERATOR:'' }, window.KEPT_CONFIG || {});
 const LIMITS = { entries: 20000, entryChars: 200000, categories: 200, tagsPerEntry: 30, tagLen: 40 };
-const APP_VERSION = '1.6.2';
+const APP_VERSION = '1.6.4';
 
 /* ---------- small utils ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -4161,11 +4236,15 @@ const Aurora = {
     let ang, n = 0; const far = x => prevAng.every(p => Math.abs(x - p) >= 45);
     do { ang = Math.round(this.rnd(95, 265)); } while (!far(ang) && ++n < 40);
     const g = { key, ang, p1: Math.round(this.rnd(9, 20)), p2: Math.round(this.rnd(30, 46)), p3: Math.round(this.rnd(58, 74)) };
-    const r = ang * Math.PI / 180; g.gx = Math.round(50 - 58 * Math.sin(r)); g.gy = Math.round(50 + 58 * Math.cos(r)); // glow sits where the light enters
+    const at = (a, d) => { const r = a * Math.PI / 180; return [Math.round(50 - d * Math.sin(r)), Math.round(50 + d * Math.cos(r))]; };
+    const side = Math.random() < .5 ? -1 : 1;
+    [g.gx, g.gy] = at(ang, 52);                                   // main light where it enters
+    [g.hx, g.hy] = at(ang + side * this.rnd(38, 58), 46);         // second colour, beside it
+    [g.kx, g.ky] = at(ang + 180 + side * this.rnd(-30, 30), 40);  // faint echo on the far side
     this.last = { key, ang }; ls.set('kept.au.last', this.last);
     return g;
   },
-  vars(g) { const c = PALS[g.key] || PALS.ember; return { '--ga': g.ang + 'deg', '--g1': c[0], '--g2': c[1], '--g3': c[2], '--g4': c[3], '--g5': c[4], '--gp1': g.p1 + '%', '--gp2': g.p2 + '%', '--gp3': g.p3 + '%', '--gx': g.gx + '%', '--gy': g.gy + '%' }; },
+  vars(g) { const c = PALS[g.key] || PALS.ember; return { '--ga': g.ang + 'deg', '--g1': c[0], '--g2': c[1], '--g3': c[2], '--g4': c[3], '--g5': c[4], '--gp1': g.p1 + '%', '--gp2': g.p2 + '%', '--gp3': g.p3 + '%', '--gx': g.gx + '%', '--gy': g.gy + '%', '--hx': (g.hx ?? 70) + '%', '--hy': (g.hy ?? 10) + '%', '--kx': (g.kx ?? 70) + '%', '--ky': (g.ky ?? 100) + '%' }; },
   style(g) { return Object.entries(this.vars(g)).map(([k, v]) => `${k}:${v}`).join(';'); },
   apply(el, g) { if (!el) return; el.dataset.au = g.key; Object.entries(this.vars(g)).forEach(([k, v]) => el.style.setProperty(k, v)); },
   fixed(name) { return { key: AU_MAP[name] || name, ang: 160, p1: 14, p2: 38, p3: 66, gx: 30, gy: 0 }; },
