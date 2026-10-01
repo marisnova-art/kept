@@ -1366,6 +1366,205 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .wx-wait svg.i{width:16px;height:16px;animation:spin 1s linear infinite}
 @media (max-width:900px){.wx-pick{width:100%}.wx-pick .select{flex:1 1 140px;min-width:0}}
 
+/* =====================================================================
+   v1.6 — writing first: one composer, options on call, grouped Today, prism aurora
+   ===================================================================== */
+/* ---------- Today header: weekday • date/year lockup → weather → greeting → status ---------- */
+.today-v .th{display:flex;flex-direction:column;align-items:flex-start;gap:18px;margin:16px 0 28px}
+.th-date{margin-bottom:4px}
+.th-date{display:flex;align-items:flex-end;gap:.16em;font-size:var(--t-display);min-width:0;max-width:100%}
+.th-date .day-big{font-size:1em;margin:0;line-height:.84;white-space:nowrap}
+.th-date .day-big i{width:.16em;height:.16em;margin-top:.02em}
+.th-ymd{display:flex;flex-direction:column;justify-content:space-between;height:.74em;font-size:1em;padding-bottom:.02em}
+.th-ymd span{font-size:.3em;line-height:1;font-weight:500;letter-spacing:-.02em;color:var(--text-3);white-space:nowrap}
+.th-ymd span:first-child{color:var(--text-2)}
+.today-v .wx-slot{margin:0;min-height:0}
+.today-v .wx-slot[hidden]{display:none}
+.wx-icon{gap:14px;padding:0}
+.wx-icon .wx-ic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:color-mix(in oklab,var(--accent) 14%,transparent)}
+.wx-icon .wx-ic svg.i{width:32px;height:32px;stroke-width:1.7;color:var(--accent)}
+.wx-icon b{font-size:clamp(38px,4.6vw,48px);font-weight:500;letter-spacing:-.04em;line-height:1}
+.wx-icon .wx-meta{display:flex;flex-direction:column;gap:3px;line-height:1.2}
+.wx-icon .wx-meta em{font-style:normal;font-size:var(--t-h2);color:var(--text);font-weight:500}
+.wx-icon .wx-meta small{font-size:var(--t-sub);color:var(--text-2)}
+.wx-text{font-size:clamp(20px,2.4vw,26px)}
+.today-v .statement{font-size:clamp(22px,2.7vw,30px);line-height:1.3;letter-spacing:-.025em;max-width:760px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;margin-top:4px}
+.stat{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:1px;align-items:center;padding:13px 14px;border-radius:20px;background:var(--surface);border:1px solid var(--line);
+  text-decoration:none;color:var(--text);min-width:0;transition:background .2s,transform .25s var(--spring)}
+.stat:hover{background:var(--surface-2)}
+.stat:active{transform:scale(.97)}
+.stat .si{grid-row:1 / 3;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in oklab,var(--mc) 15%,transparent);color:var(--mc)}
+.stat .si svg.i{width:18px;height:18px}
+.stat b{align-self:end;font-size:24px;font-weight:600;letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat small{align-self:start;font-size:var(--t-sub);color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+
+/* ---------- Today body: three calm groups ---------- */
+.today-stack{display:flex;flex-direction:column;gap:18px}
+.today-v .capture{min-height:310px;padding:26px 28px 28px;gap:0;justify-content:space-between}
+.today-v .capture .kicker{margin:0 0 26px}
+.cap-main{display:flex;flex-direction:column;gap:16px}
+.today-v .capture h2{margin:0 0 4px;font-size:clamp(28px,3.4vw,40px)}
+.today-v .cap-fake{margin:0;min-height:58px;padding:9px 9px 9px 20px}
+.today-v .cap-row{margin:0}
+
+.tg{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.tg-h{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:38px;padding:0 2px}
+.tg-h h2{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.tg-h h2 svg.i{width:18px;height:18px;color:var(--accent)}
+.tg-act{display:flex;gap:6px;align-items:center}
+.tg .pill-btn{height:34px;padding:0 14px;background:var(--surface-2);font-size:var(--t-sub)}
+.tg .pill-btn svg.i{width:15px;height:15px}
+.tg .pill-btn:hover{background:var(--surface-3)}
+.tg .week{margin:0 -4px}
+.tg-in.sheet{--sheet:var(--surface-2);--sheet-text:var(--text);--sheet-2:var(--text-2);--sheet-line:var(--line-2);
+  background:var(--surface-2);color:var(--text);box-shadow:none;border-radius:20px;padding:4px 18px 4px}
+.tg-in .sh-head{gap:10px;padding:12px 0 8px;border-bottom:1px solid var(--line)}
+.tg-in .sh-day{color:var(--text-2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tg-in .sh-day b{color:var(--text);font-weight:600}
+.tg-in .sh-add{display:flex;gap:4px;flex:none}
+.tg-in .btn.sm{height:32px;padding:0 11px;border-color:var(--line-2);color:var(--text)}
+.tg-in .ag-row{padding:13px 0;border-bottom:1px dashed var(--line-2)}
+.tg-in .ag-row:last-child{border-bottom:0}
+.tg-in .ag-row .at{font-size:var(--t-body)}
+.tg-in .ag-row .rp{display:grid;place-items:center;color:var(--text-3);flex:none}
+.tg-in .ag-row .rp svg.i{width:14px;height:14px}
+.tg-in .ag-empty{padding:18px 0 16px}
+.tg-sub{font-size:var(--t-sub);color:var(--text-2);padding:4px 4px 0;font-weight:500}
+.keep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.tg .st-card{background:var(--surface-2);border-radius:20px;padding:16px 18px 18px}
+.tg .st-card .lbl svg.i{width:14px;height:14px;color:var(--accent)}
+.tg .st-card .more{width:32px;height:32px;top:12px;right:12px}
+.tg .st-body{font-size:clamp(17px,1.8vw,20px);line-height:1.35;-webkit-line-clamp:4}
+.tg .warm{border-radius:20px}
+.tg .list{background:var(--surface-2);border-radius:20px}
+.tg .list .row:last-child{border-bottom-color:transparent}
+.tg-foot{display:flex;gap:8px;align-items:center;font-size:var(--t-sub);color:var(--text-3);padding:10px 4px 0;border-top:1px solid var(--line)}
+.tg-foot svg.i{width:15px;height:15px;flex:none}
+@media (max-width:900px){
+  .today-v .th{gap:14px;margin:6px 0 22px}
+  .th-date{font-size:clamp(46px,13.5vw,72px)}
+  .th-ymd span{font-size:.31em}
+  .wx-icon .wx-ic{width:48px;height:48px;border-radius:15px}
+  .wx-icon .wx-ic svg.i{width:28px;height:28px}
+  .wx-icon b{font-size:38px}
+  .today-v .statement{font-size:21px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stat{padding:11px 12px;border-radius:18px;column-gap:10px}
+  .stat .si{width:34px;height:34px;border-radius:11px}
+  .stat .si svg.i{width:16px;height:16px}
+  .stat b{font-size:20px}
+  .today-v .capture{min-height:0;padding:20px 18px 20px}
+  .today-v .capture .kicker{margin-bottom:22px}
+  .cap-main{gap:14px}
+  .tg{padding:14px 12px 14px;border-radius:24px}
+  .tg-in.sheet{padding:2px 14px}
+  .tg-in .sh-add .btn.sm{padding:0 9px}
+}
+
+/* ---------- aurora v3: flowing curtains + a slowly turning prism ---------- */
+.aurora,[data-au="sunset"]{--p1:#ffd36b;--p2:#ff5fa2}
+[data-au="ocean"]{--p1:#5ef0d0;--p2:#b07cff}
+[data-au="forest"]{--p1:#7ef0c8;--p2:#ffd36b}
+[data-au="dusk"]{--p1:#6fd3ff;--p2:#ffb36b}
+[data-au="rose"]{--p1:#ffe08a;--p2:#b48cff}
+[data-au="storm"]{--p1:#9ff0ff;--p2:#c1a6ff}
+[data-au="snow"]{--p1:#c9f0ff;--p2:#e2c6ff}
+[data-au="night"]{--p1:#5ff0ff;--p2:#ff7ad9}
+.au-l{inset:-50%;animation:auFlow 18s ease-in-out infinite alternate;
+  background:
+    radial-gradient(26% 20% at 32% 30%,var(--a1),transparent 70%),
+    radial-gradient(30% 24% at 68% 26%,var(--a2),transparent 70%),
+    radial-gradient(28% 26% at 56% 66%,var(--a3),transparent 72%),
+    radial-gradient(22% 18% at 24% 70%,color-mix(in oklab,var(--p1) 70%,transparent),transparent 70%),
+    radial-gradient(20% 16% at 78% 58%,color-mix(in oklab,var(--p2) 60%,transparent),transparent 70%)}
+.au-l::before{content:"";position:absolute;left:8%;right:8%;top:22%;height:42%;pointer-events:none;mix-blend-mode:screen;opacity:.55;filter:blur(12px);
+  background:repeating-linear-gradient(90deg,transparent 0 2.5%,color-mix(in oklab,var(--a1) 70%,transparent) 4.5%,transparent 7%,transparent 9%,color-mix(in oklab,var(--p1) 55%,transparent) 11%,transparent 14%,color-mix(in oklab,var(--p2) 45%,transparent) 16.5%,transparent 19.5%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 52%,transparent 100%);
+  animation:auCurtain 14s ease-in-out infinite alternate}
+.au-l::after{content:"";position:absolute;left:22%;top:18%;width:56%;aspect-ratio:1;border-radius:50%;pointer-events:none;mix-blend-mode:screen;opacity:.34;filter:blur(38px);
+  background:conic-gradient(from 0deg,var(--a1),var(--p1),var(--a2),var(--p2),var(--a3),var(--a1));
+  animation:auPrism 24s linear infinite}
+.aurora::before{opacity:.5;animation:auSweep2 21s ease-in-out infinite alternate}
+@keyframes auFlow{0%{transform:translate3d(-6%,-4%,0) rotate(-5deg) scale(1)}35%{transform:translate3d(4%,3%,0) rotate(4deg) scale(1.12)}70%{transform:translate3d(-2%,6%,0) rotate(-2deg) scale(1.05)}100%{transform:translate3d(6%,-3%,0) rotate(7deg) scale(1.16)}}
+@keyframes auCurtain{0%{transform:skewX(-16deg) translateX(-7%) scaleY(.92)}50%{transform:skewX(-6deg) translateX(2%) scaleY(1.08)}100%{transform:skewX(-20deg) translateX(8%) scaleY(.96)}}
+@keyframes auPrism{to{transform:rotate(360deg)}}
+.au-paused .au-l::before,.au-paused .au-l::after{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.au-l,.au-l::before,.au-l::after,.aurora::before{animation:none!important}}
+
+/* ---------- editor: one aurora composer, writing first ---------- */
+#editor.skin-capture #edPin,#editor.skin-capture #edFav,#editor.skin-capture [data-ed="more"]{display:inline-flex}
+#editor.skin-capture .ed-dates{display:inline}
+#editor .ed-top{gap:8px;padding:12px 14px 10px;border-bottom:1px solid transparent;transition:border-color .25s}
+#editor.drawer-open .ed-top{border-bottom-color:rgba(255,255,255,.1)}
+.ed-optbtn{display:inline-flex;align-items:center;gap:8px;height:36px;max-width:min(46vw,360px);padding:0 12px 0 6px;border-radius:var(--r-pill);
+  background:rgba(255,255,255,.12);color:#fff;font-size:var(--t-sub);border:1px solid rgba(255,255,255,.14);transition:background .2s,color .2s,transform .2s var(--spring)}
+.ed-optbtn:hover{background:rgba(255,255,255,.2)}
+.ed-optbtn:active{transform:scale(.96)}
+.ed-optbtn .ob-ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);flex:none}
+.ed-optbtn .ob-ic svg.i{width:14px;height:14px}
+.ed-optbtn .ob-t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-optbtn .ob-sl{width:15px;height:15px;flex:none;opacity:.8}
+.ed-optbtn.pinned .ob-ic{box-shadow:0 0 0 2px var(--accent)}
+#editor.drawer-open .ed-optbtn{background:#fff;color:#111;border-color:#fff}
+#editor.drawer-open .ed-optbtn .ob-ic{background:rgba(0,0,0,.08)}
+.ed-drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s var(--ease);flex:none;position:relative;z-index:4}
+#editor.drawer-open .ed-drawer{grid-template-rows:1fr}
+.ed-drawer-in{min-height:0;overflow:hidden}
+#editor.drawer-open .ed-drawer-in{overflow:auto;max-height:min(62vh,calc(var(--vvh,100dvh) - 180px));overscroll-behavior:contain;scrollbar-width:thin}
+.ed-drawer-pad{max-width:776px;margin:0 auto;padding:6px 28px 14px;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(-6px);transition:opacity .2s,transform .3s var(--ease)}
+#editor.drawer-open .ed-drawer-pad{opacity:1;transform:none}
+#editor.drawer-open .ed-drawer{background:rgba(8,10,14,.24);border-bottom:1px solid rgba(255,255,255,.1)}
+.ed-dsec{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:start}
+.ed-dl{font-size:var(--t-cap);color:var(--text-3);padding-top:9px;letter-spacing:.02em}
+#editor.no-props .ed-dsec-props{display:none}
+.ed-dsec-props .props{display:flex;flex-wrap:wrap;gap:6px}
+.ed-drawer .ed-meta{padding:0}
+.ed-drawer .ed-typesel{margin:0}
+.ed-drow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}
+.ed-drow .heart{position:static;width:auto;height:32px;border-radius:var(--r-pill);opacity:1;display:inline-flex}
+.ed-drow .mchip.on{background:#fff;color:#111}
+.ed-drow #edPin.on svg{color:var(--accent)}
+.ed-drow .heart.on svg{fill:currentColor;color:var(--dot)}
+.ed-drow .ed-dclose{background:rgba(255,255,255,.18);color:#fff}
+.ed-dslot:empty{display:none}
+.ed-dslot .ed-opt{position:static!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:18px!important;box-shadow:none!important;background:rgba(255,255,255,.08)!important;max-height:none;padding:12px 14px 10px;animation:optIn .22s var(--ease)}
+#editor .ed-scroll{padding:0}
+#editor .ed-inner{max-width:776px;min-height:100%;display:flex;flex-direction:column;padding:18px 28px 28px}
+.ed-titlebox{flex:none;margin:0 0 16px;padding:10px 16px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);transition:background .2s,border-color .2s}
+.ed-titlebox:focus-within{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.28)}
+#editor .ed-title{font-size:clamp(19px,2.2vw,24px);line-height:1.3;padding:2px 0;letter-spacing:-.02em;font-weight:500}
+#editor .ed-title::placeholder{color:rgba(255,255,255,.45)}
+#editor .prose{flex:1;min-height:42vh;padding-bottom:12px;outline:0}
+#editor .ed-prompt{flex:none}
+#editor .ed-tools{gap:2px}
+#editor.typing .au-l{opacity:.72;transition:opacity .6s}
+#editor .au-l{transition:opacity .6s}
+@media (max-width:900px){
+  #editor .ed-top{padding:4px 10px 8px;gap:6px}
+  .ed-optbtn{max-width:44vw;height:34px}
+  .ed-drawer-pad{padding:4px 16px 12px}
+  .ed-dsec{grid-template-columns:minmax(0,1fr);gap:6px}
+  .ed-dl{padding-top:0}
+  #editor .ed-inner{padding:12px 16px 20px}
+  .ed-titlebox{margin-bottom:12px;padding:8px 14px;border-radius:16px}
+  #editor .prose{min-height:30vh}
+  /* the formatting bar is one slim scrolling row, not a two-row grid over your text */
+  #editor .ed-tools{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:2px;padding:5px 6px calc(5px + env(safe-area-inset-bottom));scrollbar-width:none}
+  .kb-open #editor .ed-tools{padding-bottom:5px}
+  #editor .ed-tools .tb{width:42px;height:40px;flex:none}
+  #editor .ed-tools .tb-sep{display:block;width:1px;height:22px;margin:0 3px;background:rgba(255,255,255,.14);flex:none}
+}
+@media (max-width:420px){.ed-optbtn .ob-sl{display:none}.ed-status .txt{max-width:64px}}
+
+/* repeat marks */
+.cd .ev .rp{display:none}
+.ev .rp{display:inline-grid;place-items:center;flex:none;opacity:.7}
+.ev .rp svg.i{width:11px;height:11px}
+.ag-rp{display:flex;align-items:center;gap:4px;font-size:var(--t-cap);color:var(--text-3);margin-top:2px}
+.ag-rp svg.i{width:12px;height:12px}
+.due svg.i{width:12px;height:12px;vertical-align:-1px;margin-right:3px}
+
 </style>
 </head>
 <body>
@@ -2090,6 +2289,25 @@ ko: {
   'sc.lists': '글머리 / 번호 목록', 'sc.quote': '인용문', 'sc.icon': '아이콘 넣기', 'sc.emoji': '이모티콘 넣기', 'sc.undo': '실행 취소 / 다시 실행', 'sc.save': '저장하고 바로 동기화', 'sc.md': '줄 첫머리에 입력하면 목록·번호·인용·제목', 'sc.capture': '빠른 기록 저장 (줄바꿈은 Shift+Enter)'
 }
 };
+/* v1.6 strings — repeats, writing-first editor, grouped Today */
+Object.assign(I18N.en, {
+  'prop.repeat': 'Repeat', 'repeat.none': 'Does not repeat', 'repeat.weekly': 'Weekly', 'repeat.monthly': 'Monthly', 'repeat.yearly': 'Yearly',
+  'repeat.weeklyOn': 'Every {d}', 'repeat.monthlyOn': 'Monthly on the {n}', 'repeat.yearlyOn': 'Every year on {d}', 'repeat.dayN': 'Day {n}',
+  'repeat.until': 'Ends on (optional)', 'repeat.untilShort': 'until {d}',
+  'ed.options': 'Options', 'ed.optionsHide': 'Hide options', 'ed.typeH': 'Type', 'ed.detailsH': 'Details', 'ed.organizeH': 'Organize', 'ed.focus': 'Focus',
+  'ed.keepWriting': 'Keep writing',
+  'stat.streak': 'Day streak', 'stat.records': 'Records', 'stat.doneWeek': 'Done this week', 'stat.places': 'Places saved',
+  'today.planH': 'Schedule', 'today.openCal': 'Calendar', 'today.notesH': 'Records', 'today.keepH': 'Pinned & favorites', 'today.addEvent': 'Event', 'today.addTask': 'To-do'
+});
+Object.assign(I18N.ko, {
+  'prop.repeat': '반복', 'repeat.none': '반복 안 함', 'repeat.weekly': '매주', 'repeat.monthly': '매월', 'repeat.yearly': '매년',
+  'repeat.weeklyOn': '매주 {d}', 'repeat.monthlyOn': '매월 {n}일', 'repeat.yearlyOn': '매년 {d}', 'repeat.dayN': '{n}일',
+  'repeat.until': '종료일 (선택)', 'repeat.untilShort': '{d}까지',
+  'ed.options': '옵션', 'ed.optionsHide': '옵션 닫기', 'ed.typeH': '종류', 'ed.detailsH': '세부 정보', 'ed.organizeH': '정리', 'ed.focus': '집중',
+  'ed.keepWriting': '이어서 쓰기',
+  'stat.streak': '연속 기록', 'stat.records': '전체 기록', 'stat.doneWeek': '이번 주 완료', 'stat.places': '저장한 위치',
+  'today.planH': '일정', 'today.openCal': '캘린더', 'today.notesH': '기록', 'today.keepH': '고정 · 즐겨찾기', 'today.addEvent': '일정', 'today.addTask': '할 일'
+});
 
 /* ---- core.js ---- */
 'use strict';
@@ -2098,7 +2316,7 @@ ko: {
    ===================================================================== */
 const CFG = Object.assign({ SUPABASE_URL:'', SUPABASE_ANON_KEY:'', DONATE:{}, PRIVACY_CONTACT:'', OPERATOR:'' }, window.KEPT_CONFIG || {});
 const LIMITS = { entries: 20000, entryChars: 200000, categories: 200, tagsPerEntry: 30, tagLen: 40 };
-const APP_VERSION = '1.5.0';
+const APP_VERSION = '1.6.0';
 
 /* ---------- small utils ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -2638,7 +2856,10 @@ const Reminders = {
     live().forEach(e => {
       let at = null, when = null;
       if (e.type === 'event' && e.meta.date && e.meta.remind != null && e.meta.remind !== '') {
-        const tm = e.meta.time || '09:00'; when = new Date(`${e.meta.date}T${tm}`).getTime(); at = when - Number(e.meta.remind) * 60e3;
+        const tm = e.meta.time || '09:00'; const span = Math.ceil(hours / 24) + 2;
+        const dks = e.meta.repeat ? [...Array(span)].map((_, i) => dayKey(addDays(new Date(), i))).filter(dk => occursOn(e, dk)) : [e.meta.date];
+        dks.forEach(dk => { const w = new Date(`${dk}T${tm}`).getTime(), a = w - Number(e.meta.remind) * 60e3; if (a > now - 1000 && a < lim) out.push({ e, at: a, when: w }); });
+        return;
       } else if (e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.remind != null && e.meta.remind !== '') {
         const tm = e.meta.due_time || '09:00'; when = new Date(`${e.meta.due}T${tm}`).getTime(); at = when - Number(e.meta.remind) * 60e3;
       }
@@ -2936,26 +3157,38 @@ const Editor = {
           <button class="btn sm ghost ed-cancel" data-ed="cancel"><span data-i18n="common.cancel"></span></button>
           <button class="ed-status" id="edStatus" data-s="saved" data-ed="retry"><span class="led"></span><span class="txt"></span></button>
           <span class="tb-spacer"></span>
-          <button class="icon-btn" data-ed="pin" id="edPin" data-i18n-title="ed.pin">${icon('pin')}</button>
-          <button class="heart" data-ed="fav" id="edFav" data-i18n-title="ed.favorite">${icon('heart')}</button>
-          <button class="icon-btn" data-ed="more" data-i18n-title="common.more">${icon('more-horizontal')}</button>
+          <button class="ed-optbtn" data-ed="drawer" id="edOptBtn" aria-expanded="false" aria-controls="edDrawer"><span class="ob-ic" id="edOptIc"></span><span class="ob-t" id="edOptSum"></span>${icon('sliders-horizontal', 'ob-sl')}</button>
           <button class="btn sm primary ed-done" data-ed="close"><span class="lbl"></span></button>
+        </div>
+        <div class="ed-drawer" id="edDrawer" aria-hidden="true">
+          <div class="ed-drawer-in"><div class="ed-drawer-pad">
+            <div class="ed-dsec"><span class="ed-dl" data-i18n="ed.typeH"></span><div class="ed-typesel" id="edTypeSel" role="radiogroup"></div></div>
+            <div class="ed-dsec ed-dsec-props"><span class="ed-dl" data-i18n="ed.detailsH"></span><span class="props" id="edFields"></span></div>
+            <div class="ed-dsec"><span class="ed-dl" data-i18n="ed.organizeH"></span>
+              <div class="ed-meta">
+                <button class="mchip" data-ed="type" id="edType" hidden></button>
+                <button class="mchip" data-ed="cat" id="edCat"></button>
+                <span class="tag-edit" id="edTags"></span>
+                <input class="tag-input" id="edTagIn" list="tagSuggest" maxlength="40" enterkeyhint="done" autocapitalize="off" data-i18n-ph="ed.addTag">
+                <datalist id="tagSuggest"></datalist>
+              </div>
+            </div>
+            <div class="ed-drow">
+              <button class="mchip" data-ed="pin" id="edPin">${icon('pin')}<span data-i18n="ed.pin"></span></button>
+              <button class="mchip heart" data-ed="fav" id="edFav">${icon('heart')}<span data-i18n="ed.favorite"></span></button>
+              <span class="ed-dates" id="edDates"></span>
+              <span class="tb-spacer"></span>
+              <button class="mchip" data-ed="more">${icon('more-horizontal')}<span data-i18n="common.more"></span></button>
+              <button class="mchip ed-dclose" data-ed="drawer">${icon('chevron-up')}<span data-i18n="ed.keepWriting"></span></button>
+            </div>
+            <div class="ed-dslot" id="edDSlot"></div>
+          </div></div>
         </div>
         <div class="ed-scroll" id="edScroll">
           <div class="ed-inner">
             <div id="edTrash" class="note warn" hidden style="margin:6px 0 10px"></div>
             <div class="ed-prompt" id="edPrompt" aria-hidden="true"></div>
-            <div class="ed-typesel" id="edTypeSel" role="radiogroup"></div>
-            <textarea class="ed-title" id="edTitle" rows="1" maxlength="300" enterkeyhint="next"></textarea>
-            <div class="ed-meta">
-              <button class="mchip" data-ed="type" id="edType"></button>
-              <span class="props" id="edFields"></span>
-              <button class="mchip" data-ed="cat" id="edCat"></button>
-              <span class="tag-edit" id="edTags"></span>
-              <input class="tag-input" id="edTagIn" list="tagSuggest" maxlength="40" enterkeyhint="done" autocapitalize="off" data-i18n-ph="ed.addTag">
-              <datalist id="tagSuggest"></datalist>
-              <span class="ed-dates" id="edDates"></span>
-            </div>
+            <div class="ed-titlebox"><textarea class="ed-title" id="edTitle" rows="1" maxlength="300" enterkeyhint="next"></textarea></div>
             <div class="prose" id="edBody" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true" enterkeyhint="enter"></div>
           </div>
         </div>
@@ -2979,7 +3212,8 @@ const Editor = {
       `<span class="sep"></span><button data-hl="hl-yellow">${icon('highlighter')}</button><button data-cmd="clear">${icon('eraser')}</button>`;
     $('#bubble')?.remove(); document.body.appendChild(bubble);
     this.el = { root, panelEl: root.querySelector('.ed-panel'), title: $('#edTitle'), body: $('#edBody'), status: $('#edStatus'), type: $('#edType'), cat: $('#edCat'), tags: $('#edTags'), tagIn: $('#edTagIn'),
-      fields: $('#edFields'), fav: $('#edFav'), pin: $('#edPin'), scroll: $('#edScroll'), bubble, trash: $('#edTrash'), dates: $('#edDates'), opt: $('#edOpt'), tools: $('#edTools') };
+      fields: $('#edFields'), fav: $('#edFav'), pin: $('#edPin'), scroll: $('#edScroll'), bubble, trash: $('#edTrash'), dates: $('#edDates'), opt: $('#edOpt'), tools: $('#edTools'),
+      drawer: $('#edDrawer'), optBtn: $('#edOptBtn'), optSum: $('#edOptSum'), optIc: $('#edOptIc'), dslot: $('#edDSlot') };
     try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch {}
     this.paintLast();
     if (!this.bound) { this.bind(); this.bound = true; } else this.bindEls();
@@ -2994,11 +3228,12 @@ const Editor = {
   },
   bindEls() {
     const { root, title, body, tagIn, bubble, tools, opt } = this.el;
-    root.addEventListener('click', e => {
+    if (!root._edBound) root.addEventListener('click', e => { // #editor survives re-init (language change): bind its click once
       const b = e.target.closest('[data-ed]'); if (!b) return; const a = b.dataset.ed;
-      ({ close: () => this.close(), cancel: () => this.cancel(), fav: () => this.toggle('favorite', b), pin: () => this.toggle('pinned', b), more: () => this.moreMenu(b), type: () => this.typeMenu(b), cat: () => this.catMenu(b),
+      ({ drawer: () => this.toggleDrawer(), close: () => this.close(), cancel: () => this.cancel(), fav: () => this.toggle('favorite', b), pin: () => this.toggle('pinned', b), more: () => this.moreMenu(b), type: () => this.typeMenu(b), cat: () => this.catMenu(b),
          retry: () => { if (S.sync === 'error' || S.sync === 'offline') Sync.run(); } }[a])?.();
     });
+    root._edBound = true;
     // keep the caret (and the on-screen keyboard) while tapping tools
     const keep = e => { if (e.target.closest('button') && !e.target.closest('input')) { e.preventDefault(); this.saveSel(); } };
     [tools, bubble, opt].forEach(n => { n.addEventListener('mousedown', keep); n.addEventListener('click', e => this.toolClick(e)); });
@@ -3016,10 +3251,11 @@ const Editor = {
     });
     body.addEventListener('keydown', e => this.keys(e));
     body.addEventListener('paste', e => this.paste(e));
-    body.addEventListener('focus', () => { this.ensureBlock(); root.classList.add('typing'); if (this.panel && (this.panelMode === 'kb' || this.panel.startsWith('prop:'))) { this.closePanel(); this.updateToolState(); } });
+    body.addEventListener('focus', () => { this.ensureBlock(); root.classList.add('typing'); if (this.drawerOpen) this.toggleDrawer(false, true); if (this.panel && (this.panelMode === 'kb' || this.panel.startsWith('prop:'))) { this.closePanel(); this.updateToolState(); } });
     body.addEventListener('blur', () => { if (this.panelMode !== 'kb') this.saveSel(true); root.classList.remove('typing'); });
     body.addEventListener('drop', e => { if (e.dataTransfer?.files?.length) { e.preventDefault(); toast(t('ed.noImages')); } });
     this.el.scroll.addEventListener('scroll', () => this.hideBubble(), { passive: true });
+    this.el.scroll.addEventListener('mousedown', e => { if (e.target === this.el.scroll || e.target.classList?.contains('ed-inner')) { e.preventDefault(); if (this.ready()) { this.closePanel(); this.focusBody(true); this.ensureCaret(); } } });
     tagIn.addEventListener('keydown', e => {
       if ((e.key === 'Enter' || e.key === ',') && tagIn.value.trim() && !e.isComposing) { e.preventDefault(); this.addTag(tagIn.value); tagIn.value = ''; }
       else if (e.key === 'Backspace' && !tagIn.value && this.e.tags.length) { this.e.tags.pop(); this.renderTags(); this.changed(); }
@@ -3029,7 +3265,7 @@ const Editor = {
     this.el.tags.addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (b) { this.e.tags.splice(+b.dataset.rm, 1); this.renderTags(); this.changed(); } });
     this.el.fields.addEventListener('click', e => {
       const b = e.target.closest('[data-prop],[data-tf]'); if (!b || !this.ready()) return;
-      if (b.dataset.prop) return this.togglePanel('prop:' + b.dataset.prop);
+      if (b.dataset.prop) { if (!this.drawerOpen) this.toggleDrawer(true); return this.togglePanel('prop:' + b.dataset.prop); }
       const k = b.dataset.tf; this.e.meta[k] = !this.e.meta[k];
       if (k === 'done') { this.e.meta.done_at = this.e.meta.done ? nowISO() : null; }
       if (this.e.meta[k]) { burst(b); haptic(12); }
@@ -3045,7 +3281,8 @@ const Editor = {
   /* ---------- open / close ---------- */
   open(id, preset = {}, opts = {}) {
     if (this.e) this.commit.flush?.();
-    this.skin = opts.skin || null;
+    this.skin = 'capture'; // one writing surface everywhere: the aurora composer
+    this.drawerOpen = false;
     const ex = id && S.entries.get(id);
     this.isNew = !ex; this.touched = false;
     this.e = ex || newEntry(preset);
@@ -3053,7 +3290,7 @@ const Editor = {
     this._cancelled = false;
     this.dirty = false; this.pending = null; this.savedRange = null;
     const { root, title, body } = this.el;
-    root.classList.remove('closing', 'saved', 'has-text'); root.classList.add('open'); this.el.panelEl.style.transform = '';
+    root.classList.remove('closing', 'saved', 'has-text', 'drawer-open'); this.el.drawer.setAttribute('aria-hidden', 'true'); this.el.drawer.inert = true; this.el.optBtn.setAttribute('aria-expanded', 'false'); root.classList.add('open'); this.el.panelEl.style.transform = '';
     root.classList.toggle('skin-capture', this.skin === 'capture'); this.el.panelEl.classList.toggle('aurora', this.skin === 'capture');
     document.documentElement.classList.add('editor-open');
     this.fitViewport();
@@ -3091,16 +3328,49 @@ const Editor = {
   },
   markEmpty() { const b = this.el.body; b.classList.toggle('is-empty', !b.textContent.replace(ZWRE, '').trim() && !b.querySelector('.ico,li')); },
   renderSkin() {
-    const cap = this.skin === 'capture'; const e = this.e;
-    $('.ed-done .lbl', this.el.root).textContent = cap ? t('common.save') : t('common.done');
-    const pr = $('#edPrompt'); pr.innerHTML = cap ? `${icon('message-circle')}<span>${esc(Prompts.current())}</span>` : '';
-    if (cap) this.el.panelEl.dataset.au = Aurora.name(); else delete this.el.panelEl.dataset.au;
-    const types = ['note', 'idea', 'todo', 'event', 'item', 'contact'];
-    $('#edTypeSel').innerHTML = cap ? types.map(ty => `<button data-t="${ty}" role="radio" aria-checked="${ty === e.type}" class="${ty === e.type ? 'on' : ''}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('') : '';
+    const e = this.e;
+    $('.ed-done .lbl', this.el.root).textContent = this.isNew ? t('common.save') : t('common.done');
+    const pr = $('#edPrompt'); pr.innerHTML = this.isNew && !e.deleted_at ? `${icon('message-circle')}<span>${esc(Prompts.current())}</span>` : '';
+    this.el.panelEl.dataset.au = Aurora.name();
+    $('#edTypeSel').innerHTML = typeList().map(ty => `<button data-t="${ty.id}" role="radio" aria-checked="${ty.id === e.type}" class="${ty.id === e.type ? 'on' : ''}">${icon(ty.icon)}<span>${esc(ty.label)}</span></button>`).join('');
     const structured = ['todo', 'event', 'item', 'contact'].includes(e.type);
-    this.el.root.classList.toggle('no-title', cap && !structured && !e.title);
-    this.el.body.dataset.ph = cap && !structured ? t('cap.ph.' + e.type) : t('ed.bodyPh');
-    if (cap && structured && this.isNew && document.activeElement === this.el.body && !this.el.body.textContent.trim()) this.el.title.focus({ preventScroll: true });
+    this.el.root.classList.remove('no-title');
+    this.el.root.classList.toggle('no-props', !this.propDefs(e.type).length);
+    this.el.body.dataset.ph = !structured && this.isNew && ['note', 'idea', 'todo', 'event', 'item', 'contact'].includes(e.type) ? t('cap.ph.' + e.type) : t('ed.bodyPh');
+    if (structured && this.isNew && document.activeElement === this.el.body && !this.el.body.textContent.trim()) this.el.title.focus({ preventScroll: true });
+    this.renderSummary();
+  },
+  /* the options live in a drawer under the header: closed while you write, one tap away when you need them */
+  toggleDrawer(force, fromTyping) {
+    if (!this.e) return;
+    const open = force ?? !this.drawerOpen; if (open === this.drawerOpen) return;
+    this.drawerOpen = open;
+    const { root, drawer, optBtn } = this.el;
+    root.classList.toggle('drawer-open', open); drawer.setAttribute('aria-hidden', String(!open)); drawer.inert = !open; optBtn.setAttribute('aria-expanded', String(open));
+    optBtn.title = t(open ? 'ed.optionsHide' : 'ed.options');
+    haptic(5);
+    if (open) {
+      this.saveSel(); this.hideBubble();
+      if (this.panel && !this.panel.startsWith('prop:')) this.closePanel();
+      if (isTouch() && document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    } else {
+      if (this.panel && this.panel.startsWith('prop:')) this.closePanel();
+      this.renderFields();
+      if (!fromTyping && this.ready()) { this.focusKeep(); this.ensureCaret(); }
+    }
+  },
+  renderSummary() {
+    const e = this.e; if (!e || !this.el.optSum) return;
+    const ty = typeOf(e.type); const bits = [ty.label];
+    const m = e.meta || {};
+    if (e.type === 'event') { if (m.date) bits.push(fmtDate(parseDay(m.date), { month: 'short', day: 'numeric' }) + (m.time ? ' ' + fmtTime(m.time) : '')); if (m.repeat) bits.push(t('repeat.' + m.repeat)); }
+    else if (e.type === 'todo') { if (m.due) bits.push(fmtDue(m.due, m.due_time)); }
+    else if (e.type === 'item' && m.location) bits.push(m.location);
+    const c = catOf(e.category_id); if (c) bits.push(c.name);
+    if (e.tags.length) bits.push('#' + e.tags[0] + (e.tags.length > 1 ? ' +' + (e.tags.length - 1) : ''));
+    this.el.optIc.innerHTML = icon(ty.icon);
+    this.el.optSum.textContent = bits.join(' · ');
+    this.el.optBtn.classList.toggle('pinned', !!e.pinned); this.el.optBtn.classList.toggle('faved', !!e.favorite);
   },
   close(fromPop = false) {
     if (!this.e) return;
@@ -3161,7 +3431,7 @@ const Editor = {
     const st = this.el.status; st.dataset.s = s;
     let label = { new: t('ed.st.new'), saving: t('ed.st.saving'), saved: t('ed.st.saved'), synced: t('ed.st.synced'), offline: t('ed.st.offline'), error: t('ed.st.error') }[s] || '';
     const n = this.e ? (this.e.title.length + (this.e.text || '').replace(/\s/g, '').length) : 0;
-    if (n && this.skin !== 'capture' && ['saved', 'synced', 'offline'].includes(s)) label += ' · ' + t('ed.chars', { n: fmtNum(n) });
+    if (n && !this.isNew && ['saved', 'synced', 'offline'].includes(s)) label += ' · ' + t('ed.chars', { n: fmtNum(n) });
     const txt = st.querySelector('.txt'); if (txt.textContent !== label) { txt.textContent = label; st.classList.remove('swap'); void st.offsetWidth; st.classList.add('swap'); }
     st.querySelector('.led').innerHTML = ['saved', 'synced'].includes(s) ? icon('check') : '';
     st.title = s === 'error' ? (Sync.lastError || t('ed.st.error')) : '';
@@ -3178,15 +3448,16 @@ const Editor = {
     const e = this.e, ty = typeOf(e.type), c = catOf(e.category_id);
     this.el.type.innerHTML = `${icon(ty.icon)}<span>${esc(ty.label)}</span>${icon('chevron-down')}`;
     this.el.cat.innerHTML = c ? `<span class="sw" style="background:${esc(c.color)}"></span><span>${esc(c.name)}</span>` : `${icon('folder')}<span>${esc(t('ed.noCategory'))}</span>`;
-    this.el.fav.classList.toggle('on', !!e.favorite);
-    this.el.pin.style.color = e.pinned ? 'var(--accent)' : '';
+    this.el.fav.classList.toggle('on', !!e.favorite); this.el.fav.setAttribute('aria-pressed', String(!!e.favorite));
+    this.el.pin.classList.toggle('on', !!e.pinned); this.el.pin.setAttribute('aria-pressed', String(!!e.pinned));
+    this.renderSummary();
     this.el.title.placeholder = t('ed.titlePh.' + (['item', 'contact', 'todo', 'event'].includes(e.type) ? e.type : 'default'));
     this.renderTags(); this.renderDates();
     const all = new Set(); live().forEach(x => x.tags.forEach(tg => all.add(tg)));
     $('#tagSuggest').innerHTML = [...all].slice(0, 300).map(x => `<option value="${esc(x)}">`).join('');
   },
   renderDates() { if (this.e && S.entries.has(this.e.id)) this.el.dates.textContent = t('ed.edited', { t: fmtRel(this.e.updated_at) }); else this.el.dates.textContent = ''; },
-  renderTags() { this.el.tags.innerHTML = this.e.tags.map((g, i) => `<span class="tchip">#${esc(g)}<button data-rm="${i}" aria-label="${esc(t('common.remove'))}">${icon('x')}</button></span>`).join(''); },
+  renderTags() { this.renderSummary(); this.el.tags.innerHTML = this.e.tags.map((g, i) => `<span class="tchip">#${esc(g)}<button data-rm="${i}" aria-label="${esc(t('common.remove'))}">${icon('x')}</button></span>`).join(''); },
   addTag(v) {
     v.split(',').map(s => s.trim().replace(/^#/, '').slice(0, LIMITS.tagLen)).filter(Boolean).forEach(tg => { if (!this.e.tags.includes(tg) && this.e.tags.length < LIMITS.tagsPerEntry) this.e.tags.push(tg); });
     this.renderTags(); this.changed();
@@ -3239,7 +3510,7 @@ const Editor = {
   propDefs(type) {
     return ({
       todo: ['due', 'priority', 'remind', 'important', 'done'],
-      event: ['date', 'time', 'remind', 'desc'],
+      event: ['date', 'time', 'repeat', 'remind', 'desc'],
       item: ['location'],
       contact: ['phone', 'email', 'org', 'address']
     })[type] || [];
@@ -3253,12 +3524,13 @@ const Editor = {
       case 'time': return m.time ? fmtTime(m.time) + (m.end_time ? '–' + fmtTime(m.end_time) : '') : '';
       case 'priority': return m.priority ? 'P' + m.priority : '';
       case 'remind': return remind(m.remind);
+      case 'repeat': return m.repeat ? repeatLabel(m, true) : '';
       default: return m[k] || '';
     }
   },
   renderFields() {
     const e = this.e, m = e.meta, f = this.el.fields;
-    const IC = { due: 'calendar', date: 'calendar', time: 'clock', priority: 'flag', remind: 'bell', desc: 'text-quote', location: 'map-pin', phone: 'phone', email: 'mail', org: 'briefcase', address: 'home' };
+    const IC = { repeat: 'repeat', due: 'calendar', date: 'calendar', time: 'clock', priority: 'flag', remind: 'bell', desc: 'text-quote', location: 'map-pin', phone: 'phone', email: 'mail', org: 'briefcase', address: 'home' };
     f.innerHTML = this.propDefs(e.type).map(k => {
       if (k === 'important') return `<button class="mchip prop ${m.important ? 'set star' : 'empty'}" data-tf="important" aria-pressed="${!!m.important}">${icon('star')}<span>${esc(t('f.important'))}</span></button>`;
       if (k === 'done') return `<button class="mchip prop ${m.done ? 'set ok' : 'empty'}" data-tf="done" aria-pressed="${!!m.done}">${icon(m.done ? 'circle-check' : 'circle')}<span>${esc(m.done ? t('task.done') : t('task.open'))}</span></button>`;
@@ -3266,6 +3538,7 @@ const Editor = {
       const v = this.propLabel(k); const cls = v ? 'set' + (k === 'location' ? ' accent' : '') + (k === 'due' && !m.done && m.due && m.due < todayKey() ? ' over' : '') : 'empty';
       return `<button class="mchip prop ${cls} ${this.panel === 'prop:' + k ? 'open' : ''}" data-prop="${k}">${icon(IC[k] || 'circle')}<span>${esc(v || t('prop.' + k))}</span></button>`;
     }).join('');
+    this.renderSummary();
   },
   setType(ty) {
     this.e.type = ty; if (ty === 'event' && !this.e.meta.date) this.e.meta.date = V.selDay || todayKey(); if (ty === 'todo' && this.e.meta.done == null) this.e.meta.done = false;
@@ -3283,6 +3556,12 @@ const Editor = {
       case 'due': body = dayBtns('due') + `<div class="pp-2">${field(t('f.due'), inp('due', 'date'))}${field(t('f.time'), inp('due_time', 'time'))}</div>` + (m.due ? `<button class="pp-clear" data-pset="due:">${icon('x')}${esc(t('prop.clearDate'))}</button>` : ''); break;
       case 'date': body = dayBtns('date') + `<div class="pp-2">${field(t('f.date'), inp('date', 'date'))}</div>`; break;
       case 'time': body = `<div class="pp-grid">${[['', 'cal.allDay'], ['09:00'], ['12:00'], ['15:00'], ['19:00']].map(([v, l]) => `<button class="pp-b ${(m.time || '') === v ? 'on' : ''}" data-pset="time:${v}">${esc(l ? t(l) : fmtTime(v))}</button>`).join('')}</div><div class="pp-2">${field(t('f.start'), inp('time', 'time'))}${field(t('f.end'), inp('end_time', 'time'))}</div>`; break;
+      case 'repeat': {
+        const b = m.date ? parseDay(m.date) : new Date();
+        const hint = { weekly: fmtDate(b, { weekday: 'short' }), monthly: t('repeat.dayN', { n: b.getDate() }), yearly: fmtDate(b, { month: 'short', day: 'numeric' }) };
+        body = `<div class="pp-grid four">${REPEATS.map(v => `<button class="pp-b ${(m.repeat || '') === v ? 'on' : ''}" data-pset="repeat:${v}">${esc(t('repeat.' + (v || 'none')))}${v ? `<small>${esc(hint[v])}</small>` : ''}</button>`).join('')}</div>`
+          + (m.repeat ? `<div class="pp-2">${field(t('repeat.until'), inp('repeat_until', 'date'))}</div><p class="pp-note">${esc(repeatLabel(m))}</p>` : '');
+        break; }
       case 'priority': body = `<div class="pp-grid four">${[0, 1, 2, 3].map(p => `<button class="pp-b ${Number(m.priority || 0) === p ? 'on' : ''}" data-pset="priority:${p}">${esc(t('prio.' + p))}</button>`).join('')}</div>`; break;
       case 'remind': body = remind + (this.e.type === 'todo' && !m.due ? `<p class="pp-note">${esc(t('prop.remindNeedsDue'))}</p>` : ''); break;
       case 'desc': body = `<div class="pp-1">${field(t('f.desc'), inp('desc', 'text', t('f.descPh')))}</div>`; break;
@@ -3298,6 +3577,7 @@ const Editor = {
     const k = ev.target.dataset?.k; if (!k || !this.e) return;
     let v = ev.target.value; if (k === 'email') ev.target.setCustomValidity(v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) ? t('err.email') : '');
     this.e.meta[k] = v; this.renderFields(); this.changed();
+    if (k === 'repeat_until' && this.panel === 'prop:repeat') { const n = $('.pp-note', this.el.opt); if (n) n.textContent = repeatLabel(this.e.meta); }
     if (ev.type === 'change' && ['due', 'date', 'time', 'end_time', 'due_time'].includes(k)) $$('[data-pset]', this.el.opt).forEach(b => b.classList.toggle('on', b.dataset.pset === k + ':' + v));
   },
   propSet(spec) {
@@ -3305,8 +3585,9 @@ const Editor = {
     if (k === 'priority') v = Number(v);
     this.e.meta[k] = v; if (k === 'due' && !v) { this.e.meta.due_time = ''; }
     if (k === 'time' && !v) this.e.meta.end_time = '';
+    if (k === 'repeat' && !v) this.e.meta.repeat_until = '';
     haptic(5); this.renderFields(); this.changed();
-    const one = ['priority', 'remind'].includes(k) || (k === 'time' && !v);
+    const one = ['priority', 'remind'].includes(k) || (k === 'time' && !v) || (k === 'repeat' && !v);
     if (one) { this.closePanel(); this.renderFields(); } else this.renderPanel();
   },
 
@@ -3405,14 +3686,25 @@ const Editor = {
     if (d.mark) return this.mark(d.mark);
     if (d.cmd) return this.cmd(d.cmd);
     if (d.panel) return this.togglePanel(d.panel);
-    if (d.color !== undefined) return this.mark('color', d.color || null);
-    if (d.hl !== undefined) return this.mark('hl', d.hl || null);
-    if (d.size !== undefined) return this.mark('size', d.size || null);
-    if (d.sp) { this.setSpacing(d.sp); this.renderPanel(); return; }
+    if (d.color !== undefined) { this.mark('color', d.color || null); return this.backToText(); }
+    if (d.hl !== undefined) { this.mark('hl', d.hl || null); return this.backToText(); }
+    if (d.size !== undefined) { this.mark('size', d.size || null); return this.backToText(); }
+    if (d.sp) { this.setSpacing(d.sp); return this.backToText(); }
     if (d.tab) { ls.set('kept.pick.' + this.panel, d.tab); this.renderPanel(); return; }
     if (d.pset !== undefined) return this.propSet(d.pset);
     if (d.pclose !== undefined) { this.closePanel(); this.renderFields(); return; }
-    if (d.v) { this.panel === 'icon' ? this.insertIcon(d.v) : this.insertText(d.v); burst(b, 4); }
+    if (d.v) { this.panel === 'icon' ? this.insertIcon(d.v) : this.insertText(d.v); burst(b, 4); return this.backToText(); }
+  },
+  /* after choosing an icon, emoji, colour or size you are writing again — caret restored, keyboard back */
+  backToText() {
+    if (!this.ready() || !this.panel || this.panel.startsWith('prop:')) return;
+    const r = this.savedRange && this.savedRange.startContainer.isConnected && this.inBody(this.savedRange.startContainer) ? this.savedRange.cloneRange() : null;
+    this.closePanel();
+    const b = this.el.body; b.focus({ preventScroll: true });
+    const s = getSelection();
+    if (r) { s.removeAllRanges(); s.addRange(r); this.savedRange = r.cloneRange(); }
+    else if (!s.rangeCount || !this.inBody(s.anchorNode)) this.focusBody(true);
+    this.updateToolState(); this.ensureCaret();
   },
   afterFmt() { this.touched = true; this.changed(); this.histNow(); this.updateToolState(); this.ensureCaret(); },
   closestBlock() { const s = getSelection(); if (!s.rangeCount) return null; let n = s.anchorNode; if (n?.nodeType === 3) n = n.parentNode; return n && this.inBody(n) ? n.closest('p,div,li,blockquote,h2,h3') : null; },
@@ -3464,7 +3756,7 @@ const Editor = {
       const s = getSelection(); if (!s.rangeCount || !this.inBody(s.anchorNode)) return;
       let rect = s.getRangeAt(0).getBoundingClientRect();
       if (!rect.height) { const n = s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement; rect = n.getBoundingClientRect(); if (rect.height > 60) return; }
-      const sc = this.el.scroll.getBoundingClientRect(); const ov = this.panelMode === 'over' || this.panelMode === 'prop' ? this.el.opt.offsetHeight : 0; const lim = sc.bottom - ov - 28;
+      const sc = this.el.scroll.getBoundingClientRect(); const ov = this.panelMode === 'over' ? this.el.opt.offsetHeight : 0; const lim = sc.bottom - ov - 28;
       if (rect.bottom > lim) this.el.scroll.scrollBy({ top: rect.bottom - lim + 36, behavior: 'smooth' });
       else if (rect.top < sc.top + 6) this.el.scroll.scrollBy({ top: rect.top - sc.top - 40, behavior: 'smooth' });
     });
@@ -3495,7 +3787,7 @@ const Editor = {
   closePanel() {
     const wasProp = this.panel && this.panel.startsWith('prop:');
     this.panel = null; this.panelMode = null; this.el.scroll?.querySelector('.ghost-host')?.remove();
-    if (this.el.opt) { this.el.opt.hidden = true; this.el.opt.innerHTML = ''; this.el.opt.className = 'ed-opt'; }
+    if (this.el.opt) { this.el.opt.hidden = true; this.el.opt.innerHTML = ''; this.el.opt.className = 'ed-opt'; if (this.el.opt.parentNode !== this.el.panelEl && this.el.tools) this.el.panelEl.insertBefore(this.el.opt, this.el.tools); }
     this.el.root?.classList.remove('panel-open', 'panel-kb'); this.el.root?.style.setProperty('--opt-h', '0px');
     if (wasProp && this.e) this.renderFields();
   },
@@ -3515,9 +3807,11 @@ const Editor = {
         <div class="pgrid ${p}">${list(cur).map(v => p === 'icon' ? `<button data-v="${v}" aria-label="${esc(v)}">${icon(v)}</button>` : `<button data-v="${v}">${v}</button>`).join('')}</div></div>`;
     }
     this.el.root.style.setProperty('--tools-h', this.el.tools.offsetHeight + 'px');
+    const host = p.startsWith('prop:') ? this.el.dslot : this.el.panelEl;
+    if (o.parentNode !== host) { if (host === this.el.dslot) host.appendChild(o); else host.insertBefore(o, this.el.tools); }
     o.innerHTML = h; o.hidden = false; o.className = 'ed-opt mode-' + this.panelMode + (p.startsWith('prop:') ? ' is-prop' : '');
     this.el.root.classList.add('panel-open'); this.el.root.classList.toggle('panel-kb', this.panelMode === 'kb');
-    requestAnimationFrame(() => { if (this.panelMode === 'over' || this.panelMode === 'prop') this.el.root.style.setProperty('--opt-h', o.offsetHeight + 'px'); this.ensureCaret(); });
+    requestAnimationFrame(() => { if (this.panelMode === 'over') this.el.root.style.setProperty('--opt-h', o.offsetHeight + 'px'); else if (this.panelMode === 'prop') o.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); this.ensureCaret(); });
     const q = o.querySelector('[data-q]');
     if (q) q.addEventListener('input', () => {
       const v = q.value.trim().toLowerCase(); const sets = p === 'icon' ? ICON_SETS : EMOJI_SETS; const all = Object.keys(sets).flatMap(k => p === 'icon' ? sets[k] : sets[k].split(' '));
@@ -3578,6 +3872,7 @@ const Editor = {
     if (mod && k === 's') { e.preventDefault(); this.commit.flush(); Sync.schedule(10); this.setStatus(this.el.status.dataset.s, true); }
     if (e.key === 'Tab') { const li = this.closestBlock()?.closest('li'); if (li) { e.preventDefault(); this.histNow(); document.execCommand(e.shiftKey ? 'outdent' : 'indent'); this.afterFmt(); } }
     if (e.key === 'Escape' && this.panel) { e.stopPropagation(); this.closePanel(); this.updateToolState(); }
+    else if (e.key === 'Escape' && this.drawerOpen) { e.stopPropagation(); this.toggleDrawer(false); }
   },
   paste(e) {
     e.preventDefault();
@@ -3823,8 +4118,8 @@ const Weather = {
     const w = this.data && this.data.city === c.id && Date.now() - this.data.at < 6 * 3600e3 ? this.data : null;
     if (!w) return this.busy ? `<span class="wx wx-wait">${icon('loader')}<span>${esc(c.name)}</span></span>` : '';
     const k = this.kind(w); const label = t('wx.' + k);
-    if (!V.wxStyle) V.wxStyle = Math.random() < .5 ? 'icon' : 'text';
-    if (V.wxStyle === 'icon') return `<button class="wx wx-icon" data-act="wxStyle" title="${esc(c.country + ' · ' + c.name)}">${icon(this.icon(w))}<b>${w.temp}°</b><span>${esc(c.name)} · ${esc(label)}<small>↑${w.max}° ↓${w.min}°</small></span></button>`;
+    if (!V.wxStyle) V.wxStyle = 'icon';
+    if (V.wxStyle === 'icon') return `<button class="wx wx-icon" data-act="wxStyle" title="${esc(c.country + ' · ' + c.name)}"><span class="wx-ic">${icon(this.icon(w))}</span><b>${w.temp}°</b><span class="wx-meta"><em>${esc(label)}</em><small>${esc(c.name)} · ↑${w.max}° ↓${w.min}°</small></span></button>`;
     return `<button class="wx wx-text" data-act="wxStyle" title="${esc(c.country)}">${esc(c.name)}, ${esc(t('wd.' + k, { tw: this.tempWord(w.temp) }))} <b>${w.temp}°</b></button>`;
   }
 };
@@ -3886,7 +4181,7 @@ function snippet(e, ws, len = 160) {
 /* ---------- entry renderers ---------- */
 function metaBadge(e) {
   if (e.type === 'todo' && e.meta.due) { const k = todayKey(); const cls = !e.meta.done && e.meta.due < k ? 'over' : e.meta.due === k ? 'today' : ''; return `<span class="due ${cls}">${esc(fmtDue(e.meta.due, e.meta.due_time))}</span>`; }
-  if (e.type === 'event' && e.meta.date) return `<span class="due">${esc(fmtDue(e.meta.date, e.meta.time))}</span>`;
+  if (e.type === 'event' && e.meta.date) return `<span class="due">${e.meta.repeat ? icon('repeat') : ''}${esc(e.meta.repeat ? repeatLabel(e.meta, true) + (e.meta.time ? ' · ' + fmtTime(e.meta.time) : '') : fmtDue(e.meta.date, e.meta.time))}</span>`;
   return '';
 }
 function fmtDue(d, tm) {
@@ -3956,11 +4251,33 @@ function streak() {
   return n;
 }
 function dayAgenda(k) {
-  const ev = live().filter(e => e.type === 'event' && e.meta.date === k).sort((a, b) => (a.meta.time || '').localeCompare(b.meta.time || ''));
+  const ev = live().filter(e => isEventOn(e, k)).sort((a, b) => (a.meta.time || '').localeCompare(b.meta.time || ''));
   const td = live().filter(e => e.type === 'todo' && e.meta.due === k).sort((a, b) => (a.meta.done - b.meta.done) || (a.meta.due_time || '99').localeCompare(b.meta.due_time || '99'));
   return { ev, td };
 }
-function dayItems(dk) { return live().filter(e => (e.type === 'event' && e.meta.date === dk) || (e.type === 'todo' && e.meta.due === dk)); }
+/* recurring schedules: an event repeats from its date — weekly, monthly (same day, clamped to month end) or yearly — optionally until a date */
+const REPEATS = ['', 'weekly', 'monthly', 'yearly'];
+function occursOn(e, dk) {
+  const m = e.meta || {}; const base = m.date; if (!base || !dk) return false;
+  if (base === dk) return true;
+  const r = m.repeat; if (!r || dk < base || (m.repeat_until && dk > m.repeat_until)) return false;
+  const b = parseDay(base), d = parseDay(dk); const lastDay = (y, mo) => new Date(y, mo + 1, 0).getDate();
+  if (r === 'weekly') return Math.round((d - b) / 864e5) % 7 === 0;
+  const bd = Math.min(b.getDate(), lastDay(d.getFullYear(), d.getMonth()));
+  if (r === 'monthly') return d.getDate() === bd;
+  if (r === 'yearly') return d.getMonth() === b.getMonth() && d.getDate() === bd;
+  return false;
+}
+const isEventOn = (e, dk) => e.type === 'event' && occursOn(e, dk);
+function repeatLabel(m, short) {
+  if (!m || !m.repeat || !m.date) return '';
+  const b = parseDay(m.date);
+  const what = m.repeat === 'weekly' ? t('repeat.weeklyOn', { d: fmtDate(b, { weekday: short ? 'short' : 'long' }) })
+    : m.repeat === 'monthly' ? t('repeat.monthlyOn', { n: b.getDate() })
+    : t('repeat.yearlyOn', { d: fmtDate(b, { month: 'short', day: 'numeric' }) });
+  return short ? what : what + (m.repeat_until ? ' · ' + t('repeat.untilShort', { d: fmtDate(parseDay(m.repeat_until), { month: 'short', day: 'numeric' }) }) : '');
+}
+function dayItems(dk) { return live().filter(e => isEventOn(e, dk) || (e.type === 'todo' && e.meta.due === dk)); }
 function dayDots(dk, max = 3) {
   const l = dayItems(dk); if (!l.length) return '<span class="dots"></span>';
   return `<span class="dots">${l.slice(0, max).map(e => `<i class="${e.type === 'todo' ? (e.meta.done ? 'td done' : 'td') : 'ev'}" style="${catOf(e.category_id) ? `--dc:${esc(catOf(e.category_id).color)}` : ''}"></i>`).join('')}</span>`;
@@ -3988,12 +4305,9 @@ function viewToday() {
 
   // week strip
   if (!V.weekAnchor) V.weekAnchor = startOfWeek(now, S.prefs.weekStart);
-  const busy = new Set(live().flatMap(e => e.type === 'event' ? [e.meta.date] : e.type === 'todo' && !e.meta.done ? [e.meta.due] : []).filter(Boolean));
   const days = [...Array(7)].map((_, i) => addDays(V.weekAnchor, i));
   const selD = parseDay(V.selDay);
   const ag = dayAgenda(V.selDay);
-  const agRows = ag.ev.map(e => `<div class="ag-row" data-act="open" data-id="${e.id}"><span class="ai" style="color:${e.meta.time ? 'var(--sheet-2)' : 'var(--dot)'}">${icon(e.meta.time ? 'calendar' : 'sparkle')}</span><span class="at">${esc(entryDisplayTitle(e))}</span><span class="tm">${esc(e.meta.time ? fmtTime(e.meta.time) : t('cal.allDay'))}</span></div>`)
-    .concat(ag.td.map(e => `<div class="ag-row ${e.meta.done ? 'done' : ''}" data-act="open" data-id="${e.id}"><span class="ai"><button class="ag-chk ${e.meta.done ? 'on' : ''}" data-act="toggleDone" data-id="${e.id}" aria-label="${esc(t('task.toggle'))}">${icon('check')}</button></span><span class="at">${esc(entryDisplayTitle(e))}</span><span class="tm">${esc(e.meta.due_time ? fmtTime(e.meta.due_time) : '')}</span></div>`));
   const pinned = sortEntries(live().filter(e => e.pinned)).slice(0, 3);
   const favs = sortEntries(live().filter(e => e.favorite && !e.pinned), 'updated').slice(0, 4);
   const recent = sortEntries(live(), 'updated').slice(0, 6);
@@ -4001,52 +4315,67 @@ function viewToday() {
   const capTypes = ['note', 'idea', 'todo', 'event', 'item', 'contact'];
   const tints = ['#ff7a34', '#c2412d', '#d9762b', '#a33a2a'];
 
-  return `<div class="wrap view-enter">
+  const stat = (href, ic, color, n, label, extra = '') => `<a href="${href}" class="stat" style="--mc:${color}" ${extra}><span class="si">${icon(ic)}</span><b>${esc(fmtNum(n))}</b><small>${esc(label)}</small></a>`;
+  const isThisWeek = V.selDay === k && dayKey(V.weekAnchor) === dayKey(startOfWeek(now, S.prefs.weekStart));
+  const agRowsT = ag.ev.map(e => `<div class="ag-row" data-act="open" data-id="${e.id}"><span class="ai" style="color:${e.meta.time ? 'var(--sheet-2)' : 'var(--dot)'}">${icon(e.meta.time ? 'calendar' : 'sparkle')}</span><span class="at">${esc(entryDisplayTitle(e))}</span>${e.meta.repeat ? `<span class="rp" title="${esc(repeatLabel(e.meta))}">${icon('repeat')}</span>` : ''}<span class="tm">${esc(e.meta.time ? fmtTime(e.meta.time) : t('cal.allDay'))}</span></div>`)
+    .concat(ag.td.map(e => `<div class="ag-row ${e.meta.done ? 'done' : ''}" data-act="open" data-id="${e.id}"><span class="ai"><button class="ag-chk ${e.meta.done ? 'on' : ''}" data-act="toggleDone" data-id="${e.id}" aria-label="${esc(t('task.toggle'))}">${icon('check')}</button></span><span class="at">${esc(entryDisplayTitle(e))}</span><span class="tm">${esc(e.meta.due_time ? fmtTime(e.meta.due_time) : '')}</span></div>`));
+  const wx = Weather.html();
+
+  return `<div class="wrap view-enter today-v">
     ${installBanner()}
-    <section class="today-hero">
-      <div class="hero-l"><div class="day-big">${esc(fmtDate(now, { weekday: 'long' }))}<i></i></div><div class="wx-slot">${Weather.html()}</div></div>
-      <div class="date-stack">${esc(fmtDate(now, { month: 'long', day: 'numeric' }))}<br>${esc(String(now.getFullYear()))}</div>
-    </section>
-    <p class="statement">${esc(greet)}${name ? `, ${avatarHTML('face')}<b>${esc(name)}</b>${esc(t('today.nameSuffix'))}.` : '.'} ${sentence}</p>
-    <nav class="metrics" aria-label="${esc(t('today.summary'))}">
-      <a href="#/recent" class="mt" style="--mc:var(--accent)">${icon('flame')}<span>${esc(tn('today.streak', streak()))}</span>${icon('chevron-right', 'go')}</a>
-      <a href="#/all" class="mt" style="--mc:var(--text)">${icon('file-text')}<span>${esc(tn('today.records', total))}</span>${icon('chevron-right', 'go')}</a>
-      <a href="#/tasks" data-act="tasksDone" class="mt" style="--mc:var(--ok)">${icon('check-check')}<span>${esc(tn('today.doneWeek', weekDone))}</span>${icon('chevron-right', 'go')}</a>
-      <a href="#/items" class="mt" style="--mc:var(--c-blue)">${icon('map-pin')}<span>${esc(tn('today.places', places))}</span>${icon('chevron-right', 'go')}</a>
-    </nav>
-    <div class="today-grid">
-      <div class="col">
-        <section class="aurora capture" ${Aurora.attr()} aria-label="${esc(t('cap.label'))}">${Aurora.layers}
-          <div class="kicker"><span class="cap-k">${esc(Prompts.kicker())}</span><button class="chip-t" data-act="promptNext" aria-label="${esc(t('cap.another'))}">${icon('refresh-cw')}</button></div>
+    <header class="th">
+      <div class="th-date">
+        <h1 class="day-big">${esc(fmtDate(now, { weekday: 'long' }))}<i></i></h1>
+        <div class="th-ymd"><span>${esc(fmtDate(now, { month: 'long', day: 'numeric' }))}</span><span>${esc(String(now.getFullYear()))}</span></div>
+      </div>
+      <div class="wx-slot" ${wx ? '' : 'hidden'}>${wx}</div>
+      <p class="statement">${esc(greet)}${name ? `, ${avatarHTML('face')}<b>${esc(name)}</b>${esc(t('today.nameSuffix'))}.` : '.'} ${sentence}</p>
+      <nav class="stats" aria-label="${esc(t('today.summary'))}">
+        ${stat('#/recent', 'flame', 'var(--accent)', streak(), t('stat.streak'))}
+        ${stat('#/all', 'file-text', 'var(--text)', total, t('stat.records'))}
+        ${stat('#/tasks', 'check-check', 'var(--ok)', weekDone, t('stat.doneWeek'), 'data-act="tasksDone"')}
+        ${stat('#/items', 'map-pin', 'var(--c-blue)', places, t('stat.places'))}
+      </nav>
+    </header>
+    <div class="today-stack">
+      <section class="aurora capture" ${Aurora.attr()} aria-label="${esc(t('cap.label'))}">${Aurora.layers}
+        <div class="kicker"><span class="cap-k">${esc(Prompts.kicker())}</span><button class="chip-t" data-act="promptNext" aria-label="${esc(t('cap.another'))}">${icon('refresh-cw')}</button></div>
+        <div class="cap-main">
           <h2 class="cap-q" aria-live="polite">${esc(Prompts.current())}</h2>
           <button class="cap-fake" data-act="composer" data-t="${V.capType}"><span>${esc(t('cap.ph.' + V.capType))}</span><span class="send">${icon('arrow-up')}</span></button>
           <div class="cap-row">${capTypes.map(ty => `<button class="chip-t" data-act="composer" data-t="${ty}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('')}</div>
-        </section>
-        ${pinned.map(e => `<section class="st-card" data-act="open" data-id="${e.id}"><div class="lbl">${esc(t('today.pinnedLabel', { type: typeOf(e.type).label }))}</div>
-          <button class="more" data-act="stMore" data-id="${e.id}" aria-label="${esc(t('common.more'))}">${icon('more-horizontal')}</button>
-          <div class="st-body">${e.title ? `<b>${esc(e.title)}</b> ` : ''}${hydrateIcons(Object.assign(document.createElement('div'), { innerHTML: sanitizeHTML(e.content) })).innerHTML}</div></section>`).join('')}
-        ${favs.length ? `<div class="fav-stack" style="display:flex;flex-direction:column;gap:10px">${favs.map((e, i) => { const c = catOf(e.category_id); return `<article class="warm" style="--tint:${esc(c?.color || tints[i % 4])}" data-act="open" data-id="${e.id}">
-          <div class="top"><span class="tic">${icon(typeOf(e.type).icon)}</span><span>${esc(typeOf(e.type).label)}</span></div>
-          <button class="heart on" data-act="fav" data-id="${e.id}" aria-label="${esc(t('ed.favorite'))}">${icon('heart')}</button>
-          <h3>${esc(entryDisplayTitle(e))}</h3><p>${esc(snippet(e, null, 140).replace(e.title ? '' : entryDisplayTitle(e), '').trim() || ' ')}</p></article>`; }).join('')}</div>` : ''}
-        ${!pinned.length && !favs.length && total ? `<div class="note tip-note">${icon('info')}<span>${esc(t('today.tipPin'))}</span></div>` : ''}
-      </div>
-      <div class="col">
-        <section class="week-card">
-          <div class="week-top"><button class="lbl" data-act="weekToday">${esc(fmtDate(selD, { weekday: 'long' }))} <span>· ${esc(fmtDate(selD, { month: 'short', day: 'numeric' }))}</span></button>
-            <span style="display:flex;gap:6px">${V.selDay !== k || dayKey(V.weekAnchor) !== dayKey(startOfWeek(now, S.prefs.weekStart)) ? `<button class="pill-btn today-pill" data-act="weekToday">${icon('rotate-ccw')}<span>${esc(t('date.today'))}</span></button>` : ''}<a class="pill-btn" href="#/calendar">${icon('calendar-days')}<span>${esc(t('nav.calendar'))}</span></a></span></div>
-          <div class="week" id="weekStrip"><button class="nav" data-act="wk" data-d="-7" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button>
-            <div class="wk-track">${days.map(d => { const dk = dayKey(d); return `<button class="wd ${dk === V.selDay ? 'sel' : ''} ${dk === k ? 'is-today' : ''} ${d.getDay() === 0 ? 'sun' : ''}" data-act="pickDay" data-d="${dk}"><span class="w">${esc(fmtDate(d, { weekday: 'narrow' }))}</span><span class="n">${d.getDate()}</span>${dayDots(dk)}</button>`; }).join('')}</div>
-            <button class="nav" data-act="wk" data-d="7" aria-label="${esc(t('common.next'))}">${icon('chevron-right')}</button></div>
-        </section>
-        <section class="sheet" aria-label="${esc(t('today.agenda'))}">
-          <div class="sh-head"><span>${esc(V.selDay === k ? t('today.agendaToday') : fmtDate(selD, { weekday: 'long', month: 'long', day: 'numeric' }))}</span>
-            <span style="display:flex;gap:4px"><button class="btn sm" data-act="new" data-type="event" data-date="${V.selDay}">${icon('plus')}${esc(t('type.event'))}</button><button class="btn sm" data-act="new" data-type="todo" data-date="${V.selDay}">${icon('plus')}${esc(t('type.todo'))}</button></span></div>
-          ${agRows.length ? agRows.join('') : `<div class="ag-empty"><span>${esc(t('today.agendaEmpty'))}</span></div>`}
-        </section>
-        ${recent.length ? `<div class="recent-box"><div class="sb-label" style="padding:14px 4px 8px">${esc(t('today.recent'))}<a href="#/recent" style="color:var(--text-2);text-decoration:none">${esc(t('common.viewAll'))}</a></div>
-          <div class="list">${recent.map(e => rowS(e)).join('')}</div></div>` : ''}
-      </div>
+        </div>
+      </section>
+
+      <section class="tg tg-plan" aria-label="${esc(t('today.agenda'))}">
+        <div class="tg-h"><h2>${icon('calendar-days')}<span>${esc(t('today.planH'))}</span></h2>
+          <span class="tg-act">${isThisWeek ? '' : `<button class="pill-btn today-pill" data-act="weekToday">${icon('rotate-ccw')}<span>${esc(t('date.today'))}</span></button>`}<a class="pill-btn" href="#/calendar">${icon('calendar')}<span>${esc(t('today.openCal'))}</span>${icon('chevron-right')}</a></span></div>
+        <div class="week" id="weekStrip"><button class="nav" data-act="wk" data-d="-7" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button>
+          <div class="wk-track">${days.map(d => { const dk = dayKey(d); return `<button class="wd ${dk === V.selDay ? 'sel' : ''} ${dk === k ? 'is-today' : ''} ${d.getDay() === 0 ? 'sun' : ''}" data-act="pickDay" data-d="${dk}"><span class="w">${esc(fmtDate(d, { weekday: 'narrow' }))}</span><span class="n">${d.getDate()}</span>${dayDots(dk)}</button>`; }).join('')}</div>
+          <button class="nav" data-act="wk" data-d="7" aria-label="${esc(t('common.next'))}">${icon('chevron-right')}</button></div>
+        <div class="tg-in sheet">
+          <div class="sh-head"><span class="sh-day"><b>${esc(V.selDay === k ? t('today.agendaToday') : fmtDate(selD, { weekday: 'long' }))}</b>${V.selDay === k ? '' : ` · ${esc(fmtDate(selD, { month: 'long', day: 'numeric' }))}`}</span>
+            <span class="sh-add"><button class="btn sm" data-act="new" data-type="event" data-date="${V.selDay}">${icon('plus')}${esc(t('today.addEvent'))}</button><button class="btn sm" data-act="new" data-type="todo" data-date="${V.selDay}">${icon('plus')}${esc(t('today.addTask'))}</button></span></div>
+          ${agRowsT.length ? agRowsT.join('') : `<div class="ag-empty"><span>${esc(t('today.agendaEmpty'))}</span></div>`}
+        </div>
+      </section>
+
+      ${total ? `<section class="tg tg-notes" aria-label="${esc(t('today.notesH'))}">
+        <div class="tg-h"><h2>${icon('notebook-pen')}<span>${esc(t('today.notesH'))}</span></h2><a class="pill-btn" href="#/recent"><span>${esc(t('common.viewAll'))}</span>${icon('chevron-right')}</a></div>
+        ${pinned.length || favs.length ? `<div class="tg-sub">${esc(t('today.keepH'))}</div>
+        <div class="keep-grid">
+          ${pinned.map(e => `<section class="st-card" data-act="open" data-id="${e.id}"><div class="lbl">${icon('pin')}${esc(t('today.pinnedLabel', { type: typeOf(e.type).label }))}</div>
+            <button class="more" data-act="stMore" data-id="${e.id}" aria-label="${esc(t('common.more'))}">${icon('more-horizontal')}</button>
+            <div class="st-body">${e.title ? `<b>${esc(e.title)}</b> ` : ''}${hydrateIcons(Object.assign(document.createElement('div'), { innerHTML: sanitizeHTML(e.content) })).innerHTML}</div></section>`).join('')}
+          ${favs.map((e, i) => { const c = catOf(e.category_id); return `<article class="warm" style="--tint:${esc(c?.color || tints[i % 4])}" data-act="open" data-id="${e.id}">
+            <div class="top"><span class="tic">${icon(typeOf(e.type).icon)}</span><span>${esc(typeOf(e.type).label)}</span></div>
+            <button class="heart on" data-act="fav" data-id="${e.id}" aria-label="${esc(t('ed.favorite'))}">${icon('heart')}</button>
+            <h3>${esc(entryDisplayTitle(e))}</h3><p>${esc(snippet(e, null, 140).replace(e.title ? '' : entryDisplayTitle(e), '').trim() || ' ')}</p></article>`; }).join('')}
+        </div>` : ''}
+        <div class="tg-sub">${esc(t('today.recent'))}</div>
+        <div class="list">${recent.map(e => rowS(e)).join('')}</div>
+        ${!pinned.length && !favs.length ? `<div class="tg-foot">${icon('info')}<span>${esc(t('today.tipPin'))}</span></div>` : ''}
+      </section>` : ''}
     </div></div>`;
 }
 async function captureToEntry(input, ty) {
@@ -4145,12 +4474,11 @@ function viewTasks() {
 /* ---------- Calendar ---------- */
 function viewCalendar() {
   const c = V.cal; const a = c.anchor; const k = todayKey(); const ws = S.prefs.weekStart;
-  const evs = live().filter(e => (e.type === 'event' && e.meta.date) || (e.type === 'todo' && e.meta.due));
-  const byDay = new Map(); evs.forEach(e => { const d = e.type === 'event' ? e.meta.date : e.meta.due; if (!byDay.has(d)) byDay.set(d, []); byDay.get(d).push(e); });
-  byDay.forEach(l => l.sort((x, y) => (x.type === 'todo') - (y.type === 'todo') || (x.meta.time || x.meta.due_time || '').localeCompare(y.meta.time || y.meta.due_time || '')));
+  const dayCache = new Map();
+  const byDay = { get: dk => { if (!dayCache.has(dk)) dayCache.set(dk, dayItems(dk).sort((x, y) => (x.type === 'todo') - (y.type === 'todo') || (x.meta.time || x.meta.due_time || '').localeCompare(y.meta.time || y.meta.due_time || ''))); return dayCache.get(dk); } };
   const col = e => catOf(e.category_id)?.color;
   const pill = e => e.type === 'event'
-    ? `<div class="ev" style="${col(e) ? `--evc:${esc(col(e))}` : ''}">${e.meta.time ? `<span class="t">${esc(fmtTime(e.meta.time))}</span>` : ''}<span class="x">${esc(entryDisplayTitle(e))}</span></div>`
+    ? `<div class="ev" style="${col(e) ? `--evc:${esc(col(e))}` : ''}">${e.meta.repeat ? `<span class="rp">${icon('repeat')}</span>` : ''}${e.meta.time ? `<span class="t">${esc(fmtTime(e.meta.time))}</span>` : ''}<span class="x">${esc(entryDisplayTitle(e))}</span></div>`
     : `<div class="ev task ${e.meta.done ? 'done' : ''}" style="${col(e) ? `--evc:${esc(col(e))}` : ''}"><span class="x">${esc(entryDisplayTitle(e))}</span></div>`;
   const heads = [...Array(7)].map((_, i) => fmtDate(addDays(startOfWeek(new Date(2024, 0, 10), ws), i), { weekday: 'short' }));
   let grid, title, calSub = '';
@@ -4170,7 +4498,7 @@ function viewCalendar() {
   }
   const ag = dayAgenda(c.sel);
   const selD = parseDay(c.sel);
-  const rows = ag.ev.map(e => `<div class="ag-row ag-ev" data-act="open" data-id="${e.id}" style="${catOf(e.category_id) ? `--evc:${esc(catOf(e.category_id).color)}` : ''}"><span class="ag-time">${e.meta.time ? `<b>${esc(fmtTime(e.meta.time))}</b>${e.meta.end_time ? `<small>${esc(fmtTime(e.meta.end_time))}</small>` : ''}` : `<b>${esc(t('cal.allDay'))}</b>`}</span><span class="ag-bar"></span><span class="at">${esc(entryDisplayTitle(e))}</span></div>`)
+  const rows = ag.ev.map(e => `<div class="ag-row ag-ev" data-act="open" data-id="${e.id}" style="${catOf(e.category_id) ? `--evc:${esc(catOf(e.category_id).color)}` : ''}"><span class="ag-time">${e.meta.time ? `<b>${esc(fmtTime(e.meta.time))}</b>${e.meta.end_time ? `<small>${esc(fmtTime(e.meta.end_time))}</small>` : ''}` : `<b>${esc(t('cal.allDay'))}</b>`}</span><span class="ag-bar"></span><span class="at">${esc(entryDisplayTitle(e))}${e.meta.repeat ? `<small class="ag-rp">${icon('repeat')}${esc(repeatLabel(e.meta, true))}</small>` : ''}</span></div>`)
     .concat(ag.td.map(e => `<div class="ag-row ag-td ${e.meta.done ? 'done' : ''}" data-act="open" data-id="${e.id}"><span class="ag-time"><b>${esc(e.meta.due_time ? fmtTime(e.meta.due_time) : t('type.todo'))}</b></span><button class="ag-chk ${e.meta.done ? 'on' : ''}" data-act="toggleDone" data-id="${e.id}" aria-label="${esc(t('task.toggle'))}">${icon('check')}</button><span class="at">${esc(entryDisplayTitle(e))}</span></div>`));
   return `<div class="wrap view-enter">${header(`<span class="nowrap">${esc(title)}</span>`, esc(calSub), `<div class="ph-actions"><div class="seg">${['month', 'week'].map(m => `<button class="${c.mode === m ? 'on' : ''}" data-act="calMode" data-v="${m}">${esc(t('cal.' + m))}</button>`).join('')}</div>
       <button class="btn sm" data-act="calNav" data-d="0">${esc(t('date.today'))}</button><button class="icon-btn" data-act="calNav" data-d="-1" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button><button class="icon-btn" data-act="calNav" data-d="1" aria-label="${esc(t('common.next'))}">${icon('chevron-right')}</button></div>`)}
@@ -4461,7 +4789,7 @@ function shell() {
 function renderSidebar() { const sb = $('#sidebar'); if (!sb) return; const st = sb.querySelector('.sb-nav')?.scrollTop || 0; sb.innerHTML = sidebarHTML(); sb.querySelector('.sb-nav').scrollTop = st; }
 function renderBell() {
   const k = todayKey(); const L = live();
-  const n = L.filter(e => e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.due <= k).length + L.filter(e => e.type === 'event' && e.meta.date === k && (!e.meta.time || e.meta.time >= `${pad(new Date().getHours())}:${pad(new Date().getMinutes())}`)).length;
+  const n = L.filter(e => e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.due <= k).length + L.filter(e => isEventOn(e, k) && (!e.meta.time || e.meta.time >= `${pad(new Date().getHours())}:${pad(new Date().getMinutes())}`)).length;
   const b = $('#bellBadge'); if (b) { b.hidden = !n; b.textContent = n > 9 ? '9+' : n; }
 }
 const VIEWS = { today: viewToday, all: () => viewList('all'), recent: () => viewList('recent'), favorites: () => viewList('favorites'), type: a => viewList('type', a), category: a => viewList('category', a),
@@ -4759,7 +5087,7 @@ function toggleSidebar(force) {
 function bellMenu(el) {
   const k = todayKey(); const L = live();
   const over = L.filter(e => e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.due < k);
-  const today = L.filter(e => (e.type === 'todo' && !e.meta.done && e.meta.due === k) || (e.type === 'event' && e.meta.date === k));
+  const today = L.filter(e => (e.type === 'todo' && !e.meta.done && e.meta.due === k) || isEventOn(e, k));
   const up = Reminders.upcoming(48).filter(x => !today.includes(x.e));
   const it = (e, w, cls = '') => `<div class="notif-item ${cls}" data-id="${e.id}">${icon(typeOf(e.type).icon)}<div style="min-width:0"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(entryDisplayTitle(e))}</div><div class="w">${esc(w)}</div></div></div>`;
   const html = `<div style="padding:6px 8px 2px;font-weight:500">${esc(t('notif.title'))}</div>` +
@@ -4809,6 +5137,8 @@ function bindGlobal() {
     const typing = /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable;
     if (e.key === 'Escape') {
       if ($('.menu,.dialog')) { closeLayers(); return; }
+      if (Editor.e && Editor.panel) { Editor.closePanel(); Editor.updateToolState(); return; }
+      if (Editor.e && Editor.drawerOpen) { Editor.toggleDrawer(false); return; }
       if (Editor.e) { Editor.close(); return; }
       if ($('#sidebar.open')) { toggleSidebar(false); return; }
       if (S.selecting) { ACT.selCancel(); return; }
@@ -4821,7 +5151,7 @@ function bindGlobal() {
     else if (e.key === '?') { e.preventDefault(); showShortcuts(); }
   });
   bindSwipe(); bindKeyboardChrome(); bindPager();
-  onChange(w => { if (w !== 'weather') return; const sl = $('.wx-slot'); if (sl) sl.innerHTML = Weather.html(); if ((S.prefs.aurora || 'auto') === 'auto' && !Aurora.override) $$('.aurora[data-au]').forEach(n => n.dataset.au = Aurora.pick()); });
+  onChange(w => { if (w !== 'weather') return; const sl = $('.wx-slot'); if (sl) { sl.innerHTML = Weather.html(); sl.hidden = !sl.innerHTML; } if ((S.prefs.aurora || 'auto') === 'auto' && !Aurora.override) $$('.aurora[data-au]').forEach(n => n.dataset.au = Aurora.pick()); });
   addEventListener('hashchange', () => { if (Editor.e) Editor.close(true); closeLayers(); render(); $('#view')?.focus({ preventScroll: true }); });
   addEventListener('online', () => { S.online = true; netbar(false); Sync.run(); });
   addEventListener('offline', () => { S.online = false; netbar(true); if (S.mode === 'cloud') Sync.set('offline'); });
