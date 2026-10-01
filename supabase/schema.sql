@@ -50,7 +50,7 @@ create index if not exists entries_trgm_text    on public.entries using gin (con
 -- ---------- per-user settings ----------
 create table if not exists public.user_settings (
   user_id    uuid primary key default auth.uid() references auth.users(id) on delete cascade,
-  prefs      jsonb not null default '{}'::jsonb check (pg_column_size(prefs) <= 16384),
+  prefs      jsonb not null default '{}'::jsonb check (pg_column_size(prefs) <= 65536),
   updated_at timestamptz not null default now()
 );
 

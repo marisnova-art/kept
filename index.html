@@ -7,7 +7,7 @@
 <meta name="description" content="Kept is a free, fast, text-first place for thoughts, tasks, events, where you put things and the people you know.">
 <meta name="theme-color" content="#0a0a0b">
 <meta name="color-scheme" content="dark light">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data: blob:; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.open-meteo.com; img-src 'self' data: blob:; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
@@ -257,16 +257,9 @@ kbd{font-family:var(--mono);font-size:var(--t-cap);color:var(--text-3);border:1p
 
 /* Aurora capture (reference 3) */
 .aurora{position:relative;border-radius:var(--r-xl);overflow:hidden;isolation:isolate;color:#fff;
-  background:
-    radial-gradient(120% 80% at 85% -10%, #ff8a3d 0%, rgba(255,138,61,0) 46%),
-    radial-gradient(90% 70% at 30% -20%, #e8432c 0%, rgba(232,67,44,0) 52%),
-    radial-gradient(120% 90% at 10% 40%, rgba(255,150,60,.55) 0%, rgba(255,150,60,0) 40%),
-    linear-gradient(170deg,#3d3a2a 0%, #154447 38%, #102c33 62%, #191d24 100%);}
-.aurora::after{content:"";position:absolute;inset:0;background:var(--grain);opacity:.18;mix-blend-mode:overlay;pointer-events:none;z-index:-1}
-.aurora.teal{background:
-    radial-gradient(110% 70% at 100% 0%, #ff7a34 0%, rgba(255,122,52,0) 42%),
-    radial-gradient(80% 60% at 40% -10%, #d73a2b 0%, rgba(215,58,43,0) 50%),
-    linear-gradient(165deg,#2f2a22 0%,#124a4a 35%,#0f2f35 60%,#16191f 100%)}
+  --a1:#ff8a3d;--a2:#e8432c;--a3:rgba(255,150,60,.55);--b1:#3d3a2a;--b2:#154447;--b3:#102c33;--b4:#191d24;
+  background:linear-gradient(170deg,var(--b1) 0%,var(--b2) 38%,var(--b3) 62%,var(--b4) 100%)}
+.aurora::after{content:"";position:absolute;inset:0;background:var(--grain);opacity:.16;mix-blend-mode:overlay;pointer-events:none;z-index:0}
 .capture{padding:24px 24px 20px;display:flex;flex-direction:column;gap:16px}
 .capture .kicker{font-size:var(--t-sub);opacity:.85;display:flex;justify-content:space-between;align-items:center}
 .capture h2{font-size:var(--t-hero);line-height:1.08;letter-spacing:-.03em;font-weight:400;margin:6px 0 18px;max-width:520px}
@@ -1121,13 +1114,11 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .faq-i[open] summary svg.i{transform:rotate(180deg)}
 .faq-i p{margin:0;padding:0 18px 18px;font-size:var(--t-body);color:var(--text-2);line-height:1.7;animation:viewIn .25s var(--ease)}
 
-#editor.skin-capture .ed-panel{background:
-    radial-gradient(120% 60% at 85% -10%, #ff8a3d 0%, rgba(255,138,61,0) 46%),
-    radial-gradient(90% 50% at 25% -15%, #e8432c 0%, rgba(232,67,44,0) 52%),
-    radial-gradient(120% 70% at 5% 30%, rgba(255,150,60,.42) 0%, rgba(255,150,60,0) 40%),
-    linear-gradient(172deg,#3d3a2a 0%, #154447 30%, #102c33 58%, #151a21 100%)}
+#editor.skin-capture .ed-panel{background:linear-gradient(172deg,var(--b1) 0%,var(--b2) 30%,var(--b3) 58%,var(--b4) 100%)}
+#editor.skin-capture .ed-panel{--a1:#ff8a3d;--a2:#e8432c;--a3:rgba(255,150,60,.5);--b1:#3d3a2a;--b2:#154447;--b3:#102c33;--b4:#151a21}
 #editor.skin-capture .ed-panel::after{content:"";position:absolute;inset:0;background:var(--grain);opacity:.16;mix-blend-mode:overlay;pointer-events:none;border-radius:inherit}
-#editor.skin-capture .ed-panel > *{position:relative;z-index:1}
+#editor.skin-capture .ed-panel > :not(.au-l){position:relative;z-index:1}
+#editor:not(.skin-capture) .ed-panel > .au-l{display:none}
 #editor.skin-capture .ed-opt.mode-over,#editor.skin-capture .ed-opt.mode-prop{position:absolute;z-index:3}
 #editor.skin-capture .ed-saved{position:absolute;z-index:6}
 #editor.skin-capture #edFav{display:none}
@@ -1136,6 +1127,172 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 #editor.skin-capture .ed-status{background:rgba(255,255,255,.12)}
 @media (max-width:420px){#editor.skin-capture .ed-kicker{display:none}}
 .editor-open #toasts{top:calc(14px + env(safe-area-inset-top));bottom:auto}
+
+
+/* =====================================================================
+   v1.3 — living aurora, weather, refined calendar
+   ===================================================================== */
+/* palettes — chosen by weather, at random, or fixed in Settings */
+[data-au="sunset"]{--a1:#ff8a3d;--a2:#e8432c;--a3:rgba(255,150,60,.55);--b1:#3d3a2a;--b2:#154447;--b3:#102c33;--b4:#191d24}
+[data-au="ocean"]{--a1:#3fa9ff;--a2:#5b5bff;--a3:rgba(80,220,255,.45);--b1:#1b2440;--b2:#0f3a56;--b3:#0b2433;--b4:#10151d}
+[data-au="forest"]{--a1:#b6e36b;--a2:#2fb38a;--a3:rgba(240,200,90,.42);--b1:#2a3324;--b2:#16403a;--b3:#0e2a2a;--b4:#121916}
+[data-au="dusk"]{--a1:#ff7ac6;--a2:#8a5cff;--a3:rgba(255,140,120,.45);--b1:#33223f;--b2:#2a1f4f;--b3:#171a35;--b4:#14141d}
+[data-au="rose"]{--a1:#ffb38a;--a2:#ff5f7e;--a3:rgba(255,210,150,.5);--b1:#40282a;--b2:#4a2333;--b3:#2a1726;--b4:#191419}
+[data-au="storm"]{--a1:#8fb4d9;--a2:#4b6cb7;--a3:rgba(160,200,230,.38);--b1:#2a3340;--b2:#1e2c3d;--b3:#141e2a;--b4:#11151b}
+[data-au="snow"]{--a1:#e8f4ff;--a2:#9ec9ff;--a3:rgba(255,255,255,.42);--b1:#3a4553;--b2:#2c3a4c;--b3:#1c2634;--b4:#141a22}
+[data-au="night"]{--a1:#6a7dff;--a2:#3b2fa0;--a3:rgba(150,120,255,.38);--b1:#1b1d3a;--b2:#141a33;--b3:#0e1224;--b4:#0b0d16}
+/* slow drift: two GPU-composited layers, no JS, no network */
+.au-l{position:absolute;inset:-35%;z-index:0;pointer-events:none;will-change:transform;
+  background:radial-gradient(34% 30% at 72% 22%,var(--a1),transparent 70%),radial-gradient(30% 26% at 28% 16%,var(--a2),transparent 70%),radial-gradient(40% 34% at 18% 58%,var(--a3),transparent 72%);
+  animation:auDrift 28s ease-in-out infinite alternate}
+.aurora::before{content:"";position:absolute;inset:-30%;z-index:0;pointer-events:none;will-change:transform;
+  background:radial-gradient(26% 22% at 78% 72%,color-mix(in oklab,var(--a2) 55%,transparent),transparent 70%),radial-gradient(22% 20% at 40% 40%,color-mix(in oklab,var(--a1) 35%,transparent),transparent 70%);
+  animation:auDrift2 37s ease-in-out infinite alternate}
+@keyframes auDrift{0%{transform:translate3d(-4%,-3%,0) rotate(0) scale(1)}50%{transform:translate3d(5%,4%,0) rotate(9deg) scale(1.12)}100%{transform:translate3d(-3%,6%,0) rotate(-7deg) scale(1.05)}}
+@keyframes auDrift2{0%{transform:translate3d(6%,4%,0) scale(1.1)}100%{transform:translate3d(-7%,-5%,0) scale(.95) rotate(12deg)}}
+.au-paused .au-l,.au-paused::before{animation-play-state:paused}
+:where(.aurora) > :not(.au-l){position:relative;z-index:1}
+.cap-q,.cap-k{transition:opacity .38s var(--ease),transform .38s var(--ease)}
+.cap-q.out,.cap-k.out{opacity:0;transform:translateY(6px)}
+.capture .chip-t.spin svg{animation:spin .6s var(--ease)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* settings palette picker */
+.au-picks{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.au-pick{width:34px;height:34px;border-radius:50%;border:2px solid transparent;transition:transform .2s var(--spring)}
+.au-pick.aurora{border-radius:50%}
+.au-pick.aurora::before,.au-pick.aurora::after{display:none}
+.au-pick.on{border-color:var(--text);transform:scale(1.08)}
+.au-pick.auto{width:auto;padding:0 14px;height:34px;border-radius:var(--r-pill);background:var(--surface-2);font-size:var(--t-sub)}
+.au-pick.auto.on{background:var(--text);color:var(--text-inv)}
+
+/* Today hero: full weekday + weather */
+.today-hero{align-items:end}
+.hero-l{min-width:0}
+.day-big{white-space:nowrap}
+.wx-slot{margin-top:10px;min-height:34px}
+.wx{display:inline-flex;align-items:center;gap:10px;color:var(--text);text-align:left;border-radius:var(--r-pill);transition:opacity .2s,transform .2s var(--spring);animation:viewIn .5s var(--ease)}
+.wx:active{transform:scale(.97)}
+.wx-icon svg.i{width:30px;height:30px;stroke-width:1.8;color:var(--accent)}
+.wx-icon b{font-size:var(--t-h1);font-weight:500;letter-spacing:-.02em}
+.wx-icon span{display:flex;flex-direction:column;font-size:var(--t-sub);color:var(--text-2);line-height:1.25}
+.wx-icon small{font-size:var(--t-cap);color:var(--text-3)}
+.wx-text{font-size:var(--t-h2);color:var(--text-2);letter-spacing:-.01em}
+.wx-text b{color:var(--text);font-weight:600}
+.wx-ask{height:34px;padding:0 14px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-sub);color:var(--text-2)}
+.wx-ask svg.i{width:16px;height:16px}
+
+/* metrics are shortcuts */
+.metrics{gap:6px}
+.mt{display:inline-flex;align-items:center;gap:7px;padding:7px 10px 7px 8px;border-radius:var(--r-pill);text-decoration:none;color:var(--text);transition:background .2s}
+.mt > svg.i:first-child{color:var(--mc)}
+.mt:hover{background:var(--surface)}
+.mt .go{width:14px;height:14px;color:var(--text-3);opacity:0;margin-left:-4px;transition:opacity .2s,transform .2s}
+.mt:hover .go{opacity:1;transform:translateX(2px)}
+
+/* week strip: swipe, refined day states */
+.week{grid-template-columns:28px minmax(0,1fr) 28px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.wk-track{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;will-change:transform}
+.wd{padding:8px 0 7px}
+.wd .n{font-size:var(--t-body);font-weight:500;width:auto;height:auto;outline:0!important}
+.wd.sun .w{color:var(--c-red);opacity:.8}
+.wd.is-today:not(.sel){background:color-mix(in oklab,var(--accent) 13%,transparent)}
+.wd.is-today .n{color:var(--accent);font-weight:600}
+.wd.sel{background:var(--text);color:var(--text-inv)}
+.wd.sel .n{color:var(--text-inv)}
+.wd.sel.is-today{background:var(--accent)}
+.wd.sel.is-today .n,.wd.sel.is-today .w{color:#fff}
+.wd .dt{display:none}
+.dots{display:flex;justify-content:center;gap:3px;height:5px;margin-top:4px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--dc,var(--accent))}
+.dots i.td{background:transparent;box-shadow:inset 0 0 0 1.3px var(--text-2)}
+.dots i.done{opacity:.35}
+.wd.sel .dots i.td{box-shadow:inset 0 0 0 1.3px var(--text-inv)}
+.wd.sel.is-today .dots i{background:#fff}
+.week-top .lbl{text-align:left;padding:4px 0}
+.today-pill{color:var(--accent)}
+@media (hover:none){.week .nav{display:none}.week{grid-template-columns:minmax(0,1fr)}}
+.slide-in-r{animation:slideInR .32s var(--ease)}
+.slide-in-l{animation:slideInL .32s var(--ease)}
+@keyframes slideInR{from{transform:translateX(30%);opacity:0}}
+@keyframes slideInL{from{transform:translateX(-30%);opacity:0}}
+
+/* calendar — calm grid, soft tinted events, dots on phones */
+.cal{padding:14px 12px 10px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.cal-head{grid-template-columns:repeat(7,minmax(0,1fr));text-align:center;padding:0 0 8px;font-size:var(--t-cap)}
+.cal-head .sun{color:var(--c-red)}.cal-head .sat{color:var(--c-blue)}
+.cal-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:0;will-change:transform}
+.cd{min-width:0;min-height:108px;background:transparent;border-radius:14px;padding:6px 5px 8px;border-top:1px solid var(--line);gap:3px;align-items:stretch}
+.cd:hover{background:var(--surface-2)}
+.cd.sel{box-shadow:none;background:var(--surface-2)}
+.cd .dn{align-self:center;width:30px;height:30px;font-size:var(--t-sub);font-weight:500;border-radius:10px;margin:0 0 3px;display:grid;place-items:center;transition:background .2s,color .2s}
+.cd.sun .dn{color:var(--c-red)}
+.cd.today .dn{background:color-mix(in oklab,var(--accent) 16%,transparent);color:var(--accent);font-weight:600}
+.cd.sel .dn{background:var(--text);color:var(--text-inv)}
+.cd.today.sel .dn{background:var(--accent);color:#fff}
+.cd.out{opacity:.32}
+.cd .evs{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ev{display:flex;align-items:center;gap:5px;min-width:0;font-size:var(--t-cap);line-height:1.35;padding:2px 7px;border-radius:7px;background:color-mix(in oklab,var(--evc,var(--accent)) 17%,transparent);color:var(--text);white-space:nowrap;overflow:hidden}
+.ev .x{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ev .t{color:var(--text-2);font-variant-numeric:tabular-nums;flex:none;margin:0}
+.ev.task{background:transparent;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+.ev.task::before{content:"";width:7px;height:7px;border-radius:50%;box-shadow:inset 0 0 0 1.4px currentColor;flex:none}
+.ev.task.done{opacity:.55;text-decoration:line-through}
+.ev-more{font-size:var(--t-cap);color:var(--text-3);padding-left:6px}
+.cd .dots{display:none}
+.cal.week .week-cols{grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.wcol{min-width:0;background:transparent;border-radius:14px;border-left:1px solid var(--line);padding:8px 6px;min-height:360px}
+.wcol:first-child{border-left:0}
+.wcol:hover{background:var(--surface-2)}
+.wcol.sel{box-shadow:none;background:var(--surface-2)}
+.wcol .wh{flex-direction:column;align-items:flex-start;gap:0;margin-bottom:8px}
+.wcol .wh b{font-size:var(--t-h2);font-weight:600;color:var(--text)}
+.wcol .wh span{font-size:var(--t-cap);color:var(--text-3)}
+.wcol.today .wh b{color:var(--accent)}
+.wcol .evs{display:flex;flex-direction:column;gap:4px;min-width:0}
+.wcol .ev{white-space:normal;align-items:flex-start;padding:5px 8px}
+.wcol .ev .x{white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.wcol .none{font-size:var(--t-cap);color:var(--text-3)}
+/* agenda timeline */
+.ag-ev,.ag-td{display:grid;grid-template-columns:62px auto minmax(0,1fr);align-items:center;gap:12px}
+.ag-time{display:flex;flex-direction:column;line-height:1.2;font-variant-numeric:tabular-nums}
+.ag-time b{font-size:var(--t-sub);font-weight:600}
+.ag-time small{font-size:var(--t-cap);color:var(--sheet-2)}
+.ag-td .ag-time b{color:var(--sheet-2);font-weight:500}
+.ag-bar{width:4px;height:30px;border-radius:2px;background:var(--evc,var(--accent))}
+.ag-ev .at,.ag-td .at{font-size:var(--t-body)}
+@media (max-width:900px){
+  .cd{min-height:58px;padding:5px 1px 6px;align-items:center;border-radius:12px}
+  .cd .evs{display:none}
+  .cd .dots{display:flex;margin-top:0}
+  .cd .dn{width:32px;height:32px;margin:0}
+  .cal{padding:10px 6px 6px}
+  .cal.week .week-cols{grid-template-columns:minmax(0,1fr)}
+  .wcol{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:start;border-left:0;border-top:1px solid var(--line);min-height:0;padding:10px 6px}
+  .wcol:first-child{border-top:0}
+  .wcol .wh{margin:0;align-items:center}
+  .wcol.empty .evs{padding-top:6px}
+}
+/* phones: bigger menus */
+@media (max-width:900px){
+  :root{--t-body:16px}
+  #sidebar .nav-item{padding:11px 12px;gap:14px}
+  #sidebar .nav-item svg.i{width:22px;height:22px}
+  #sidebar .sb-label{font-size:var(--t-sub)}
+  #sidebar .sb-head{font-size:28px}
+  .seg button{height:38px;padding:0 14px}
+  .day-big{font-size:clamp(44px,12.5vw,64px)}
+  .wx-icon b{font-size:var(--t-h2)}
+  .mt{padding:6px 8px 6px 6px}
+  .mt .go{opacity:.6}
+}
+/* donation: currency shown in the custom field */
+.amt-custom .cur{font-style:normal;font-weight:500;color:var(--text-2);flex:none}
+.amt-custom.on .cur{color:var(--text-inv)}
+.amt-custom input{text-align:left}
+@media (hover:none){.cd:hover,.wcol:hover,.wd:hover{background:transparent}.cd.sel,.wcol.sel{background:var(--surface-2)}.wd.is-today:not(.sel){background:color-mix(in oklab,var(--accent) 13%,transparent)}}
+.ag-ev,.ag-td{grid-template-columns:76px auto minmax(0,1fr)}
+.ag-time b,.ag-time small{white-space:nowrap}
 
 </style>
 </head>
@@ -1152,12 +1309,109 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 <script>
 /* ---- icons.js ---- */
 /* Lucide icons (ISC License) — https://lucide.dev */
-const ICONS={"search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","menu":"<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\"/><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\"/>","user":"<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","heart":"<path d=\"M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5\"/>","star":"<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\"/>","pin":"<path d=\"M12 17v5\"/><path d=\"M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z\"/>","pin-off":"<path d=\"M12 17v5\"/><path d=\"M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89\"/><path d=\"m2 2 20 20\"/><path d=\"M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11\"/>","trash-2":"<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","folder":"<path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","folder-open":"<path d=\"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2\"/>","inbox":"<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>","calendar":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/>","calendar-days":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M8 13h.01\"/><path d=\"M12 13h.01\"/><path d=\"M16 13h.01\"/><path d=\"M8 17h.01\"/><path d=\"M12 17h.01\"/><path d=\"M16 17h.01\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","check-square":"<path d=\"M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344\"/><path d=\"m9 11 3 3L22 4\"/>","square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","contact":"<path d=\"M16 2v2\"/><path d=\"M7 21v-2a2 2 0 012-2h6a2 2 0 012 2v2\"/><path d=\"M8 2v2\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/>","book-open":"<path d=\"M12 5v16\"/><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"/>","notebook-pen":"<path d=\"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4\"/><path d=\"M2 6h4\"/><path d=\"M2 10h4\"/><path d=\"M2 14h4\"/><path d=\"M2 18h4\"/><path d=\"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/>","file-text":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/>","list":"<path d=\"M3 5h.01\"/><path d=\"M3 12h.01\"/><path d=\"M3 19h.01\"/><path d=\"M8 5h13\"/><path d=\"M8 12h13\"/><path d=\"M8 19h13\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","more-horizontal":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","bold":"<path d=\"M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8\"/>","italic":"<line x1=\"19\" x2=\"10\" y1=\"4\" y2=\"4\"/><line x1=\"14\" x2=\"5\" y1=\"20\" y2=\"20\"/><line x1=\"15\" x2=\"9\" y1=\"4\" y2=\"20\"/>","underline":"<path d=\"M6 4v6a6 6 0 0 0 12 0V4\"/><line x1=\"4\" x2=\"20\" y1=\"20\" y2=\"20\"/>","strikethrough":"<path d=\"M16 4H9a3 3 0 0 0-2.83 4\"/><path d=\"M14 12a4 4 0 0 1 0 8H6\"/><line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\"/>","highlighter":"<path d=\"m9 11-6 6v3h9l3-3\"/><path d=\"m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4\"/>","baseline":"<path d=\"M4 20h16\"/><path d=\"m6 16 6-12 6 12\"/><path d=\"M8 12h8\"/>","type":"<path d=\"M12 4v16\"/><path d=\"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2\"/><path d=\"M9 20h6\"/>","list-ordered":"<path d=\"M11 5h10\"/><path d=\"M11 12h10\"/><path d=\"M11 19h10\"/><path d=\"M4 4h1v5\"/><path d=\"M4 9h2\"/><path d=\"M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02\"/>","list-todo":"<path d=\"M13 5h8\"/><path d=\"M13 12h8\"/><path d=\"M13 19h8\"/><path d=\"m3 17 2 2 4-4\"/><rect x=\"3\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/>","text-quote":"<path d=\"M17 5H3\"/><path d=\"M21 12H8\"/><path d=\"M21 19H8\"/><path d=\"M3 12v7\"/>","smile":"<path d=\"M15 10V9\"/><path d=\"M16.472 15a6 6 0 01-8.943 0\"/><path d=\"M9 10V9\"/><circle cx=\"12\" cy=\"12\" r=\"10\"/>","shapes":"<path d=\"M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"3.5\"/>","pilcrow":"<path d=\"M13 4v16\"/><path d=\"M17 4v16\"/><path d=\"M19 4H9.5a4.5 4.5 0 0 0 0 9H13\"/>","undo-2":"<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/>","redo-2":"<path d=\"m15 14 5-5-5-5\"/><path d=\"M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13\"/>","eraser":"<path d=\"M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21\"/><path d=\"m5.082 11.09 8.828 8.828\"/>","download":"<path d=\"M12 15V3\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/>","upload":"<path d=\"M12 3v12\"/><path d=\"m17 8-5-5-5 5\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>","log-out":"<path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/>","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","monitor":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\"/><line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","hand-heart":"<path d=\"M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16\"/><path d=\"m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95\"/><path d=\"m2 15 6 6\"/><path d=\"m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91\"/>","shield":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/>","scroll-text":"<path d=\"M15 12h-5\"/><path d=\"M15 8h-5\"/><path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/><path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\"/><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","wifi-off":"<path d=\"M12 20h.01\"/><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"/><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\"/><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\"/><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\"/><path d=\"M22 8.82a15 15 0 0 0-11.288-3.764\"/><path d=\"m2 2 20 20\"/>","cloud":"<path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/>","cloud-off":"<path d=\"M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057\"/><path d=\"M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78\"/><path d=\"m2 2 20 20\"/>","cloud-check":"<path d=\"m17 15-5.5 5.5L9 18\"/><path d=\"M5.516 16.07A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 3.501 7.327\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","loader":"<path d=\"M12 2v4\"/><path d=\"m16.2 7.8 2.9-2.9\"/><path d=\"M18 12h4\"/><path d=\"m16.2 16.2 2.9 2.9\"/><path d=\"M12 18v4\"/><path d=\"m4.9 19.1 2.9-2.9\"/><path d=\"M2 12h4\"/><path d=\"m4.9 4.9 2.9 2.9\"/>","alert-triangle":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","filter":"<path d=\"M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z\"/>","sort-desc":"<path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"M11 4h10\"/><path d=\"M11 8h7\"/><path d=\"M11 12h4\"/>","keyboard":"<path d=\"M10 8h.01\"/><path d=\"M12 12h.01\"/><path d=\"M14 8h.01\"/><path d=\"M16 12h.01\"/><path d=\"M18 8h.01\"/><path d=\"M6 8h.01\"/><path d=\"M7 16h10\"/><path d=\"M8 12h.01\"/><rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/>","smartphone":"<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/><path d=\"M12 18h.01\"/>","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\"/>","sparkle":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","external-link":"<path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/>","mail":"<path d=\"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7\"/><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/>","phone":"<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"/>","home":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>","box":"<path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z\"/><path d=\"m3.3 7 8.7 5 8.7-5\"/><path d=\"M12 22V12\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","check-check":"<path d=\"M18 6 7 17l-5-5\"/><path d=\"m22 10-7.5 7.5L13 16\"/>","sliders-horizontal":"<path d=\"M10 5H3\"/><path d=\"M12 19H3\"/><path d=\"M14 3v4\"/><path d=\"M16 17v4\"/><path d=\"M21 12h-9\"/><path d=\"M21 19h-5\"/><path d=\"M21 5h-7\"/><path d=\"M8 10v4\"/><path d=\"M8 12H3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","sunrise":"<path d=\"M12 2v8\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m8 6 4-4 4 4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","moon-star":"<path d=\"M18 5h4\"/><path d=\"M20 3v4\"/><path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","minus":"<path d=\"M5 12h14\"/>","flag":"<path d=\"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528\"/>","bookmark":"<path d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"/>","link":"<path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"/><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"/>","gift":"<path d=\"M12 7v14\"/><path d=\"M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8\"/><path d=\"M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5\"/><rect x=\"3\" y=\"7\" width=\"18\" height=\"4\" rx=\"1\"/>","music":"<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>","plane":"<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z\"/>","car":"<path d=\"M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2\"/><circle cx=\"7\" cy=\"17\" r=\"2\"/><path d=\"M9 17h6\"/><circle cx=\"17\" cy=\"17\" r=\"2\"/>","shopping-cart":"<path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18\"/><path d=\"M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25\"/><circle cx=\"18\" cy=\"20\" r=\"2\"/><circle cx=\"8\" cy=\"20\" r=\"2\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","briefcase":"<path d=\"M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"6\" rx=\"2\"/>","graduation-cap":"<path d=\"M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z\"/><path d=\"M22 10v6\"/><path d=\"M6 12.5V16a6 3 0 0 0 12 0v-3.5\"/>","dumbbell":"<path d=\"M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z\"/><path d=\"m2.5 21.5 1.4-1.4\"/><path d=\"m20.1 3.9 1.4-1.4\"/><path d=\"M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z\"/><path d=\"m9.6 14.4 4.8-4.8\"/>","pill":"<path d=\"m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z\"/><path d=\"m8.5 8.5 7 7\"/>","stethoscope":"<path d=\"M11 2v2\"/><path d=\"M5 2v2\"/><path d=\"M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1\"/><path d=\"M8 15a6 6 0 0 0 12 0v-3\"/><circle cx=\"20\" cy=\"10\" r=\"2\"/>","utensils":"<path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/>","cake":"<path d=\"M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8\"/><path d=\"M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1\"/><path d=\"M2 21h20\"/><path d=\"M7 8v3\"/><path d=\"M12 8v3\"/><path d=\"M17 8v3\"/><path d=\"M7 4h.01\"/><path d=\"M12 4h.01\"/><path d=\"M17 4h.01\"/>","camera":"<path d=\"M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>","headphones":"<path d=\"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3\"/>","gamepad-2":"<line x1=\"6\" x2=\"10\" y1=\"11\" y2=\"11\"/><line x1=\"8\" x2=\"8\" y1=\"9\" y2=\"13\"/><line x1=\"15\" x2=\"15.01\" y1=\"12\" y2=\"12\"/><line x1=\"18\" x2=\"18.01\" y1=\"10\" y2=\"10\"/><path d=\"M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z\"/>","leaf":"<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"/><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"/>","umbrella":"<path d=\"M12 13v7a2 2 0 0 0 4 0\"/><path d=\"M12 2v2\"/><path d=\"M20.992 13a1 1 0 0 0 .97-1.274 10.284 10.284 0 0 0-19.923 0A1 1 0 0 0 3 13z\"/>","zap":"<path d=\"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","trophy":"<path d=\"M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2\"/><path d=\"M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2\"/><path d=\"M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3\"/><path d=\"M4 22h16\"/><path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\"/><path d=\"M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","brain":"<path d=\"M12 18V5\"/><path d=\"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4\"/><path d=\"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5\"/><path d=\"M17.997 5.125a4 4 0 0 1 2.526 5.77\"/><path d=\"M18 18a4 4 0 0 0 2-7.464\"/><path d=\"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517\"/><path d=\"M6 18a4 4 0 0 1-2-7.464\"/><path d=\"M6.003 5.125a4 4 0 0 0-2.526 5.77\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","baby":"<path d=\"M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5\"/><path d=\"M15 12h.01\"/><path d=\"M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1\"/><path d=\"M9 12h.01\"/>","dog":"<path d=\"M11.25 16.25h1.5L12 17z\"/><path d=\"M16 14v.5\"/><path d=\"M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309\"/><path d=\"M8 14v.5\"/><path d=\"M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5\"/>","key":"<path d=\"m2 21 9.6-9.6\"/><path d=\"m7.5 15.5 2.3 2.3a1 1 0 0 1 0 1.4l-2.1 2.1a1 1 0 0 1-1.4 0L4 19\"/><circle cx=\"15.5\" cy=\"7.5\" r=\"5.5\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>","sofa":"<path d=\"M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3\"/><path d=\"M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z\"/><path d=\"M4 18v2\"/><path d=\"M20 18v2\"/><path d=\"M12 4v9\"/>","bed":"<path d=\"M2 4v16\"/><path d=\"M2 8h18a2 2 0 0 1 2 2v10\"/><path d=\"M2 17h20\"/><path d=\"M6 8v9\"/>","lamp":"<path d=\"M12 12v6\"/><path d=\"M4.077 10.615A1 1 0 0 0 5 12h14a1 1 0 0 0 .923-1.385l-3.077-7.384A2 2 0 0 0 15 2H9a2 2 0 0 0-1.846 1.23Z\"/><path d=\"M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>","shirt":"<path d=\"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z\"/>","scissors":"<circle cx=\"6\" cy=\"6\" r=\"3\"/><path d=\"M8.12 8.12 12 12\"/><path d=\"M20 4 8.12 15.88\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><path d=\"M14.8 14.8 20 20\"/>","wrench":"<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"/>","hammer":"<path d=\"m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9\"/><path d=\"m18 15 4-4\"/><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\"/>","laptop":"<path d=\"M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z\"/><path d=\"M20.054 15.987H3.946\"/>","tv":"<path d=\"m17 2-5 5-5-5\"/><rect width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\"/>","battery-charging":"<path d=\"m11 7-3 5h4l-3 5\"/><path d=\"M14.856 6H16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.935\"/><path d=\"M22 14v-4\"/><path d=\"M5.14 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2.936\"/>","alarm-clock":"<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2\"/><path d=\"M5 3 2 6\"/><path d=\"m22 6-3-3\"/><path d=\"M6.38 18.7 4 21\"/><path d=\"M17.64 18.67 20 21\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","timer":"<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/><line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/><circle cx=\"12\" cy=\"14\" r=\"8\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","thumbs-up":"<path d=\"M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z\"/><path d=\"M7 10v12\"/>","thumbs-down":"<path d=\"M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z\"/><path d=\"M17 14V2\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","crown":"<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\"/><path d=\"M5 21h14\"/>","gem":"<path d=\"M10.5 3 8 9l4 13 4-13-2.5-6\"/><path d=\"M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z\"/><path d=\"M2 9h20\"/>","feather":"<path d=\"M14.086 18.412A2 2 0 0112.67 19H5v-7.672a2 2 0 01.586-1.414L11.75 3.75a6 6 0 118.49 8.49z\"/><path d=\"M16 8 2 22\"/><path d=\"M17.488 15H9\"/>","pen-tool":"<path d=\"M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z\"/><path d=\"m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18\"/><path d=\"m2.3 2.3 7.286 7.286\"/><circle cx=\"11\" cy=\"11\" r=\"2\"/>","map":"<path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z\"/><path d=\"M15 5.764v15\"/><path d=\"M9 3.236v15\"/>","compass":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z\"/>","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>","waves":"<path d=\"M2 12q2.5 2 5 0t5 0 5 0 5 0\"/><path d=\"M2 19q2.5 2 5 0t5 0 5 0 5 0\"/><path d=\"M2 5q2.5 2 5 0t5 0 5 0 5 0\"/>","building-2":"<path d=\"M10 12h4\"/><path d=\"M10 8h4\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\"/><path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\"/>","store":"<path d=\"M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5\"/><path d=\"M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244\"/><path d=\"M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05\"/>","school":"<path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M18 4.933V21\"/><path d=\"m4 6 7.106-3.79a2 2 0 0 1 1.788 0L20 6\"/><path d=\"m6 11-3.52 2.147a1 1 0 0 0-.48.854V19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a1 1 0 0 0-.48-.853L18 11\"/><path d=\"M6 4.933V21\"/><circle cx=\"12\" cy=\"9\" r=\"2\"/>","hospital":"<path d=\"M12 7v4\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M14 9h-4\"/><path d=\"M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2\"/><path d=\"M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16\"/>","church":"<path d=\"M10 9h4\"/><path d=\"M12 7v5\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"m18 9 3.52 2.147a1 1 0 0 1 .48.854V19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.999a1 1 0 0 1 .48-.854L6 9\"/><path d=\"M6 21V7a1 1 0 0 1 .376-.782l5-3.999a1 1 0 0 1 1.249.001l5 4A1 1 0 0 1 18 7v14\"/>","landmark":"<path d=\"M10 18v-7\"/><path d=\"M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z\"/><path d=\"M14 18v-7\"/><path d=\"M18 18v-7\"/><path d=\"M3 22h18\"/><path d=\"M6 18v-7\"/>","train-front":"<path d=\"M8 3.1V7a4 4 0 0 0 8 0V3.1\"/><path d=\"m9 15-1-1\"/><path d=\"m15 15 1-1\"/><path d=\"M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z\"/><path d=\"m8 19-2 3\"/><path d=\"m16 19 2 3\"/>","bike":"<circle cx=\"18.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"5.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"15\" cy=\"5\" r=\"1\"/><path d=\"M12 17.5V14l-3-3 4-3 2 3h2\"/>","bus":"<path d=\"M8 6v6\"/><path d=\"M15 6v6\"/><path d=\"M2 12h19.6\"/><path d=\"M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3\"/><circle cx=\"7\" cy=\"18\" r=\"2\"/><path d=\"M9 18h5\"/><circle cx=\"16\" cy=\"18\" r=\"2\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","receipt":"<path d=\"M12 17V7\"/><path d=\"M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8\"/><path d=\"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z\"/>","piggy-bank":"<path d=\"M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z\"/><path d=\"M16 10h.01\"/><path d=\"M2 8v1a2 2 0 0 0 2 2h1\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","chart-line":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"m19 9-5 5-4-4-3 3\"/>","quote":"<path d=\"M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"/><path d=\"M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"/>","bookmark-check":"<path d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"/><path d=\"m9 10 2 2 4-4\"/>","smile-plus":"<path d=\"M13.267 2.08a10 10 0 108.653 8.653\"/><path d=\"M15 10V9\"/><path d=\"M16 5h6\"/><path d=\"M16.472 15a6 6 0 01-8.943 0\"/><path d=\"M19 2v6\"/><path d=\"M9 10V9\"/>","sun-medium":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v1\"/><path d=\"M12 20v1\"/><path d=\"M3 12h1\"/><path d=\"M20 12h1\"/><path d=\"m18.364 5.636-.707.707\"/><path d=\"m6.343 17.657-.707.707\"/><path d=\"m5.636 5.636.707.707\"/><path d=\"m17.657 17.657.707.707\"/>","cloud-rain":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 14v6\"/><path d=\"M8 14v6\"/><path d=\"M12 16v6\"/>","snowflake":"<path d=\"m10 20-1.25-2.5L6 18\"/><path d=\"M10 4 8.75 6.5 6 6\"/><path d=\"m14 20 1.25-2.5L18 18\"/><path d=\"m14 4 1.25 2.5L18 6\"/><path d=\"m17 21-3-6h-4\"/><path d=\"m17 3-3 6 1.5 3\"/><path d=\"M2 12h6.5L10 9\"/><path d=\"m20 10-1.5 2 1.5 2\"/><path d=\"M22 12h-6.5L14 15\"/><path d=\"m4 10 1.5 2L4 14\"/><path d=\"m7 21 3-6-1.5-3\"/><path d=\"m7 3 3 6h4\"/>","thermometer":"<path d=\"M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","square-plus":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 12h8\"/><path d=\"M12 8v8\"/>","ellipsis-vertical":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"5\" r=\"1\"/><circle cx=\"12\" cy=\"19\" r=\"1\"/>","monitor-down":"<path d=\"M12 13V7\"/><path d=\"m15 10-3 3-3-3\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M12 17v4\"/><path d=\"M8 21h8\"/>","maximize-2":"<path d=\"M15 3h6v6\"/><path d=\"m21 3-7 7\"/><path d=\"m3 21 7-7\"/><path d=\"M9 21H3v-6\"/>","send":"<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/><path d=\"m21.854 2.147-10.94 10.939\"/>","circle-plus":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 12h8\"/><path d=\"M12 8v8\"/>","app-window":"<rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","tablet-smartphone":"<rect width=\"10\" height=\"14\" x=\"3\" y=\"8\" rx=\"2\"/><path d=\"M5 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-2.4\"/><path d=\"M8 18h.01\"/>"};
+const ICONS={"search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","plus":"<path d=\"M5 12h14\"/><path d=\"M12 5v14\"/>","x":"<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>","menu":"<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>","bell":"<path d=\"M10.268 21a2 2 0 0 0 3.464 0\"/><path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\"/>","user":"<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","heart":"<path d=\"M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5\"/>","star":"<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\"/>","pin":"<path d=\"M12 17v5\"/><path d=\"M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z\"/>","pin-off":"<path d=\"M12 17v5\"/><path d=\"M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89\"/><path d=\"m2 2 20 20\"/><path d=\"M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11\"/>","trash-2":"<path d=\"M10 11v6\"/><path d=\"M14 11v6\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M3 6h18\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/>","rotate-ccw":"<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\"/><path d=\"M3 3v5h5\"/>","archive":"<rect width=\"20\" height=\"5\" x=\"2\" y=\"3\" rx=\"1\"/><path d=\"M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8\"/><path d=\"M10 12h4\"/>","tag":"<path d=\"M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z\"/><circle cx=\"7.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","folder":"<path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>","folder-open":"<path d=\"m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2\"/>","inbox":"<polyline points=\"22 12 16 12 14 15 10 15 8 12 2 12\"/><path d=\"M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z\"/>","clock":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 6v6l4 2\"/>","calendar":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/>","calendar-days":"<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/><path d=\"M8 13h.01\"/><path d=\"M12 13h.01\"/><path d=\"M16 13h.01\"/><path d=\"M8 17h.01\"/><path d=\"M12 17h.01\"/><path d=\"M16 17h.01\"/>","check":"<path d=\"M20 6 9 17l-5-5\"/>","check-square":"<path d=\"M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344\"/><path d=\"m9 11 3 3L22 4\"/>","square":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/>","circle":"<circle cx=\"12\" cy=\"12\" r=\"10\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","lightbulb":"<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","contact":"<path d=\"M16 2v2\"/><path d=\"M7 21v-2a2 2 0 012-2h6a2 2 0 012 2v2\"/><path d=\"M8 2v2\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/>","book-open":"<path d=\"M12 5v16\"/><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"/>","notebook-pen":"<path d=\"M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4\"/><path d=\"M2 6h4\"/><path d=\"M2 10h4\"/><path d=\"M2 14h4\"/><path d=\"M2 18h4\"/><path d=\"M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z\"/>","file-text":"<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>","layout-grid":"<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\"/><rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\"/>","list":"<path d=\"M3 5h.01\"/><path d=\"M3 12h.01\"/><path d=\"M3 19h.01\"/><path d=\"M8 5h13\"/><path d=\"M8 12h13\"/><path d=\"M8 19h13\"/>","arrow-right":"<path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/>","arrow-left":"<path d=\"m12 19-7-7 7-7\"/><path d=\"M19 12H5\"/>","arrow-up":"<path d=\"m5 12 7-7 7 7\"/><path d=\"M12 19V5\"/>","chevron-left":"<path d=\"m15 18-6-6 6-6\"/>","chevron-right":"<path d=\"m9 18 6-6-6-6\"/>","chevron-down":"<path d=\"m6 9 6 6 6-6\"/>","more-horizontal":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>","bold":"<path d=\"M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8\"/>","italic":"<line x1=\"19\" x2=\"10\" y1=\"4\" y2=\"4\"/><line x1=\"14\" x2=\"5\" y1=\"20\" y2=\"20\"/><line x1=\"15\" x2=\"9\" y1=\"4\" y2=\"20\"/>","underline":"<path d=\"M6 4v6a6 6 0 0 0 12 0V4\"/><line x1=\"4\" x2=\"20\" y1=\"20\" y2=\"20\"/>","strikethrough":"<path d=\"M16 4H9a3 3 0 0 0-2.83 4\"/><path d=\"M14 12a4 4 0 0 1 0 8H6\"/><line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\"/>","highlighter":"<path d=\"m9 11-6 6v3h9l3-3\"/><path d=\"m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4\"/>","baseline":"<path d=\"M4 20h16\"/><path d=\"m6 16 6-12 6 12\"/><path d=\"M8 12h8\"/>","type":"<path d=\"M12 4v16\"/><path d=\"M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2\"/><path d=\"M9 20h6\"/>","list-ordered":"<path d=\"M11 5h10\"/><path d=\"M11 12h10\"/><path d=\"M11 19h10\"/><path d=\"M4 4h1v5\"/><path d=\"M4 9h2\"/><path d=\"M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02\"/>","list-todo":"<path d=\"M13 5h8\"/><path d=\"M13 12h8\"/><path d=\"M13 19h8\"/><path d=\"m3 17 2 2 4-4\"/><rect x=\"3\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/>","text-quote":"<path d=\"M17 5H3\"/><path d=\"M21 12H8\"/><path d=\"M21 19H8\"/><path d=\"M3 12v7\"/>","smile":"<path d=\"M15 10V9\"/><path d=\"M16.472 15a6 6 0 01-8.943 0\"/><path d=\"M9 10V9\"/><circle cx=\"12\" cy=\"12\" r=\"10\"/>","shapes":"<path d=\"M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><circle cx=\"17.5\" cy=\"17.5\" r=\"3.5\"/>","pilcrow":"<path d=\"M13 4v16\"/><path d=\"M17 4v16\"/><path d=\"M19 4H9.5a4.5 4.5 0 0 0 0 9H13\"/>","undo-2":"<path d=\"M9 14 4 9l5-5\"/><path d=\"M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11\"/>","redo-2":"<path d=\"m15 14 5-5-5-5\"/><path d=\"M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13\"/>","eraser":"<path d=\"M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21\"/><path d=\"m5.082 11.09 8.828 8.828\"/>","download":"<path d=\"M12 15V3\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/><path d=\"m7 10 5 5 5-5\"/>","upload":"<path d=\"M12 3v12\"/><path d=\"m17 8-5-5-5 5\"/><path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"/>","log-out":"<path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/>","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>","moon":"<path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","monitor":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\"/><line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","hand-heart":"<path d=\"M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16\"/><path d=\"m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95\"/><path d=\"m2 15 6 6\"/><path d=\"m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91\"/>","shield":"<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/>","scroll-text":"<path d=\"M15 12h-5\"/><path d=\"M15 8h-5\"/><path d=\"M19 17V5a2 2 0 0 0-2-2H4\"/><path d=\"M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3\"/>","key-round":"<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\"/><circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","wifi-off":"<path d=\"M12 20h.01\"/><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"/><path d=\"M5 12.859a10 10 0 0 1 5.17-2.69\"/><path d=\"M19 12.859a10 10 0 0 0-2.007-1.523\"/><path d=\"M2 8.82a15 15 0 0 1 4.177-2.643\"/><path d=\"M22 8.82a15 15 0 0 0-11.288-3.764\"/><path d=\"m2 2 20 20\"/>","cloud":"<path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/>","cloud-off":"<path d=\"M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057\"/><path d=\"M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78\"/><path d=\"m2 2 20 20\"/>","cloud-check":"<path d=\"m17 15-5.5 5.5L9 18\"/><path d=\"M5.516 16.07A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 3.501 7.327\"/>","refresh-cw":"<path d=\"M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/><path d=\"M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16\"/><path d=\"M8 16H3v5\"/>","loader":"<path d=\"M12 2v4\"/><path d=\"m16.2 7.8 2.9-2.9\"/><path d=\"M18 12h4\"/><path d=\"m16.2 16.2 2.9 2.9\"/><path d=\"M12 18v4\"/><path d=\"m4.9 19.1 2.9-2.9\"/><path d=\"M2 12h4\"/><path d=\"m4.9 4.9 2.9 2.9\"/>","alert-triangle":"<path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/>","info":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>","copy":"<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>","pencil":"<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\"/><path d=\"m15 5 4 4\"/>","filter":"<path d=\"M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z\"/>","sort-desc":"<path d=\"m3 16 4 4 4-4\"/><path d=\"M7 20V4\"/><path d=\"M11 4h10\"/><path d=\"M11 8h7\"/><path d=\"M11 12h4\"/>","keyboard":"<path d=\"M10 8h.01\"/><path d=\"M12 12h.01\"/><path d=\"M14 8h.01\"/><path d=\"M16 12h.01\"/><path d=\"M18 8h.01\"/><path d=\"M6 8h.01\"/><path d=\"M7 16h10\"/><path d=\"M8 12h.01\"/><rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/>","smartphone":"<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/><path d=\"M12 18h.01\"/>","flame":"<path d=\"M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4\"/>","sparkle":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","database":"<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/>","external-link":"<path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/>","mail":"<path d=\"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7\"/><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/>","phone":"<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"/>","home":"<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>","box":"<path d=\"M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z\"/><path d=\"m3.3 7 8.7 5 8.7-5\"/><path d=\"M12 22V12\"/>","layers":"<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>","check-check":"<path d=\"M18 6 7 17l-5-5\"/><path d=\"m22 10-7.5 7.5L13 16\"/>","sliders-horizontal":"<path d=\"M10 5H3\"/><path d=\"M12 19H3\"/><path d=\"M14 3v4\"/><path d=\"M16 17v4\"/><path d=\"M21 12h-9\"/><path d=\"M21 19h-5\"/><path d=\"M21 5h-7\"/><path d=\"M8 10v4\"/><path d=\"M8 12H3\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","sunrise":"<path d=\"M12 2v8\"/><path d=\"m4.93 10.93 1.41 1.41\"/><path d=\"M2 18h2\"/><path d=\"M20 18h2\"/><path d=\"m19.07 10.93-1.41 1.41\"/><path d=\"M22 22H2\"/><path d=\"m8 6 4-4 4 4\"/><path d=\"M16 18a4 4 0 0 0-8 0\"/>","moon-star":"<path d=\"M18 5h4\"/><path d=\"M20 3v4\"/><path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","minus":"<path d=\"M5 12h14\"/>","flag":"<path d=\"M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528\"/>","bookmark":"<path d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"/>","link":"<path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"/><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"/>","gift":"<path d=\"M12 7v14\"/><path d=\"M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8\"/><path d=\"M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5\"/><rect x=\"3\" y=\"7\" width=\"18\" height=\"4\" rx=\"1\"/>","music":"<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>","plane":"<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z\"/>","car":"<path d=\"M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2\"/><circle cx=\"7\" cy=\"17\" r=\"2\"/><path d=\"M9 17h6\"/><circle cx=\"17\" cy=\"17\" r=\"2\"/>","shopping-cart":"<path d=\"m2.05 2.05 1.099-.028a1 1 0 0 1 1.008.815l2.69 14.347A1 1 0 0 0 7.83 18H18\"/><path d=\"M4.563 5h16.435a1 1 0 0 1 .981 1.204l-1.026 6.226A2 2 0 0 1 18.962 14H6.25\"/><circle cx=\"18\" cy=\"20\" r=\"2\"/><circle cx=\"8\" cy=\"20\" r=\"2\"/>","wallet":"<path d=\"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1\"/><path d=\"M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4\"/>","briefcase":"<path d=\"M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"6\" rx=\"2\"/>","graduation-cap":"<path d=\"M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z\"/><path d=\"M22 10v6\"/><path d=\"M6 12.5V16a6 3 0 0 0 12 0v-3.5\"/>","dumbbell":"<path d=\"M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z\"/><path d=\"m2.5 21.5 1.4-1.4\"/><path d=\"m20.1 3.9 1.4-1.4\"/><path d=\"M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z\"/><path d=\"m9.6 14.4 4.8-4.8\"/>","pill":"<path d=\"m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z\"/><path d=\"m8.5 8.5 7 7\"/>","stethoscope":"<path d=\"M11 2v2\"/><path d=\"M5 2v2\"/><path d=\"M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1\"/><path d=\"M8 15a6 6 0 0 0 12 0v-3\"/><circle cx=\"20\" cy=\"10\" r=\"2\"/>","utensils":"<path d=\"M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2\"/><path d=\"M7 2v20\"/><path d=\"M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7\"/>","cake":"<path d=\"M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8\"/><path d=\"M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1\"/><path d=\"M2 21h20\"/><path d=\"M7 8v3\"/><path d=\"M12 8v3\"/><path d=\"M17 8v3\"/><path d=\"M7 4h.01\"/><path d=\"M12 4h.01\"/><path d=\"M17 4h.01\"/>","camera":"<path d=\"M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>","headphones":"<path d=\"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3\"/>","gamepad-2":"<line x1=\"6\" x2=\"10\" y1=\"11\" y2=\"11\"/><line x1=\"8\" x2=\"8\" y1=\"9\" y2=\"13\"/><line x1=\"15\" x2=\"15.01\" y1=\"12\" y2=\"12\"/><line x1=\"18\" x2=\"18.01\" y1=\"10\" y2=\"10\"/><path d=\"M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z\"/>","leaf":"<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"/><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"/>","umbrella":"<path d=\"M12 13v7a2 2 0 0 0 4 0\"/><path d=\"M12 2v2\"/><path d=\"M20.992 13a1 1 0 0 0 .97-1.274 10.284 10.284 0 0 0-19.923 0A1 1 0 0 0 3 13z\"/>","zap":"<path d=\"M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z\"/>","target":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"12\" r=\"6\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/>","trophy":"<path d=\"M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2\"/><path d=\"M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2\"/><path d=\"M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3\"/><path d=\"M4 22h16\"/><path d=\"M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z\"/><path d=\"M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","brain":"<path d=\"M12 18V5\"/><path d=\"M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4\"/><path d=\"M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5\"/><path d=\"M17.997 5.125a4 4 0 0 1 2.526 5.77\"/><path d=\"M18 18a4 4 0 0 0 2-7.464\"/><path d=\"M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517\"/><path d=\"M6 18a4 4 0 0 1-2-7.464\"/><path d=\"M6.003 5.125a4 4 0 0 0-2.526 5.77\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>","users":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","baby":"<path d=\"M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5\"/><path d=\"M15 12h.01\"/><path d=\"M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1\"/><path d=\"M9 12h.01\"/>","dog":"<path d=\"M11.25 16.25h1.5L12 17z\"/><path d=\"M16 14v.5\"/><path d=\"M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309\"/><path d=\"M8 14v.5\"/><path d=\"M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5\"/>","key":"<path d=\"m2 21 9.6-9.6\"/><path d=\"m7.5 15.5 2.3 2.3a1 1 0 0 1 0 1.4l-2.1 2.1a1 1 0 0 1-1.4 0L4 19\"/><circle cx=\"15.5\" cy=\"7.5\" r=\"5.5\"/>","package":"<path d=\"M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z\"/><path d=\"M12 22V12\"/><polyline points=\"3.29 7 12 12 20.71 7\"/><path d=\"m7.5 4.27 9 5.15\"/>","sofa":"<path d=\"M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3\"/><path d=\"M2 16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z\"/><path d=\"M4 18v2\"/><path d=\"M20 18v2\"/><path d=\"M12 4v9\"/>","bed":"<path d=\"M2 4v16\"/><path d=\"M2 8h18a2 2 0 0 1 2 2v10\"/><path d=\"M2 17h20\"/><path d=\"M6 8v9\"/>","lamp":"<path d=\"M12 12v6\"/><path d=\"M4.077 10.615A1 1 0 0 0 5 12h14a1 1 0 0 0 .923-1.385l-3.077-7.384A2 2 0 0 0 15 2H9a2 2 0 0 0-1.846 1.23Z\"/><path d=\"M8 20a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1z\"/>","shirt":"<path d=\"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z\"/>","scissors":"<circle cx=\"6\" cy=\"6\" r=\"3\"/><path d=\"M8.12 8.12 12 12\"/><path d=\"M20 4 8.12 15.88\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><path d=\"M14.8 14.8 20 20\"/>","wrench":"<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"/>","hammer":"<path d=\"m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9\"/><path d=\"m18 15 4-4\"/><path d=\"m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5\"/>","laptop":"<path d=\"M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z\"/><path d=\"M20.054 15.987H3.946\"/>","tv":"<path d=\"m17 2-5 5-5-5\"/><rect width=\"20\" height=\"15\" x=\"2\" y=\"7\" rx=\"2\"/>","battery-charging":"<path d=\"m11 7-3 5h4l-3 5\"/><path d=\"M14.856 6H16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.935\"/><path d=\"M22 14v-4\"/><path d=\"M5.14 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2.936\"/>","alarm-clock":"<circle cx=\"12\" cy=\"13\" r=\"8\"/><path d=\"M12 9v4l2 2\"/><path d=\"M5 3 2 6\"/><path d=\"m22 6-3-3\"/><path d=\"M6.38 18.7 4 21\"/><path d=\"M17.64 18.67 20 21\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","timer":"<line x1=\"10\" x2=\"14\" y1=\"2\" y2=\"2\"/><line x1=\"12\" x2=\"15\" y1=\"14\" y2=\"11\"/><circle cx=\"12\" cy=\"14\" r=\"8\"/>","repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>","circle-alert":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><line x1=\"12\" x2=\"12\" y1=\"8\" y2=\"12\"/><line x1=\"12\" x2=\"12.01\" y1=\"16\" y2=\"16\"/>","circle-x":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/>","circle-help":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","thumbs-up":"<path d=\"M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z\"/><path d=\"M7 10v12\"/>","thumbs-down":"<path d=\"M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z\"/><path d=\"M17 14V2\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","crown":"<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\"/><path d=\"M5 21h14\"/>","gem":"<path d=\"M10.5 3 8 9l4 13 4-13-2.5-6\"/><path d=\"M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z\"/><path d=\"M2 9h20\"/>","feather":"<path d=\"M14.086 18.412A2 2 0 0112.67 19H5v-7.672a2 2 0 01.586-1.414L11.75 3.75a6 6 0 118.49 8.49z\"/><path d=\"M16 8 2 22\"/><path d=\"M17.488 15H9\"/>","pen-tool":"<path d=\"M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z\"/><path d=\"m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18\"/><path d=\"m2.3 2.3 7.286 7.286\"/><circle cx=\"11\" cy=\"11\" r=\"2\"/>","map":"<path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z\"/><path d=\"M15 5.764v15\"/><path d=\"M9 3.236v15\"/>","compass":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z\"/>","mountain":"<path d=\"m8 3 4 8 5-5 5 15H2L8 3z\"/>","waves":"<path d=\"M2 12q2.5 2 5 0t5 0 5 0 5 0\"/><path d=\"M2 19q2.5 2 5 0t5 0 5 0 5 0\"/><path d=\"M2 5q2.5 2 5 0t5 0 5 0 5 0\"/>","building-2":"<path d=\"M10 12h4\"/><path d=\"M10 8h4\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\"/><path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\"/>","store":"<path d=\"M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5\"/><path d=\"M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244\"/><path d=\"M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05\"/>","school":"<path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M18 4.933V21\"/><path d=\"m4 6 7.106-3.79a2 2 0 0 1 1.788 0L20 6\"/><path d=\"m6 11-3.52 2.147a1 1 0 0 0-.48.854V19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a1 1 0 0 0-.48-.853L18 11\"/><path d=\"M6 4.933V21\"/><circle cx=\"12\" cy=\"9\" r=\"2\"/>","hospital":"<path d=\"M12 7v4\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"M14 9h-4\"/><path d=\"M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2\"/><path d=\"M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16\"/>","church":"<path d=\"M10 9h4\"/><path d=\"M12 7v5\"/><path d=\"M14 21v-3a2 2 0 0 0-4 0v3\"/><path d=\"m18 9 3.52 2.147a1 1 0 0 1 .48.854V19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.999a1 1 0 0 1 .48-.854L6 9\"/><path d=\"M6 21V7a1 1 0 0 1 .376-.782l5-3.999a1 1 0 0 1 1.249.001l5 4A1 1 0 0 1 18 7v14\"/>","landmark":"<path d=\"M10 18v-7\"/><path d=\"M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z\"/><path d=\"M14 18v-7\"/><path d=\"M18 18v-7\"/><path d=\"M3 22h18\"/><path d=\"M6 18v-7\"/>","train-front":"<path d=\"M8 3.1V7a4 4 0 0 0 8 0V3.1\"/><path d=\"m9 15-1-1\"/><path d=\"m15 15 1-1\"/><path d=\"M9 19c-2.8 0-5-2.2-5-5v-4a8 8 0 0 1 16 0v4c0 2.8-2.2 5-5 5Z\"/><path d=\"m8 19-2 3\"/><path d=\"m16 19 2 3\"/>","bike":"<circle cx=\"18.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"5.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"15\" cy=\"5\" r=\"1\"/><path d=\"M12 17.5V14l-3-3 4-3 2 3h2\"/>","bus":"<path d=\"M8 6v6\"/><path d=\"M15 6v6\"/><path d=\"M2 12h19.6\"/><path d=\"M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3\"/><circle cx=\"7\" cy=\"18\" r=\"2\"/><path d=\"M9 18h5\"/><circle cx=\"16\" cy=\"18\" r=\"2\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","receipt":"<path d=\"M12 17V7\"/><path d=\"M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8\"/><path d=\"M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z\"/>","piggy-bank":"<path d=\"M11 17h3v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a3.16 3.16 0 0 0 2-2h1a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-1a5 5 0 0 0-2-4V3a4 4 0 0 0-3.2 1.6l-.3.4H11a6 6 0 0 0-6 6v1a5 5 0 0 0 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1z\"/><path d=\"M16 10h.01\"/><path d=\"M2 8v1a2 2 0 0 0 2 2h1\"/>","banknote":"<rect width=\"20\" height=\"12\" x=\"2\" y=\"6\" rx=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><path d=\"M6 12h.01M18 12h.01\"/>","chart-line":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"m19 9-5 5-4-4-3 3\"/>","quote":"<path d=\"M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"/><path d=\"M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z\"/>","bookmark-check":"<path d=\"M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z\"/><path d=\"m9 10 2 2 4-4\"/>","smile-plus":"<path d=\"M13.267 2.08a10 10 0 108.653 8.653\"/><path d=\"M15 10V9\"/><path d=\"M16 5h6\"/><path d=\"M16.472 15a6 6 0 01-8.943 0\"/><path d=\"M19 2v6\"/><path d=\"M9 10V9\"/>","sun-medium":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 3v1\"/><path d=\"M12 20v1\"/><path d=\"M3 12h1\"/><path d=\"M20 12h1\"/><path d=\"m18.364 5.636-.707.707\"/><path d=\"m6.343 17.657-.707.707\"/><path d=\"m5.636 5.636.707.707\"/><path d=\"m17.657 17.657.707.707\"/>","cloud-rain":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 14v6\"/><path d=\"M8 14v6\"/><path d=\"M12 16v6\"/>","snowflake":"<path d=\"m10 20-1.25-2.5L6 18\"/><path d=\"M10 4 8.75 6.5 6 6\"/><path d=\"m14 20 1.25-2.5L18 18\"/><path d=\"m14 4 1.25 2.5L18 6\"/><path d=\"m17 21-3-6h-4\"/><path d=\"m17 3-3 6 1.5 3\"/><path d=\"M2 12h6.5L10 9\"/><path d=\"m20 10-1.5 2 1.5 2\"/><path d=\"M22 12h-6.5L14 15\"/><path d=\"m4 10 1.5 2L4 14\"/><path d=\"m7 21 3-6-1.5-3\"/><path d=\"m7 3 3 6h4\"/>","thermometer":"<path d=\"M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","square-plus":"<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M8 12h8\"/><path d=\"M12 8v8\"/>","ellipsis-vertical":"<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"5\" r=\"1\"/><circle cx=\"12\" cy=\"19\" r=\"1\"/>","monitor-down":"<path d=\"M12 13V7\"/><path d=\"m15 10-3 3-3-3\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\"/><path d=\"M12 17v4\"/><path d=\"M8 21h8\"/>","maximize-2":"<path d=\"M15 3h6v6\"/><path d=\"m21 3-7 7\"/><path d=\"m3 21 7-7\"/><path d=\"M9 21H3v-6\"/>","send":"<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/><path d=\"m21.854 2.147-10.94 10.939\"/>","circle-plus":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M8 12h8\"/><path d=\"M12 8v8\"/>","app-window":"<rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/>","chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","tablet-smartphone":"<rect width=\"10\" height=\"14\" x=\"3\" y=\"8\" rx=\"2\"/><path d=\"M5 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-2.4\"/><path d=\"M8 18h.01\"/>","cloud-sun":"<path d=\"M12 2v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"M20 12h2\"/><path d=\"m19.07 4.93-1.41 1.41\"/><path d=\"M15.947 12.65a4 4 0 0 0-5.925-4.128\"/><path d=\"M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z\"/>","cloud-moon":"<path d=\"M13 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6z\"/><path d=\"M18.376 14.512a6 6 0 0 0 3.461-4.127c.148-.625-.659-.97-1.248-.714a4 4 0 0 1-5.259-5.26c.255-.589-.09-1.395-.716-1.248a6 6 0 0 0-4.594 5.36\"/>","cloud-fog":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M16 17H7\"/><path d=\"M17 21H9\"/>","cloud-drizzle":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 19v1\"/><path d=\"M8 14v1\"/><path d=\"M16 19v1\"/><path d=\"M16 14v1\"/><path d=\"M12 21v1\"/><path d=\"M12 16v1\"/>","cloud-snow":"<path d=\"M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242\"/><path d=\"M8 15h.01\"/><path d=\"M8 19h.01\"/><path d=\"M12 17h.01\"/><path d=\"M12 21h.01\"/><path d=\"M16 15h.01\"/><path d=\"M16 19h.01\"/>","cloud-lightning":"<path d=\"M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973\"/><path d=\"m13 12-3 5h4l-3 5\"/>","wind":"<path d=\"M12.8 19.6A2 2 0 1 0 14 16H2\"/><path d=\"M17.5 8a2.5 2.5 0 1 1 2 4H2\"/><path d=\"M9.8 4.4A2 2 0 1 1 11 8H2\"/>","locate":"<line x1=\"2\" x2=\"5\" y1=\"12\" y2=\"12\"/><line x1=\"19\" x2=\"22\" y1=\"12\" y2=\"12\"/><line x1=\"12\" x2=\"12\" y1=\"2\" y2=\"5\"/><line x1=\"12\" x2=\"12\" y1=\"19\" y2=\"22\"/><circle cx=\"12\" cy=\"12\" r=\"7\"/>","navigation":"<polygon points=\"3 11 22 2 13 21 11 13 3 11\"/>"};
 
 /* ---- i18n.js ---- */
 /* UI strings. Add a language by copying `en` and translating values; keys are shared. */
 const I18N = {
 en: {
+  "prompt.0": "What’s on your mind right now?",
+  "prompt.1": "Where did you put it?",
+  "prompt.2": "What should future you remember?",
+  "prompt.3": "What did you promise someone?",
+  "prompt.4": "Which idea keeps coming back?",
+  "prompt.5": "What was the most honest moment of your day?",
+  "prompt.6": "What would make tomorrow easier?",
+  "prompt.7": "Who do you need to call back?",
+  "prompt.8": "What made you smile today?",
+  "prompt.9": "What are you avoiding, and why?",
+  "prompt.10": "What did you learn this week?",
+  "prompt.11": "What’s one small thing you can finish today?",
+  "prompt.12": "Who deserves a thank-you?",
+  "prompt.13": "What would you do if you weren’t afraid?",
+  "prompt.14": "What’s taking up space in your head?",
+  "prompt.15": "Where are your keys right now?",
+  "prompt.16": "What’s a sentence you want to keep?",
+  "prompt.17": "What did someone say that stuck with you?",
+  "prompt.18": "What do you want to remember about today?",
+  "prompt.19": "What are you looking forward to?",
+  "prompt.20": "What’s the next step, just the next one?",
+  "prompt.21": "What would make this week feel good?",
+  "prompt.22": "Which promise to yourself matters most?",
+  "prompt.23": "What did you notice that others missed?",
+  "prompt.24": "What’s worth doing slowly?",
+  "prompt.25": "What can you let go of?",
+  "prompt.26": "What surprised you lately?",
+  "prompt.27": "Whose birthday is coming up?",
+  "prompt.28": "What’s a question you can’t stop asking?",
+  "prompt.29": "What did you buy, and where is the receipt?",
+  "prompt.30": "What would your calmer self write down?",
+  "prompt.31": "What’s the one thing to not forget tomorrow?",
+  "prompt.32": "What made today different?",
+  "prompt.33": "What do you need more of?",
+  "prompt.34": "What are you grateful for right now?",
+  "prompt.35": "What’s an idea too small to ignore?",
+  "prompt.36": "What’s the password hint you’ll need later?",
+  "prompt.37": "What did you start but not finish?",
+  "prompt.38": "What would you tell yourself a year ago?",
+  "prompt.39": "What sounded interesting today?",
+  "prompt.40": "Where did you leave off?",
+  "prompt.41": "What do you want to try next?",
+  "prompt.42": "What’s a place you want to go back to?",
+  "prompt.43": "What’s been on your to-do list too long?",
+  "prompt.44": "What would make someone’s day?",
+  "prompt.45": "What are you proud of this week?",
+  "prompt.46": "What did today teach you?",
+  "prompt.47": "What’s quietly important?",
+  "cap.k0": "one thought",
+  "cap.k1": "today’s question",
+  "cap.k2": "a quiet moment",
+  "cap.k3": "before you forget",
+  "cap.k4": "just for you",
+  "cap.k5": "write it down",
+  "wx.show": "Show local weather",
+  "wx.refresh": "Update weather",
+  "wx.denied": "Location is off for this site — weather can’t be shown.",
+  "wx.fail": "Couldn’t get the weather right now.",
+  "wx.clear": "Clear",
+  "wx.partly": "Partly cloudy",
+  "wx.cloudy": "Cloudy",
+  "wx.fog": "Foggy",
+  "wx.drizzle": "Drizzle",
+  "wx.rain": "Rain",
+  "wx.snow": "Snow",
+  "wx.thunder": "Thunderstorm",
+  "wd.clear": "A {tw}, clear day",
+  "wd.partly": "A {tw} day with a few clouds",
+  "wd.cloudy": "A {tw}, grey day",
+  "wd.fog": "A {tw}, misty day",
+  "wd.drizzle": "A {tw} day of light rain",
+  "wd.rain": "A {tw}, rainy day",
+  "wd.snow": "A {tw}, snowy day",
+  "wd.thunder": "A stormy, {tw} day",
+  "tw.freezing": "freezing",
+  "tw.cold": "cold",
+  "tw.cool": "cool",
+  "tw.mild": "mild",
+  "tw.warm": "warm",
+  "tw.hot": "hot",
+  "au.sunset": "Sunset",
+  "au.ocean": "Ocean",
+  "au.forest": "Forest",
+  "au.dusk": "Dusk",
+  "au.rose": "Rose",
+  "au.storm": "Rain",
+  "au.snow": "Snow",
+  "au.night": "Night",
+  "set.aurora": "Card colours",
+  "set.auroraSub": "Auto follows the weather (or picks one at random). Tap ↻ on the card to change it.",
+  "set.auroraAuto": "Auto",
+  "set.weather": "Weather on Today",
+  "set.weatherSub": "Uses your approximate location once an hour via Open-Meteo. Nothing is stored on our servers.",
+  "cal.free": "Free",
+  "today.summary": "Summary",
+  "faq.q16": "Where does the weather come from?",
+  "faq.a16": "From Open-Meteo, a free weather service. With your permission, your approximate location (rounded to about 1 km) is sent directly from your device at most once an hour. Kept never stores your location. You can turn it off in Settings → Appearance.",
   "prop.due": "Due date",
   "prop.date": "Date",
   "prop.time": "Time",
@@ -1293,8 +1547,6 @@ en: {
   'cap.label': 'Quick capture', 'cap.kicker': 'one thought', 'cap.another': 'Another question', 'cap.saved': '{type} saved',
   'cap.ph.note': 'What do you think?', 'cap.ph.idea': 'Write the idea before it slips away…', 'cap.ph.todo': 'What needs doing?', 'cap.ph.event': 'What’s happening on this day?',
   'cap.ph.item': 'Passport: desk, right drawer', 'cap.ph.contact': 'Name, phone, email…',
-  'prompt.0': 'What’s on your mind right now?', 'prompt.1': 'Where did you put it?', 'prompt.2': 'What should future you remember?', 'prompt.3': 'What did you promise someone?',
-  'prompt.4': 'Which idea keeps coming back?', 'prompt.5': 'What was the most honest moment of your day?', 'prompt.6': 'What would make tomorrow easier?', 'prompt.7': 'Who do you need to call back?',
   'recent.sub': 'Edited in the last 14 days', 'list.more': 'Show more ({n} left)',
   'empty.title': 'Nothing here yet', 'empty.sub': 'Start with one line. You can sort it out later.', 'empty.favTitle': 'No favorites yet', 'empty.favSub': 'Tap the heart on any record to keep it close.',
   'bulk.select': 'Select', 'bulk.selected.one': '{n} selected', 'bulk.selected.other': '{n} selected', 'bulk.all': 'Select all', 'bulk.move': 'Move', 'bulk.tag': 'Tag', 'bulk.type': 'Type', 'bulk.fav': 'Favorite',
@@ -1394,7 +1646,7 @@ en: {
   'sup.footer': 'Every feature is free for everyone, whether or not you contribute.',
   'legal.privacy': 'Privacy Policy', 'legal.terms': 'Terms of Service', 'legal.template': 'Template — the operator must review and complete this before launch.', 'legal.operatorPh': '[Operator name]', 'legal.contactPh': '[privacy contact email]',
   'legal.p1': 'Who we are', 'legal.p1Body': 'Kept is operated by {op}. Contact {contact} with any privacy question or request.',
-  'legal.p2': 'What we store', 'legal.p2Body': 'Your email address, password hash (handled by our authentication provider), the records, categories and settings you create, and — if you contribute — the amount, date and status reported by the payment provider. We do not store images, and we do not collect location, contacts from your device, or analytics about what you write.',
+  'legal.p2': 'What we store', 'legal.p2Body': 'Your email address, password hash (handled by our authentication provider), the records, categories and settings you create, and — if you contribute — the amount, date and status reported by the payment provider. We do not store images (except an optional small profile photo), and we do not collect your location, device contacts or analytics about what you write. If you turn on weather, your device sends an approximate location directly to Open-Meteo; Kept does not receive or store it.',
   'legal.p3': 'How we use it', 'legal.p3Body': 'Only to run Kept: storing and syncing your records, signing you in and sending account emails. Your records are never used for advertising, sold, shared with data brokers, or used to train AI.',
   'legal.p4': 'Where it lives', 'legal.p4Body': 'Records are stored with our database provider (Supabase) and protected by row-level security so only your account can read them. Data is encrypted in transit (HTTPS) and at rest by the provider.',
   'legal.p5': 'Your controls', 'legal.p5Body': 'You can export all records (JSON/CSV), delete individual records, empty the trash, delete all records, or delete your account from Settings at any time.',
@@ -1410,6 +1662,103 @@ en: {
   'sc.lists': 'Bulleted / numbered list', 'sc.quote': 'Quote', 'sc.icon': 'Insert icon', 'sc.emoji': 'Insert emoji', 'sc.undo': 'Undo / redo', 'sc.save': 'Save & sync now', 'sc.md': 'Type at line start for list, numbered, quote, heading', 'sc.capture': 'Save quick capture (Shift+Enter for new line)'
 },
 ko: {
+  "prompt.0": "지금 머릿속에 무엇이 있나요?",
+  "prompt.1": "그거, 어디에 두었나요?",
+  "prompt.2": "미래의 나에게 꼭 남길 말은?",
+  "prompt.3": "누군가와 약속한 게 있나요?",
+  "prompt.4": "자꾸 떠오르는 아이디어가 있나요?",
+  "prompt.5": "오늘 가장 솔직했던 순간은?",
+  "prompt.6": "내일을 조금 더 편하게 만들려면?",
+  "prompt.7": "다시 연락해야 할 사람이 있나요?",
+  "prompt.8": "오늘 나를 웃게 한 건 무엇인가요?",
+  "prompt.9": "미루고 있는 일과 그 이유는?",
+  "prompt.10": "이번 주에 새로 알게 된 것은?",
+  "prompt.11": "오늘 끝낼 수 있는 작은 일 하나는?",
+  "prompt.12": "고맙다고 말해야 할 사람은 누구인가요?",
+  "prompt.13": "두렵지 않다면 무엇을 하고 싶나요?",
+  "prompt.14": "머릿속을 차지하고 있는 생각은?",
+  "prompt.15": "지금 열쇠는 어디에 있나요?",
+  "prompt.16": "간직하고 싶은 문장이 있나요?",
+  "prompt.17": "누군가의 말이 마음에 남았나요?",
+  "prompt.18": "오늘에 대해 기억하고 싶은 것은?",
+  "prompt.19": "요즘 기대되는 일은 무엇인가요?",
+  "prompt.20": "딱 다음 한 걸음은 무엇인가요?",
+  "prompt.21": "이번 주를 기분 좋게 만들려면?",
+  "prompt.22": "나와의 약속 중 가장 중요한 것은?",
+  "prompt.23": "남들이 놓친 것을 발견했나요?",
+  "prompt.24": "천천히 해도 좋은 일은 무엇인가요?",
+  "prompt.25": "이제 내려놓아도 되는 것은?",
+  "prompt.26": "최근에 놀랐던 일이 있나요?",
+  "prompt.27": "곧 생일인 사람이 있나요?",
+  "prompt.28": "자꾸 떠오르는 질문이 있나요?",
+  "prompt.29": "산 물건의 영수증은 어디에 두었나요?",
+  "prompt.30": "차분한 내가 적어 둘 한 줄은?",
+  "prompt.31": "내일 절대 잊으면 안 되는 한 가지는?",
+  "prompt.32": "오늘을 특별하게 만든 건 무엇인가요?",
+  "prompt.33": "요즘 더 필요한 것은 무엇인가요?",
+  "prompt.34": "지금 감사한 것이 있나요?",
+  "prompt.35": "작지만 지나치기 아까운 아이디어는?",
+  "prompt.36": "나중에 필요할 비밀번호 힌트는?",
+  "prompt.37": "시작했지만 끝내지 못한 일은?",
+  "prompt.38": "1년 전의 나에게 해 주고 싶은 말은?",
+  "prompt.39": "오늘 흥미롭게 들린 것이 있나요?",
+  "prompt.40": "어디까지 했었나요?",
+  "prompt.41": "다음에 해 보고 싶은 것은?",
+  "prompt.42": "다시 가고 싶은 곳이 있나요?",
+  "prompt.43": "너무 오래 할 일 목록에 있던 일은?",
+  "prompt.44": "누군가의 하루를 밝혀 줄 일은?",
+  "prompt.45": "이번 주에 스스로 자랑스러운 일은?",
+  "prompt.46": "오늘이 가르쳐 준 것은?",
+  "prompt.47": "조용히 중요한 일은 무엇인가요?",
+  "cap.k0": "지금 떠오른 생각",
+  "cap.k1": "오늘의 질문",
+  "cap.k2": "잠깐 멈춤",
+  "cap.k3": "잊기 전에",
+  "cap.k4": "나에게 묻기",
+  "cap.k5": "적어 두기",
+  "wx.show": "우리 동네 날씨 보기",
+  "wx.refresh": "날씨 새로고침",
+  "wx.denied": "이 사이트의 위치 권한이 꺼져 있어 날씨를 보여 줄 수 없어요.",
+  "wx.fail": "지금은 날씨를 가져오지 못했어요.",
+  "wx.clear": "맑음",
+  "wx.partly": "구름 조금",
+  "wx.cloudy": "흐림",
+  "wx.fog": "안개",
+  "wx.drizzle": "이슬비",
+  "wx.rain": "비",
+  "wx.snow": "눈",
+  "wx.thunder": "뇌우",
+  "wd.clear": "{tw} 맑은 날",
+  "wd.partly": "구름 조금 낀 {tw} 날",
+  "wd.cloudy": "흐리고 {tw} 날",
+  "wd.fog": "안개 낀 {tw} 날",
+  "wd.drizzle": "이슬비 내리는 {tw} 날",
+  "wd.rain": "비 내리는 {tw} 날",
+  "wd.snow": "눈 내리는 {tw} 날",
+  "wd.thunder": "천둥 치는 {tw} 날",
+  "tw.freezing": "꽁꽁 언",
+  "tw.cold": "추운",
+  "tw.cool": "선선한",
+  "tw.mild": "포근한",
+  "tw.warm": "따뜻한",
+  "tw.hot": "무더운",
+  "au.sunset": "노을",
+  "au.ocean": "바다",
+  "au.forest": "숲",
+  "au.dusk": "해질녘",
+  "au.rose": "장미",
+  "au.storm": "비",
+  "au.snow": "눈",
+  "au.night": "밤",
+  "set.aurora": "카드 색상",
+  "set.auroraSub": "자동은 날씨에 맞추거나 무작위로 골라요. 카드의 ↻ 버튼으로 바꿀 수 있어요.",
+  "set.auroraAuto": "자동",
+  "set.weather": "오늘 화면 날씨",
+  "set.weatherSub": "대략적인 위치로 한 시간에 한 번 Open-Meteo에서 날씨를 가져와요. 서버에 위치를 저장하지 않아요.",
+  "cal.free": "일정 없음",
+  "today.summary": "요약",
+  "faq.q16": "날씨 정보는 어디서 오나요?",
+  "faq.a16": "무료 날씨 서비스 Open-Meteo에서 가져와요. 허용하면 약 1km 단위로 반올림한 대략적 위치가 기기에서 직접, 한 시간에 최대 한 번 전송돼요. Kept는 위치를 저장하지 않으며 설정 → 화면에서 끌 수 있어요.",
   "prop.due": "마감일",
   "prop.date": "날짜",
   "prop.time": "시간",
@@ -1544,8 +1893,6 @@ ko: {
   'cap.label': '빠른 기록', 'cap.kicker': '지금 떠오른 생각', 'cap.another': '다른 질문', 'cap.saved': '{type} 저장됨',
   'cap.ph.note': '어떤 생각이 드나요?', 'cap.ph.idea': '날아가기 전에 아이디어를 적어 두세요…', 'cap.ph.todo': '해야 할 일이 뭔가요?', 'cap.ph.event': '이날 어떤 일이 있나요?',
   'cap.ph.item': '여권: 책상 오른쪽 서랍', 'cap.ph.contact': '이름, 전화번호, 이메일…',
-  'prompt.0': '지금 머릿속에 무엇이 있나요?', 'prompt.1': '그거, 어디에 두었나요?', 'prompt.2': '미래의 나에게 꼭 남길 말은?', 'prompt.3': '누군가와 약속한 게 있나요?',
-  'prompt.4': '자꾸 떠오르는 아이디어가 있나요?', 'prompt.5': '오늘 가장 솔직했던 순간은?', 'prompt.6': '내일을 조금 더 편하게 만들려면?', 'prompt.7': '다시 연락해야 할 사람이 있나요?',
   'recent.sub': '최근 14일 동안 수정한 기록', 'list.more': '더 보기 ({n}개 남음)',
   'empty.title': '아직 기록이 없어요', 'empty.sub': '한 줄부터 시작하세요. 정리는 나중에 해도 돼요.', 'empty.favTitle': '즐겨찾기가 없어요', 'empty.favSub': '기록의 하트를 누르면 여기에 모여요.',
   'bulk.select': '선택', 'bulk.selected.other': '{n}개 선택됨', 'bulk.all': '모두 선택', 'bulk.move': '이동', 'bulk.tag': '태그', 'bulk.type': '유형', 'bulk.fav': '즐겨찾기',
@@ -1643,7 +1990,7 @@ ko: {
   'sup.footer': '후원 여부와 관계없이 모든 기능은 누구에게나 무료예요.',
   'legal.privacy': '개인정보 처리방침', 'legal.terms': '이용약관', 'legal.template': '템플릿 — 출시 전 운영자가 검토하고 완성해야 합니다.', 'legal.operatorPh': '[운영자 이름]', 'legal.contactPh': '[개인정보 문의 이메일]',
   'legal.p1': '운영자', 'legal.p1Body': 'Kept는 {op}이(가) 운영합니다. 개인정보 관련 문의와 요청은 {contact}로 보내 주세요.',
-  'legal.p2': '저장하는 정보', 'legal.p2Body': '이메일 주소, 비밀번호 해시(인증 서비스에서 처리), 사용자가 만든 기록·카테고리·설정, 그리고 후원 시 결제 서비스가 전달하는 금액·일시·상태. 이미지는 저장하지 않으며, 위치·기기 연락처나 작성 내용에 대한 분석 정보는 수집하지 않습니다.',
+  'legal.p2': '저장하는 정보', 'legal.p2Body': '이메일 주소, 비밀번호 해시(인증 서비스에서 처리), 사용자가 만든 기록·카테고리·설정, 그리고 후원 시 결제 서비스가 전달하는 금액·일시·상태. 이미지는 저장하지 않으며(선택적인 작은 프로필 사진 제외), 위치·기기 연락처나 작성 내용에 대한 분석 정보는 수집하지 않습니다. 날씨 기능을 켜면 기기가 대략적인 위치를 Open-Meteo로 직접 보내며, Kept는 이를 받거나 저장하지 않습니다.',
   'legal.p3': '이용 목적', 'legal.p3Body': '기록 저장·동기화, 로그인, 계정 관련 이메일 발송 등 Kept 운영에만 사용합니다. 기록은 광고, 판매, 데이터 브로커 제공, AI 학습에 절대 사용하지 않습니다.',
   'legal.p4': '보관 위치', 'legal.p4Body': '기록은 데이터베이스 제공업체(Supabase)에 저장되며, 행 단위 보안(RLS)으로 본인 계정만 읽을 수 있습니다. 전송 구간(HTTPS)과 저장 시 제공업체에 의해 암호화됩니다.',
   'legal.p5': '이용자의 권리', 'legal.p5Body': '설정에서 언제든 전체 기록 내보내기(JSON/CSV), 개별 삭제, 휴지통 비우기, 모든 기록 삭제, 계정 삭제를 할 수 있습니다.',
@@ -1667,7 +2014,7 @@ ko: {
    ===================================================================== */
 const CFG = Object.assign({ SUPABASE_URL:'', SUPABASE_ANON_KEY:'', DONATE:{}, PRIVACY_CONTACT:'', OPERATOR:'' }, window.KEPT_CONFIG || {});
 const LIMITS = { entries: 20000, entryChars: 200000, categories: 200, tagsPerEntry: 30, tagLen: 40 };
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 
 /* ---------- small utils ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -2500,7 +2847,7 @@ const Editor = {
     root.innerHTML = `
       <div class="scrim show" data-ed="close"></div>
       <section class="ed-panel" role="dialog" aria-modal="true" aria-label="${esc(t('ed.label'))}">
-        <div class="ed-grab" aria-hidden="true"><span></span></div>
+        <span class="au-l" aria-hidden="true"></span><div class="ed-grab" aria-hidden="true"><span></span></div>
         <div class="ed-top">
           <button class="icon-btn ed-x" data-ed="close" data-i18n-title="common.close">${icon('x')}</button>
           <span class="ed-kicker" data-i18n="cap.kicker"></span>
@@ -2648,7 +2995,8 @@ const Editor = {
   renderSkin() {
     const cap = this.skin === 'capture'; const e = this.e;
     $('.ed-done .lbl', this.el.root).textContent = cap ? t('common.save') : t('common.done');
-    const pr = $('#edPrompt'); pr.textContent = cap ? t('prompt.' + ((Math.floor(Date.now() / 864e5) + (V.promptShift || 0)) % PROMPTS)) : '';
+    const pr = $('#edPrompt'); pr.textContent = cap ? Prompts.current() : '';
+    if (cap) this.el.panelEl.dataset.au = Aurora.name(); else delete this.el.panelEl.dataset.au;
     const types = ['note', 'idea', 'todo', 'event', 'item', 'contact'];
     $('#edTypeSel').innerHTML = cap ? types.map(ty => `<button data-t="${ty}" role="radio" aria-checked="${ty === e.type}" class="${ty === e.type ? 'on' : ''}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('') : '';
     const structured = ['todo', 'event', 'item', 'contact'].includes(e.type);
@@ -3192,6 +3540,118 @@ const Editor = {
 Editor.commit = debounce(() => Editor.doCommit(), 450);
 Editor.histLater = debounce(() => Editor.histNow(), 600);
 
+/* ---- extras.js ---- */
+/* =====================================================================
+   EXTRAS — weather (Open-Meteo, no key, cached), aurora palettes,
+   rotating prompts. Everything here is client-side; the only network
+   call is one tiny weather request per hour, and only after the user
+   allows location.
+   ===================================================================== */
+
+/* ---------- Aurora palettes (pure CSS animation, zero traffic) ---------- */
+const AURORAS = ['sunset', 'ocean', 'forest', 'dusk', 'rose', 'storm', 'snow', 'night'];
+const Aurora = {
+  current: null,
+  pick() {
+    const pref = S.prefs.aurora || 'auto';
+    if (pref !== 'auto' && AURORAS.includes(pref)) return pref;
+    const w = Weather.data && Weather.fresh(6 * 3600e3) ? Weather.data : null;
+    if (w) return Weather.palette(w);
+    if (!this.current) this.current = ['sunset', 'ocean', 'forest', 'dusk', 'rose'][Math.floor(Math.random() * 5)];
+    return this.current;
+  },
+  next() { // the refresh button on the card
+    const order = AURORAS; const cur = this.pick(); this.current = order[(order.indexOf(cur) + 1) % order.length];
+    if ((S.prefs.aurora || 'auto') !== 'auto') savePrefs({ aurora: this.current });
+    else this.override = this.current;
+    return this.current;
+  },
+  name() { return this.override || this.pick(); },
+  attr() { return `data-au="${this.name()}"`; },
+  layers: '<span class="au-l" aria-hidden="true"></span>'
+};
+/* pause the drift while a card is off-screen (no wasted frames) */
+const auObserver = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('au-paused', !e.isIntersecting))) : null;
+function watchAuroras(root = document) { if (auObserver) $$('.aurora', root).forEach(n => auObserver.observe(n)); }
+
+/* ---------- Questions: rotate quietly while the card is visible ---------- */
+const PROMPT_COUNT = 48;
+const Prompts = {
+  order: null, i: 0, timer: null,
+  shuffle() { const a = [...Array(PROMPT_COUNT).keys()]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } this.order = a; this.i = 0; },
+  current() { if (!this.order) this.shuffle(); return t('prompt.' + this.order[this.i % PROMPT_COUNT]); },
+  kicker() { return t('cap.k' + (this.order ? this.order[this.i % PROMPT_COUNT] % 6 : 0)); },
+  advance() { if (!this.order) this.shuffle(); this.i++; if (this.i >= PROMPT_COUNT) this.shuffle(); },
+  start() {
+    this.stop();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    this.timer = setInterval(() => {
+      const h = $('.capture .cap-q'); if (!h || document.hidden || Editor.e) return;
+      if (h.closest('.capture')?.matches(':hover')) return;
+      this.advance(); Prompts.swap();
+    }, 9000);
+  },
+  swap() {
+    const h = $('.capture .cap-q'), k = $('.capture .cap-k'); if (!h) return;
+    h.classList.add('out'); k?.classList.add('out');
+    setTimeout(() => { h.textContent = this.current(); if (k) k.textContent = this.kicker(); h.classList.remove('out'); k?.classList.remove('out'); }, 380);
+  },
+  stop() { clearInterval(this.timer); this.timer = null; }
+};
+
+/* ---------- Weather ---------- */
+const WMO = c => c === 0 ? 'clear' : c <= 2 ? 'partly' : c === 3 ? 'cloudy' : c <= 48 ? 'fog' : c <= 57 ? 'drizzle' : c <= 67 ? 'rain' : c <= 77 ? 'snow' : c <= 82 ? 'rain' : c <= 86 ? 'snow' : 'thunder';
+const Weather = {
+  data: ls.get('kept.weather', null),
+  busy: false,
+  fresh(ms = 50 * 60e3) { return this.data && Date.now() - this.data.at < ms; },
+  kind(w = this.data) { return w ? WMO(w.code) : null; },
+  icon(w = this.data) {
+    const k = this.kind(w), day = w?.isDay !== 0;
+    return { clear: day ? 'sun' : 'moon', partly: day ? 'cloud-sun' : 'cloud-moon', cloudy: 'cloud', fog: 'cloud-fog', drizzle: 'cloud-drizzle', rain: 'cloud-rain', snow: 'cloud-snow', thunder: 'cloud-lightning' }[k] || 'cloud';
+  },
+  palette(w) {
+    const k = this.kind(w), day = w.isDay !== 0;
+    if (!day && (k === 'clear' || k === 'partly')) return 'night';
+    return { clear: new Date().getHours() >= 16 ? 'sunset' : 'rose', partly: 'ocean', cloudy: 'dusk', fog: 'dusk', drizzle: 'storm', rain: 'storm', snow: 'snow', thunder: 'night' }[k] || 'ocean';
+  },
+  tempWord(tC) { return t(tC < 0 ? 'tw.freezing' : tC < 8 ? 'tw.cold' : tC < 16 ? 'tw.cool' : tC < 24 ? 'tw.mild' : tC < 29 ? 'tw.warm' : 'tw.hot'); },
+  enabled() { return S.prefs.weather !== false; },
+  async permission() { try { const p = await navigator.permissions?.query({ name: 'geolocation' }); return p ? p.state : (ls.get('kept.geoOk') ? 'granted' : 'prompt'); } catch { return ls.get('kept.geoOk') ? 'granted' : 'prompt'; } },
+  /* auto-refresh only when location is already allowed — never prompts on its own */
+  async auto() {
+    if (!this.enabled() || !('geolocation' in navigator)) return;
+    if (this.fresh()) return;
+    if (await this.permission() === 'granted') this.load().catch(() => {});
+  },
+  position() { return new Promise((res, rej) => navigator.geolocation.getCurrentPosition(p => res(p.coords), rej, { enableHighAccuracy: false, timeout: 10000, maximumAge: 30 * 60e3 })); },
+  async load() {
+    if (this.busy) return; this.busy = true; emit('weather');
+    try {
+      const c = await this.position(); ls.set('kept.geoOk', 1);
+      const lat = c.latitude.toFixed(2), lon = c.longitude.toFixed(2); // ~1 km precision is plenty for weather
+      const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1`);
+      if (!r.ok) throw new Error('weather ' + r.status);
+      const j = await r.json();
+      this.data = { at: Date.now(), temp: Math.round(j.current.temperature_2m), code: j.current.weather_code, isDay: j.current.is_day, max: Math.round(j.daily.temperature_2m_max[0]), min: Math.round(j.daily.temperature_2m_min[0]) };
+      ls.set('kept.weather', this.data);
+    } catch (e) {
+      if (e && e.code === 1) { ls.del('kept.geoOk'); toast(t('wx.denied'), { error: true }); }
+      else if (e && e.code) toast(t('wx.fail'), { error: true });
+      else console.warn(e);
+    } finally { this.busy = false; emit('weather'); }
+  },
+  html() {
+    if (!this.enabled()) return '';
+    const w = this.data;
+    if (!w) return `<button class="wx wx-ask" data-act="wxLoad">${icon(this.busy ? 'loader' : 'locate')}<span>${esc(this.busy ? t('common.loading') : t('wx.show'))}</span></button>`;
+    const k = this.kind(w); const label = t('wx.' + k);
+    if (!V.wxStyle) V.wxStyle = Math.random() < .5 ? 'icon' : 'text';
+    if (V.wxStyle === 'icon') return `<button class="wx wx-icon" data-act="wxStyle" title="${esc(label)}">${icon(this.icon(w))}<b>${w.temp}°</b><span>${esc(label)}<small>↑${w.max}° ↓${w.min}°</small></span></button>`;
+    return `<button class="wx wx-text" data-act="wxStyle">${esc(t('wd.' + k, { tw: this.tempWord(w.temp) }))} <b>${w.temp}°</b></button>`;
+  }
+};
+
 /* ---- ui.js ---- */
 /* =====================================================================
    UI — shell, router, views
@@ -3323,6 +3783,11 @@ function dayAgenda(k) {
   const td = live().filter(e => e.type === 'todo' && e.meta.due === k).sort((a, b) => (a.meta.done - b.meta.done) || (a.meta.due_time || '99').localeCompare(b.meta.due_time || '99'));
   return { ev, td };
 }
+function dayItems(dk) { return live().filter(e => (e.type === 'event' && e.meta.date === dk) || (e.type === 'todo' && e.meta.due === dk)); }
+function dayDots(dk, max = 3) {
+  const l = dayItems(dk); if (!l.length) return '<span class="dots"></span>';
+  return `<span class="dots">${l.slice(0, max).map(e => `<i class="${e.type === 'todo' ? (e.meta.done ? 'td done' : 'td') : 'ev'}" style="${catOf(e.category_id) ? `--dc:${esc(catOf(e.category_id).color)}` : ''}"></i>`).join('')}</span>`;
+}
 function viewToday() {
   const now = new Date(), k = todayKey(); const h = now.getHours();
   const greet = t(h < 5 ? 'today.night' : h < 12 ? 'today.morning' : h < 18 ? 'today.afternoon' : 'today.evening');
@@ -3362,21 +3827,21 @@ function viewToday() {
   return `<div class="wrap view-enter">
     ${installBanner()}
     <section class="today-hero">
-      <div class="day-big">${esc(fmtDate(now, { weekday: 'short' }).replace('.', ''))}<i></i></div>
+      <div class="hero-l"><div class="day-big">${esc(fmtDate(now, { weekday: 'long' }))}<i></i></div><div class="wx-slot">${Weather.html()}</div></div>
       <div class="date-stack">${esc(fmtDate(now, { month: 'long', day: 'numeric' }))}<br>${esc(String(now.getFullYear()))}</div>
     </section>
     <p class="statement">${esc(greet)}${name ? `, ${avatarHTML('face')}<b>${esc(name)}</b>${esc(t('today.nameSuffix'))}.` : '.'} ${sentence}</p>
-    <div class="metrics">
-      <span style="color:var(--accent)">${icon('flame')}<span style="color:var(--text)">${esc(tn('today.streak', streak()))}</span></span>
-      <span>${icon('file-text')}${esc(tn('today.records', total))}</span>
-      <span style="color:var(--ok)">${icon('check-check')}<span style="color:var(--text)">${esc(tn('today.doneWeek', weekDone))}</span></span>
-      <span style="color:var(--c-blue)">${icon('map-pin')}<span style="color:var(--text)">${esc(tn('today.places', places))}</span></span>
-    </div>
+    <nav class="metrics" aria-label="${esc(t('today.summary'))}">
+      <a href="#/recent" class="mt" style="--mc:var(--accent)">${icon('flame')}<span>${esc(tn('today.streak', streak()))}</span>${icon('chevron-right', 'go')}</a>
+      <a href="#/all" class="mt" style="--mc:var(--text)">${icon('file-text')}<span>${esc(tn('today.records', total))}</span>${icon('chevron-right', 'go')}</a>
+      <a href="#/tasks" data-act="tasksDone" class="mt" style="--mc:var(--ok)">${icon('check-check')}<span>${esc(tn('today.doneWeek', weekDone))}</span>${icon('chevron-right', 'go')}</a>
+      <a href="#/items" class="mt" style="--mc:var(--c-blue)">${icon('map-pin')}<span>${esc(tn('today.places', places))}</span>${icon('chevron-right', 'go')}</a>
+    </nav>
     <div class="today-grid">
       <div class="col">
-        <section class="aurora capture" aria-label="${esc(t('cap.label'))}">
-          <div class="kicker"><span>${esc(t('cap.kicker'))}</span><button class="chip-t" data-act="promptNext" aria-label="${esc(t('cap.another'))}">${icon('refresh-cw')}</button></div>
-          <h2>${esc(prompt)}</h2>
+        <section class="aurora capture" ${Aurora.attr()} aria-label="${esc(t('cap.label'))}">${Aurora.layers}
+          <div class="kicker"><span class="cap-k">${esc(Prompts.kicker())}</span><button class="chip-t" data-act="promptNext" aria-label="${esc(t('cap.another'))}">${icon('refresh-cw')}</button></div>
+          <h2 class="cap-q" aria-live="polite">${esc(Prompts.current())}</h2>
           <button class="cap-fake" data-act="composer" data-t="${V.capType}"><span>${esc(t('cap.ph.' + V.capType))}</span><span class="send">${icon('arrow-up')}</span></button>
           <div class="cap-row">${capTypes.map(ty => `<button class="chip-t" data-act="composer" data-t="${ty}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('')}</div>
         </section>
@@ -3391,10 +3856,10 @@ function viewToday() {
       </div>
       <div class="col">
         <section class="week-card">
-          <div class="week-top"><div class="lbl">${esc(fmtDate(selD, { weekday: 'long' }))} <span>· ${esc(fmtDate(selD, { month: 'short', day: 'numeric' }))}</span></div>
-            <a class="pill-btn" href="#/calendar">${icon('calendar-days')}<span>${esc(t('nav.calendar'))}</span></a></div>
-          <div class="week"><button class="nav" data-act="wk" data-d="-7" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button>
-            ${days.map(d => { const dk = dayKey(d); return `<button class="wd ${dk === V.selDay ? 'sel' : ''}" data-act="pickDay" data-d="${dk}"><span class="w">${esc(fmtDate(d, { weekday: 'narrow' }))}</span><span class="n ${dk === k ? 'ring' : ''}">${d.getDate()}</span>${busy.has(dk) ? '<span class="dt"></span>' : ''}</button>`; }).join('')}
+          <div class="week-top"><button class="lbl" data-act="weekToday">${esc(fmtDate(selD, { weekday: 'long' }))} <span>· ${esc(fmtDate(selD, { month: 'short', day: 'numeric' }))}</span></button>
+            <span style="display:flex;gap:6px">${V.selDay !== k || dayKey(V.weekAnchor) !== dayKey(startOfWeek(now, S.prefs.weekStart)) ? `<button class="pill-btn today-pill" data-act="weekToday">${icon('rotate-ccw')}<span>${esc(t('date.today'))}</span></button>` : ''}<a class="pill-btn" href="#/calendar">${icon('calendar-days')}<span>${esc(t('nav.calendar'))}</span></a></span></div>
+          <div class="week" id="weekStrip"><button class="nav" data-act="wk" data-d="-7" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button>
+            <div class="wk-track">${days.map(d => { const dk = dayKey(d); return `<button class="wd ${dk === V.selDay ? 'sel' : ''} ${dk === k ? 'is-today' : ''} ${d.getDay() === 0 ? 'sun' : ''}" data-act="pickDay" data-d="${dk}"><span class="w">${esc(fmtDate(d, { weekday: 'narrow' }))}</span><span class="n">${d.getDate()}</span>${dayDots(dk)}</button>`; }).join('')}</div>
             <button class="nav" data-act="wk" data-d="7" aria-label="${esc(t('common.next'))}">${icon('chevron-right')}</button></div>
         </section>
         <section class="sheet" aria-label="${esc(t('today.agenda'))}">
@@ -3506,7 +3971,10 @@ function viewCalendar() {
   const evs = live().filter(e => (e.type === 'event' && e.meta.date) || (e.type === 'todo' && e.meta.due));
   const byDay = new Map(); evs.forEach(e => { const d = e.type === 'event' ? e.meta.date : e.meta.due; if (!byDay.has(d)) byDay.set(d, []); byDay.get(d).push(e); });
   byDay.forEach(l => l.sort((x, y) => (x.type === 'todo') - (y.type === 'todo') || (x.meta.time || x.meta.due_time || '').localeCompare(y.meta.time || y.meta.due_time || '')));
-  const pill = e => e.type === 'event' ? `<div class="ev">${e.meta.time ? `<span class="t">${esc(fmtTime(e.meta.time))}</span>` : ''}${esc(entryDisplayTitle(e))}</div>` : `<div class="ev task ${e.meta.done ? 'done' : ''}">☐ ${esc(entryDisplayTitle(e))}</div>`;
+  const col = e => catOf(e.category_id)?.color;
+  const pill = e => e.type === 'event'
+    ? `<div class="ev" style="${col(e) ? `--evc:${esc(col(e))}` : ''}">${e.meta.time ? `<span class="t">${esc(fmtTime(e.meta.time))}</span>` : ''}<span class="x">${esc(entryDisplayTitle(e))}</span></div>`
+    : `<div class="ev task ${e.meta.done ? 'done' : ''}" style="${col(e) ? `--evc:${esc(col(e))}` : ''}"><span class="x">${esc(entryDisplayTitle(e))}</span></div>`;
   const heads = [...Array(7)].map((_, i) => fmtDate(addDays(startOfWeek(new Date(2024, 0, 10), ws), i), { weekday: 'short' }));
   let grid, title, calSub = '';
   if (c.mode === 'month') {
@@ -3514,22 +3982,22 @@ function viewCalendar() {
     title = fmtDate(first, { month: 'long', year: 'numeric' });
     const cells = [...Array(42)].map((_, i) => addDays(start, i));
     const trimmed = cells[35].getMonth() !== a.getMonth() ? cells.slice(0, 35) : cells;
-    grid = `<div class="cal-head">${heads.map(h => `<span>${esc(h)}</span>`).join('')}</div><div class="cal-grid">${trimmed.map(d => { const dk = dayKey(d); const l = byDay.get(dk) || [];
-      return `<div class="cd ${d.getMonth() !== a.getMonth() ? 'out' : ''} ${dk === k ? 'today' : ''} ${dk === c.sel ? 'sel' : ''}" data-act="calDay" data-d="${dk}" tabindex="0"><span class="dn">${d.getDate()}</span>${l.slice(0, 3).map(pill).join('')}${l.length > 3 ? `<span class="ev-more">+${l.length - 3}</span>` : ''}</div>`; }).join('')}</div>`;
+    grid = `<div class="cal-head">${heads.map((h, i) => `<span class="${(ws + i) % 7 === 0 ? 'sun' : (ws + i) % 7 === 6 ? 'sat' : ''}">${esc(h)}</span>`).join('')}</div><div class="cal-grid">${trimmed.map(d => { const dk = dayKey(d); const l = byDay.get(dk) || [];
+      return `<div class="cd ${d.getMonth() !== a.getMonth() ? 'out' : ''} ${dk === k ? 'today' : ''} ${dk === c.sel ? 'sel' : ''} ${d.getDay() === 0 ? 'sun' : ''} ${l.length ? 'has' : ''}" data-act="calDay" data-d="${dk}" tabindex="0"><span class="dn">${d.getDate()}</span><div class="evs">${l.slice(0, 3).map(pill).join('')}${l.length > 3 ? `<span class="ev-more">+${l.length - 3}</span>` : ''}</div>${dayDots(dk)}</div>`; }).join('')}</div>`;
   } else {
     const start = startOfWeek(a, ws); const end = addDays(start, 6);
     title = `${fmtDate(start, { month: 'short', day: 'numeric' })} – ${fmtDate(end, start.getMonth() === end.getMonth() ? { day: 'numeric' } : { month: 'short', day: 'numeric' })}`;
     calSub = fmtDate(end, { year: 'numeric' });
     grid = `<div class="week-cols">${[...Array(7)].map((_, i) => { const d = addDays(start, i), dk = dayKey(d); const l = byDay.get(dk) || [];
-      return `<div class="wcol ${dk === k ? 'today' : ''} ${dk === c.sel ? 'sel' : ''}" data-act="calDay" data-d="${dk}"><div class="wh"><span>${esc(fmtDate(d, { weekday: 'short' }))}</span><b>${d.getDate()}</b></div>${l.map(pill).join('')}</div>`; }).join('')}</div>`;
+      return `<div class="wcol ${dk === k ? 'today' : ''} ${dk === c.sel ? 'sel' : ''} ${l.length ? '' : 'empty'}" data-act="calDay" data-d="${dk}"><div class="wh"><b>${d.getDate()}</b><span>${esc(fmtDate(d, { weekday: 'short' }))}</span></div><div class="evs">${l.length ? l.map(pill).join('') : `<span class="none">${esc(t('cal.free'))}</span>`}</div></div>`; }).join('')}</div>`;
   }
   const ag = dayAgenda(c.sel);
   const selD = parseDay(c.sel);
-  const rows = ag.ev.map(e => `<div class="ag-row" data-act="open" data-id="${e.id}"><span class="ai" style="color:${e.meta.time ? 'var(--sheet-2)' : 'var(--dot)'}">${icon(e.meta.time ? 'calendar' : 'sparkle')}</span><span class="at">${esc(entryDisplayTitle(e))}</span><span class="tm">${esc(e.meta.time ? fmtTime(e.meta.time) + (e.meta.end_time ? '–' + fmtTime(e.meta.end_time) : '') : t('cal.allDay'))}</span></div>`)
-    .concat(ag.td.map(e => `<div class="ag-row ${e.meta.done ? 'done' : ''}" data-act="open" data-id="${e.id}"><span class="ai"><button class="ag-chk ${e.meta.done ? 'on' : ''}" data-act="toggleDone" data-id="${e.id}" aria-label="${esc(t('task.toggle'))}">${icon('check')}</button></span><span class="at">${esc(entryDisplayTitle(e))}</span><span class="tm">${esc(e.meta.due_time ? fmtTime(e.meta.due_time) : '')}</span></div>`));
+  const rows = ag.ev.map(e => `<div class="ag-row ag-ev" data-act="open" data-id="${e.id}" style="${catOf(e.category_id) ? `--evc:${esc(catOf(e.category_id).color)}` : ''}"><span class="ag-time">${e.meta.time ? `<b>${esc(fmtTime(e.meta.time))}</b>${e.meta.end_time ? `<small>${esc(fmtTime(e.meta.end_time))}</small>` : ''}` : `<b>${esc(t('cal.allDay'))}</b>`}</span><span class="ag-bar"></span><span class="at">${esc(entryDisplayTitle(e))}</span></div>`)
+    .concat(ag.td.map(e => `<div class="ag-row ag-td ${e.meta.done ? 'done' : ''}" data-act="open" data-id="${e.id}"><span class="ag-time"><b>${esc(e.meta.due_time ? fmtTime(e.meta.due_time) : t('type.todo'))}</b></span><button class="ag-chk ${e.meta.done ? 'on' : ''}" data-act="toggleDone" data-id="${e.id}" aria-label="${esc(t('task.toggle'))}">${icon('check')}</button><span class="at">${esc(entryDisplayTitle(e))}</span></div>`));
   return `<div class="wrap view-enter">${header(`<span class="nowrap">${esc(title)}</span>`, esc(calSub), `<div class="ph-actions"><div class="seg">${['month', 'week'].map(m => `<button class="${c.mode === m ? 'on' : ''}" data-act="calMode" data-v="${m}">${esc(t('cal.' + m))}</button>`).join('')}</div>
       <button class="btn sm" data-act="calNav" data-d="0">${esc(t('date.today'))}</button><button class="icon-btn" data-act="calNav" data-d="-1" aria-label="${esc(t('common.prev'))}">${icon('chevron-left')}</button><button class="icon-btn" data-act="calNav" data-d="1" aria-label="${esc(t('common.next'))}">${icon('chevron-right')}</button></div>`)}
-    <div class="cal-wrap"><div class="cal">${grid}</div>
+    <div class="cal-wrap"><div class="cal ${c.mode}" id="calGrid">${grid}</div>
       <aside class="sheet"><div class="sh-head"><span>${esc(fmtDate(selD, { weekday: 'long', month: 'long', day: 'numeric' }))}</span></div>
         ${rows.length ? rows.join('') : `<div class="ag-empty"><span>${esc(t('today.agendaEmpty'))}</span></div>`}
         <div style="display:flex;gap:6px;padding:10px 0 12px"><button class="btn sm" data-act="new" data-type="event" data-date="${c.sel}">${icon('plus')}${esc(t('cal.addEvent'))}</button><button class="btn sm" data-act="new" data-type="todo" data-date="${c.sel}">${icon('plus')}${esc(t('cal.addTask'))}</button></div>
@@ -3610,6 +4078,8 @@ function viewSettings() {
     rowH(esc(t('set.language')), '', `<div class="seg">${[['ko', '한국어'], ['en', 'English']].map(([v, l]) => `<button class="${LANG === v ? 'on' : ''}" data-act="setLang" data-v="${v}">${l}</button>`).join('')}</div>`) +
     rowH(esc(t('set.theme')), '', `<div class="seg">${[['system', 'monitor'], ['light', 'sun'], ['dark', 'moon']].map(([v, ic]) => `<button class="${p.theme === v ? 'on' : ''}" data-act="setTheme" data-v="${v}">${icon(ic)}${esc(t('theme.' + v))}</button>`).join('')}</div>`) +
     rowH(esc(t('set.accent')), esc(t('set.accentSub')), `<div class="swatches">${ACCENTS.map(c => `<button class="swatch ${p.accent === c ? 'on' : ''}" style="--s:${c}" data-act="setAccent" data-v="${c}" aria-label="${c}"></button>`).join('')}<label class="swatch" style="--s:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);position:relative;overflow:hidden" title="${esc(t('set.custom'))}"><input type="color" data-chg="accent" value="${esc(p.accent)}" style="opacity:0;position:absolute;inset:0;cursor:pointer"></label></div>`) +
+    rowH(esc(t('set.aurora')), esc(t('set.auroraSub')), `<div class="au-picks"><button class="au-pick auto ${(p.aurora || 'auto') === 'auto' ? 'on' : ''}" data-act="setAurora" data-v="auto">${esc(t('set.auroraAuto'))}</button>${AURORAS.map(a => `<button class="au-pick aurora ${p.aurora === a ? 'on' : ''}" data-au="${a}" data-act="setAurora" data-v="${a}" title="${esc(t('au.' + a))}" aria-label="${esc(t('au.' + a))}"></button>`).join('')}</div>`) +
+    rowH(esc(t('set.weather')), esc(t('set.weatherSub')), `<button class="toggle ${Weather.enabled() ? 'on' : ''}" data-act="wxToggle" aria-pressed="${Weather.enabled()}" aria-label="${esc(t('set.weather'))}"></button>${Weather.enabled() ? `<button class="btn sm" data-act="wxLoad">${icon('locate')}${esc(t('wx.refresh'))}</button>` : ''}`) +
     rowH(esc(t('set.spacing')), '', `<select class="select" data-chg="spacing">${['compact', 'normal', 'relaxed'].map(v => `<option value="${v}" ${p.spacing === v ? 'selected' : ''}>${esc(t('spacing.' + v))}</option>`).join('')}</select>`))}
   ${sec('records', 'layers', t('set.records'),
     rowH(esc(t('set.defType')), '', `<select class="select" data-chg="defaultType">${typeList().map(x => `<option value="${x.id}" ${p.defaultType === x.id ? 'selected' : ''}>${esc(x.label)}</option>`).join('')}</select>`) +
@@ -3654,16 +4124,17 @@ function installHint() {
 }
 
 /* ---------- Support (voluntary) ---------- */
+function curSym(cur) { try { return new Intl.NumberFormat(locale(), { style: 'currency', currency: cur }).formatToParts(1).find(p => p.type === 'currency').value; } catch { return '$'; } }
 function viewSupport() {
   const D = CFG.DONATE || {}; const link = V.don.mode === 'monthly' ? D.monthly : D.oneTime; const cur = D.currency || 'USD';
   const money = n => new Intl.NumberFormat(locale(), { style: 'currency', currency: cur, maximumFractionDigits: 0 }).format(n);
   return `<div class="wrap view-enter" style="max-width:900px">
-    <section class="aurora teal support-hero"><div class="cap" style="font-size:var(--t-sub);opacity:.8;margin-bottom:auto">${esc(t('sup.kicker'))}</div><h2>${esc(t('sup.title'))}</h2><p>${esc(t('sup.sub'))}</p></section>
+    <section class="aurora support-hero" ${Aurora.attr()}>${Aurora.layers}<div class="cap" style="font-size:var(--t-sub);opacity:.8;margin-bottom:auto">${esc(t('sup.kicker'))}</div><h2>${esc(t('sup.title'))}</h2><p>${esc(t('sup.sub'))}</p></section>
     <div class="uses">${[['database', 'sup.use1'], ['shield', 'sup.use2'], ['sparkle', 'sup.use3']].map(([ic, k]) => `<div>${icon(ic)}<b>${esc(t(k))}</b><small>${esc(t(k + 'Sub'))}</small></div>`).join('')}</div>
     <div class="panel" style="padding:20px">
       <div class="seg">${['once', 'monthly'].map(m => `<button class="${V.don.mode === m ? 'on' : ''}" data-act="donMode" data-v="${m}">${esc(t('sup.' + m))}</button>`).join('')}</div>
       <div class="amounts">${[1, 3, 5, 7].map(a => `<button class="amt ${!V.don.custom && V.don.amt === a ? 'on' : ''}" data-act="donAmt" data-v="${a}">${esc(money(a))}</button>`).join('')}
-        <label class="amt amt-custom ${V.don.custom ? 'on' : ''}"><span>${esc(t('sup.custom'))}</span><input type="number" inputmode="decimal" min="1" max="1000" step="1" data-chg="donCustom" id="donCustom" value="${V.don.custom ? esc(String(V.don.amt)) : ''}" placeholder="${esc(money(10))}" aria-label="${esc(t('sup.customAria'))}"></label></div>
+        <label class="amt amt-custom ${V.don.custom ? 'on' : ''}"><span>${esc(t('sup.custom'))}</span><em class="cur">${esc(curSym(cur))}</em><input type="number" inputmode="decimal" min="1" max="1000" step="1" data-chg="donCustom" id="donCustom" value="${V.don.custom ? esc(String(V.don.amt)) : ''}" placeholder="10" aria-label="${esc(t('sup.customAria'))}"></label></div>
       ${link ? `<button class="btn accent" style="height:50px;padding:0 26px" data-act="donGo">${icon('hand-heart')}${esc(t(V.don.mode === 'monthly' ? 'sup.goMonthly' : 'sup.goOnce', { amt: money(V.don.amt) }))}${icon('external-link')}</button>
         <p style="color:var(--text-2);font-size:var(--t-sub);margin:12px 0 0">${esc(t('sup.provider', { p: D.provider || t('sup.providerGeneric') }))}</p>`
       : `<div class="note warn">${icon('info')}<span>${esc(t('sup.notConnected'))}</span></div>`}
@@ -3685,7 +4156,7 @@ function viewAbout() {
   const op = CFG.OPERATOR || t('about.opPh'); const contact = CFG.PRIVACY_CONTACT || t('legal.contactPh');
   const card = (ic, k) => `<div class="ab-card">${icon(ic)}<b>${esc(t('about.' + k))}</b><p>${esc(t('about.' + k + 'Body'))}</p></div>`;
   return `<div class="wrap view-enter" style="max-width:960px">
-    <section class="aurora about-hero"><div class="ab-k">${esc(t('about.kicker'))}</div><h2>${esc(t('about.title'))}</h2><p>${esc(t('about.lead'))}</p></section>
+    <section class="aurora about-hero" ${Aurora.attr()}>${Aurora.layers}<div class="ab-k">${esc(t('about.kicker'))}</div><h2>${esc(t('about.title'))}</h2><p>${esc(t('about.lead'))}</p></section>
     <section class="ab-sec"><h3 class="ab-h">${esc(t('about.whatH'))}</h3><p class="ab-p">${esc(t('about.what'))}</p></section>
     <section class="ab-sec"><h3 class="ab-h">${esc(t('about.promiseH'))}</h3><div class="ab-grid">${card('hand-heart', 'p1')}${card('shield', 'p2')}${card('feather', 'p3')}${card('download', 'p4')}${card('zap', 'p5')}${card('globe', 'p6')}</div></section>
     <section class="ab-sec"><h3 class="ab-h">${esc(t('about.howH'))}</h3><p class="ab-p">${esc(t('about.how'))}</p>
@@ -3701,7 +4172,7 @@ function viewAbout() {
   </div>`;
 }
 /* ---------- FAQ ---------- */
-const FAQ_GROUPS = [['g1', [1, 2, 3, 4]], ['g2', [5, 6, 7, 8]], ['g3', [9, 10, 11, 12]], ['g4', [13, 14, 15]]];
+const FAQ_GROUPS = [['g1', [1, 2, 3, 4]], ['g2', [5, 6, 7, 8]], ['g3', [9, 10, 16, 11, 12]], ['g4', [13, 14, 15]]];
 function viewFaq() {
   const q = norm(V.faqQ || '');
   const groups = FAQ_GROUPS.map(([g, ids]) => [g, ids.filter(i => !q || norm(t('faq.q' + i) + ' ' + t('faq.a' + i)).includes(q))]).filter(([, ids]) => ids.length);
@@ -3827,6 +4298,8 @@ function renderView(keepScroll = true) {
   if (V.flash && Date.now() - V.flash.at < 4000) $$(`#view [data-act="open"][data-id="${V.flash.id}"]`).forEach(n => { n.classList.remove('just-saved'); void n.offsetWidth; n.classList.add('just-saved'); });
   const ld = $('#loadMore'); if (ld && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); V.listLimit += 60; renderView(); } }, { root: v, rootMargin: '400px' }); io.observe(ld); }
   if (r.name === 'support') loadDonations();
+  watchAuroras(v); if (r.name === 'today') Prompts.start(); else Prompts.stop();
+  if (V.slideIn) { const tr = $(V.slideIn.sel); if (tr) { tr.classList.add('slide-in-' + V.slideIn.dir); } V.slideIn = null; }
   if (r.name === 'settings' && location.hash.includes('#', 2)) { const id = location.hash.split('#')[2]; setTimeout(() => $('#set-' + id)?.scrollIntoView({ behavior: 'smooth' }), 50); }
   const ct = $('#capIn'); if (ct) { ct.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); quickCapture(); } }); ct.addEventListener('input', () => { ct.style.height = 'auto'; ct.style.height = Math.min(200, ct.scrollHeight) + 'px'; }); }
 }
@@ -3976,15 +4449,21 @@ const ACT = {
   bulkPurge: async () => { const ids = [...S.selected]; if (!await confirmDlg(t('trash.purgeTitle'), tn('trash.purgeBody', ids.length), t('trash.purge'), true)) return; await purgeEntries(ids); S.selecting = false; S.selected.clear(); render(); },
   restoreOne: async el => { await restoreEntries([el.dataset.id]); toast(t('trash.restored')); if (Editor.e?.id === el.dataset.id) Editor.open(el.dataset.id); },
   emptyTrash: async () => { const ids = [...S.entries.values()].filter(e => e.deleted_at).map(e => e.id); if (!ids.length) return; if (!await confirmDlg(t('trash.purgeTitle'), tn('trash.purgeBody', ids.length), t('trash.empty'), true)) return; await purgeEntries(ids); render(); toast(t('trash.emptied')); },
-  wk: el => { V.weekAnchor = addDays(V.weekAnchor, +el.dataset.d); renderView(); },
+  wk: el => { const d = +el.dataset.d; V.weekAnchor = addDays(V.weekAnchor, d); V.slideIn = { sel: '#weekStrip .wk-track', dir: d > 0 ? 'r' : 'l' }; renderView(); },
   pickDay: el => { V.selDay = el.dataset.d; renderView(); },
   capType: el => { V.capType = el.dataset.t; const ta = $('#capIn'); const val = ta?.value; renderView(); const n = $('#capIn'); if (n) { n.value = val || ''; n.focus(); } },
   capSend: () => quickCapture(),
-  promptNext: () => { V.promptShift = (V.promptShift || 0) + 1; const val = $('#capIn')?.value; renderView(); if ($('#capIn')) $('#capIn').value = val || ''; },
+  promptNext: el => { const card = el.closest('.aurora'); const au = Aurora.next(); card?.setAttribute('data-au', au); Prompts.advance(); Prompts.swap(); haptic(5); el.classList.remove('spin'); void el.offsetWidth; el.classList.add('spin'); },
+  wxLoad: () => { Weather.load(); },
+  wxStyle: () => { V.wxStyle = V.wxStyle === 'icon' ? 'text' : 'icon'; const sl = $('.wx-slot'); if (sl) sl.innerHTML = Weather.html(); haptic(5); },
+  wxToggle: () => { savePrefs({ weather: !Weather.enabled() }); renderView(); },
+  setAurora: el => { Aurora.override = null; Aurora.current = null; savePrefs({ aurora: el.dataset.v }); renderView(); },
+  weekToday: () => { V.weekAnchor = startOfWeek(new Date(), S.prefs.weekStart); V.selDay = todayKey(); haptic(5); renderView(); },
+  tasksDone: () => { V.taskFilter = 'done'; },
   stMore: (el, ev) => { ev.stopPropagation(); const e = S.entries.get(el.dataset.id); menu(el, [{ label: t('common.open'), icon: 'pencil', run: () => Editor.open(e.id) }, { label: t('ed.unpin'), icon: 'pin-off', run: async () => { e.pinned = false; await saveEntry(e); } }], { alignRight: true }); },
   taskFilter: el => { V.taskFilter = el.dataset.v; renderView(); },
   calMode: el => { V.cal.mode = el.dataset.v; renderView(); },
-  calNav: el => { const d = +el.dataset.d; const a = V.cal.anchor; if (!d) { V.cal.anchor = new Date(); V.cal.sel = todayKey(); } else if (V.cal.mode === 'month') V.cal.anchor = new Date(a.getFullYear(), a.getMonth() + d, 1); else V.cal.anchor = addDays(a, d * 7); renderView(); },
+  calNav: el => { const d = +el.dataset.d; if (d) V.slideIn = { sel: '#calGrid', dir: d > 0 ? 'r' : 'l' }; const a = V.cal.anchor; if (!d) { V.cal.anchor = new Date(); V.cal.sel = todayKey(); } else if (V.cal.mode === 'month') V.cal.anchor = new Date(a.getFullYear(), a.getMonth() + d, 1); else V.cal.anchor = addDays(a, d * 7); renderView(); },
   calDay: el => { if (V.cal.sel === el.dataset.d && matchMedia('(hover:hover)').matches) { Editor.open(null, { type: 'event', meta: { date: el.dataset.d, time: '' } }); return; } V.cal.sel = el.dataset.d; renderView(); if (matchMedia('(max-width:1100px)').matches) $('.cal-wrap aside')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); },
   sScope: el => { V.search.scope = el.dataset.v; renderView(); },
   clearFilters: () => { Object.assign(V.search, { scope: 'all', type: '', cat: '', tag: '', from: '', to: '' }); renderView(); },
@@ -4156,7 +4635,8 @@ function bindGlobal() {
     else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); ACT.new({ dataset: {} }); }
     else if (e.key === '?') { e.preventDefault(); showShortcuts(); }
   });
-  bindSwipe(); bindKeyboardChrome();
+  bindSwipe(); bindKeyboardChrome(); bindPager();
+  onChange(w => { if (w !== 'weather') return; const sl = $('.wx-slot'); if (sl) sl.innerHTML = Weather.html(); if ((S.prefs.aurora || 'auto') === 'auto' && !Aurora.override) $$('.aurora[data-au]').forEach(n => n.dataset.au = Aurora.pick()); });
   addEventListener('hashchange', () => { if (Editor.e) Editor.close(true); closeLayers(); render(); $('#view')?.focus({ preventScroll: true }); });
   addEventListener('online', () => { S.online = true; netbar(false); Sync.run(); });
   addEventListener('offline', () => { S.online = false; netbar(true); if (S.mode === 'cloud') Sync.set('offline'); });
@@ -4199,6 +4679,29 @@ function bindSwipe() {
   document.addEventListener('pointerup', end); document.addEventListener('pointercancel', () => { if (sw) { sw.el.style.transform = ''; sw.w.classList.remove('swiping', 'armed'); sw = null; } });
   document.addEventListener('click', e => { if (Date.now() - lastSwipe < 400 && e.target.closest('.sw-wrap')) { e.stopPropagation(); e.preventDefault(); } }, true);
 }
+/* horizontal swipe to move weeks (Today) and months/weeks (Calendar) — touch and mouse */
+function bindPager() {
+  let p = null, lastPage = 0;
+  document.addEventListener('pointerdown', e => {
+    const host = e.target.closest('#weekStrip, #calGrid'); if (!host || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const track = host.id === 'weekStrip' ? host.querySelector('.wk-track') : host.firstElementChild?.classList.contains('cal-head') ? host.querySelector('.cal-grid') : host.firstElementChild;
+    p = { host, track, x0: e.clientX, y0: e.clientY, dx: 0, on: false };
+  }, { passive: true });
+  document.addEventListener('pointermove', e => {
+    if (!p) return; const dx = e.clientX - p.x0, dy = e.clientY - p.y0;
+    if (!p.on) { if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.3) p.on = true; else if (Math.abs(dy) > 12) { p = null; return; } else return; }
+    p.dx = dx; p.track.style.transition = 'none'; p.track.style.transform = `translateX(${dx * .55}px)`; p.track.style.opacity = String(1 - Math.min(.5, Math.abs(dx) / 500));
+  }, { passive: true });
+  const end = () => {
+    if (!p) return; const { host, track, dx, on } = p; p = null; if (!on) return;
+    lastPage = Date.now(); track.style.transition = 'transform .22s var(--ease), opacity .22s'; 
+    if (Math.abs(dx) < 50) { track.style.transform = ''; track.style.opacity = ''; return; }
+    const dir = dx < 0 ? 1 : -1; track.style.transform = `translateX(${-dir * 40}%)`; track.style.opacity = '0'; haptic(6);
+    setTimeout(() => { if (host.id === 'weekStrip') ACT.wk({ dataset: { d: String(dir * 7) } }); else ACT.calNav({ dataset: { d: String(dir) } }); }, 140);
+  };
+  document.addEventListener('pointerup', end); document.addEventListener('pointercancel', () => { if (p) { p.track.style.transform = ''; p.track.style.opacity = ''; p = null; } });
+  document.addEventListener('click', e => { if (Date.now() - lastPage < 350 && e.target.closest('#weekStrip, #calGrid')) { e.stopPropagation(); e.preventDefault(); } }, true);
+}
 /* hide the floating dock while the keyboard is up, so it never sits on top of what you type */
 function bindKeyboardChrome() {
   const editable = n => n && (n.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(n.tagName)) && !['checkbox', 'radio', 'button', 'color', 'date', 'time'].includes(n.type);
@@ -4212,7 +4715,7 @@ function showAuth(mode = 'signin', allowBack = false, msg = '') {
   const a = $('#auth'); a.hidden = false;
   const titles = { signin: t('auth.welcome'), signup: t('auth.create'), reset: t('auth.resetTitle'), newpw: t('auth.newPwTitle') };
   const subs = { signin: t('auth.signinSub'), signup: t('auth.signupSub'), reset: t('auth.resetSub'), newpw: t('auth.newPwSub') };
-  a.innerHTML = `<div class="aurora auth-art"><div style="display:flex;justify-content:space-between;align-items:center"><span class="wordmark" style="font-size:var(--t-h1)">kept<i></i></span>
+  a.innerHTML = `<div class="aurora auth-art" ${Aurora.attr()}>${Aurora.layers}<div style="display:flex;justify-content:space-between;align-items:center"><span class="wordmark" style="font-size:var(--t-h1)">kept<i></i></span>
       <button class="chip-t" data-auth-lang>${icon('globe')}<span>${LANG === 'ko' ? 'English' : '한국어'}</span></button></div>
       <div><div class="cap" style="margin-bottom:14px">${esc(t('auth.kicker'))}</div><h1>${esc(t('auth.hero'))}</h1></div>
       <div class="cap">${esc(t('auth.free'))}</div></div>
@@ -4307,7 +4810,7 @@ function reconnectLater() {
 }
 function enterApp() {
   $('#auth').hidden = true; applyPrefs(); shell(); applyI18n(); Editor.init(); render();
-  Reminders.reschedule(); $('#boot').classList.add('gone');
+  Reminders.reschedule(); $('#boot').classList.add('gone'); Weather.auto();
   if (!navigator.onLine) netbar(true);
 }
 
