@@ -1471,26 +1471,10 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 [data-au="storm"]{--p1:#9ff0ff;--p2:#c1a6ff}
 [data-au="snow"]{--p1:#c9f0ff;--p2:#e2c6ff}
 [data-au="night"]{--p1:#5ff0ff;--p2:#ff7ad9}
-.au-l{inset:-50%;animation:auFlow 18s ease-in-out infinite alternate;
-  background:
-    radial-gradient(26% 20% at 32% 30%,var(--a1),transparent 70%),
-    radial-gradient(30% 24% at 68% 26%,var(--a2),transparent 70%),
-    radial-gradient(28% 26% at 56% 66%,var(--a3),transparent 72%),
-    radial-gradient(22% 18% at 24% 70%,color-mix(in oklab,var(--p1) 70%,transparent),transparent 70%),
-    radial-gradient(20% 16% at 78% 58%,color-mix(in oklab,var(--p2) 60%,transparent),transparent 70%)}
-.au-l::before{content:"";position:absolute;left:8%;right:8%;top:22%;height:42%;pointer-events:none;mix-blend-mode:screen;opacity:.55;filter:blur(12px);
-  background:repeating-linear-gradient(90deg,transparent 0 2.5%,color-mix(in oklab,var(--a1) 70%,transparent) 4.5%,transparent 7%,transparent 9%,color-mix(in oklab,var(--p1) 55%,transparent) 11%,transparent 14%,color-mix(in oklab,var(--p2) 45%,transparent) 16.5%,transparent 19.5%);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 52%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 30%,#000 52%,transparent 100%);
-  animation:auCurtain 14s ease-in-out infinite alternate}
-.au-l::after{content:"";position:absolute;left:22%;top:18%;width:56%;aspect-ratio:1;border-radius:50%;pointer-events:none;mix-blend-mode:screen;opacity:.34;filter:blur(38px);
-  background:conic-gradient(from 0deg,var(--a1),var(--p1),var(--a2),var(--p2),var(--a3),var(--a1));
-  animation:auPrism 24s linear infinite}
-.aurora::before{opacity:.5;animation:auSweep2 21s ease-in-out infinite alternate}
-@keyframes auFlow{0%{transform:translate3d(-6%,-4%,0) rotate(-5deg) scale(1)}35%{transform:translate3d(4%,3%,0) rotate(4deg) scale(1.12)}70%{transform:translate3d(-2%,6%,0) rotate(-2deg) scale(1.05)}100%{transform:translate3d(6%,-3%,0) rotate(7deg) scale(1.16)}}
-@keyframes auCurtain{0%{transform:skewX(-16deg) translateX(-7%) scaleY(.92)}50%{transform:skewX(-6deg) translateX(2%) scaleY(1.08)}100%{transform:skewX(-20deg) translateX(8%) scaleY(.96)}}
-@keyframes auPrism{to{transform:rotate(360deg)}}
-.au-paused .au-l::before,.au-paused .au-l::after{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){.au-l,.au-l::before,.au-l::after,.aurora::before{animation:none!important}}
+/* the light itself is painted by AuroraFX into canvas.au-c — no animated CSS layers, filters or blend modes */
+.au-l.au-c{position:absolute;inset:0!important;width:100%;height:100%;z-index:0;pointer-events:none;animation:none!important;background:none!important;will-change:auto;display:block;transform:none!important}
+.aurora::before{animation:none!important;opacity:.4}
+.aurora::after,#editor.skin-capture .ed-panel::after{mix-blend-mode:normal!important;opacity:.06!important}
 
 /* ---------- editor: one aurora composer, writing first ---------- */
 #editor.skin-capture #edPin,#editor.skin-capture #edFav,#editor.skin-capture [data-ed="more"]{display:inline-flex}
@@ -1538,8 +1522,8 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 #editor .prose{flex:1;min-height:42vh;padding-bottom:12px;outline:0}
 #editor .ed-prompt{flex:none}
 #editor .ed-tools{gap:2px}
-#editor.typing .au-l{opacity:.72;transition:opacity .6s}
-#editor .au-l{transition:opacity .6s}
+#editor.typing .au-c{opacity:.72}
+#editor .au-c{transition:opacity .6s}
 @media (max-width:900px){
   #editor .ed-top{padding:4px 10px 8px;gap:6px}
   .ed-optbtn{max-width:44vw;height:34px}
@@ -1564,6 +1548,12 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .ag-rp{display:flex;align-items:center;gap:4px;font-size:var(--t-cap);color:var(--text-3);margin-top:2px}
 .ag-rp svg.i{width:12px;height:12px}
 .due svg.i{width:12px;height:12px;vertical-align:-1px;margin-right:3px}
+
+/* perf: no backdrop blur over moving light — the blur would be recomputed every frame. Solid translucent fills instead. */
+#editor .scrim{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(0,0,0,.6)}
+#editor.skin-capture .ed-tools,#editor.skin-capture .ed-opt{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(10,13,18,.62)}
+.aurora .cap-fake,.aurora .cap-box{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(255,255,255,.15)}
+.aurora .cap-fake:active{background:rgba(255,255,255,.22)}
 
 </style>
 </head>
@@ -3152,7 +3142,7 @@ const Editor = {
     root.innerHTML = `
       <div class="scrim show" data-ed="close"></div>
       <section class="ed-panel" role="dialog" aria-modal="true" aria-label="${esc(t('ed.label'))}">
-        <span class="au-l" aria-hidden="true"></span><div class="ed-grab" aria-hidden="true"><span></span></div>
+        <canvas class="au-l au-c" aria-hidden="true"></canvas><div class="ed-grab" aria-hidden="true"><span></span></div>
         <div class="ed-top">
           <button class="btn sm ghost ed-cancel" data-ed="cancel"><span data-i18n="common.cancel"></span></button>
           <button class="ed-status" id="edStatus" data-s="saved" data-ed="retry"><span class="led"></span><span class="txt"></span></button>
@@ -3291,7 +3281,7 @@ const Editor = {
     this.dirty = false; this.pending = null; this.savedRange = null;
     const { root, title, body } = this.el;
     root.classList.remove('closing', 'saved', 'has-text', 'drawer-open'); this.el.drawer.setAttribute('aria-hidden', 'true'); this.el.drawer.inert = true; this.el.optBtn.setAttribute('aria-expanded', 'false'); root.classList.add('open'); this.el.panelEl.style.transform = '';
-    root.classList.toggle('skin-capture', this.skin === 'capture'); this.el.panelEl.classList.toggle('aurora', this.skin === 'capture');
+    root.classList.toggle('skin-capture', this.skin === 'capture'); this.el.panelEl.classList.toggle('aurora', this.skin === 'capture'); AuroraFX.scan();
     document.documentElement.classList.add('editor-open');
     this.fitViewport();
     applyI18n(root);
@@ -3385,7 +3375,7 @@ const Editor = {
     this.e = null; this.hideBubble(); this.closePanel(); CSS.highlights?.delete('search');
     const root = this.el.root; root.classList.add('closing');
     document.documentElement.classList.remove('editor-open', 'kb-open');
-    setTimeout(() => { root.classList.remove('open', 'closing', 'typing'); this.el.panelEl.style.transform = ''; }, 260);
+    setTimeout(() => { root.classList.remove('open', 'closing', 'typing'); this.el.panelEl.style.transform = ''; AuroraFX.kick(); }, 260);
     if (!fromPop && history.state?.editor) history.back();
     if (wasTouched && !this._cancelled && S.entries.has(e.id) && !isEmptyEntry(e)) { UI.flash(e.id); toast(this.isNew ? t('cap.saved', { type: typeOf(e.type).label }) : t('ed.savedToast'), { action: t('common.open'), onAction: () => Editor.open(e.id) }); }
     root.classList.remove('saved'); this.skin = null;
@@ -4049,11 +4039,94 @@ const Aurora = {
   },
   name() { return this.override || this.pick(); },
   attr() { return `data-au="${this.name()}"`; },
-  layers: '<span class="au-l" aria-hidden="true"></span>'
+  layers: '<canvas class="au-l au-c" aria-hidden="true"></canvas>'
 };
 /* pause the drift while a card is off-screen (no wasted frames) */
 const auObserver = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('au-paused', !e.isIntersecting))) : null;
-function watchAuroras(root = document) { if (auObserver) $$('.aurora', root).forEach(n => auObserver.observe(n)); }
+function watchAuroras(root = document) { AuroraFX.scan(); }
+
+/* ---------- AuroraFX: the living light, painted into ONE small canvas per card and scaled up by the GPU.
+   - a ~1/5-resolution canvas: the upscale itself is the soft blur (no CSS filter, no blend modes, no giant layers)
+   - capped at 30 fps, 12 fps while you type, frozen when off-screen / behind the editor / tab hidden / reduced motion */
+const AuroraFX = {
+  items: new Map(), raf: 0, last: 0, strips: new Map(),
+  reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  io: 'IntersectionObserver' in window ? new IntersectionObserver(es => { es.forEach(e => { const it = AuroraFX.items.get(e.target); if (it) it.vis = e.isIntersecting; }); AuroraFX.kick(); }) : null,
+  ro: 'ResizeObserver' in window ? new ResizeObserver(es => es.forEach(e => { const it = AuroraFX.items.get(e.target); if (it) AuroraFX.size(it, e.contentRect.width, e.contentRect.height); })) : null,
+  scan() {
+    $$('canvas.au-c').forEach(c => {
+      if (this.items.has(c)) return;
+      const it = { c, host: c.closest('.aurora'), ctx: c.getContext('2d'), au: null, pal: null, vis: !this.io, W: 0, H: 0, seed: Math.random() * 50 };
+      if (!it.host || !it.ctx) return;
+      this.items.set(c, it); this.io?.observe(c); this.ro?.observe(c);
+      if (!this.ro) this.size(it, c.clientWidth, c.clientHeight);
+    });
+    for (const [c, it] of this.items) if (!c.isConnected) { this.io?.unobserve(c); this.ro?.unobserve(c); this.items.delete(c); }
+    this.kick();
+  },
+  size(it, w, h) {
+    if (!w || !h) return;
+    const W = Math.round(clamp(w / 5, 72, 220)), H = Math.max(24, Math.round(W * h / w));
+    if (W === it.W && H === it.H) return;
+    it.W = it.c.width = W; it.H = it.c.height = H; this.paint(it, performance.now());
+  },
+  palette(it) {
+    const cs = getComputedStyle(it.host); const g = k => cs.getPropertyValue(k).trim() || '#888';
+    it.pal = { a1: g('--a1'), a2: g('--a2'), a3: g('--a3'), p1: g('--p1'), p2: g('--p2') }; it.au = it.host.dataset.au || '';
+    it.curtA = this.strip(it.pal.a1); it.curtB = this.strip(it.pal.p1); it.curtC = this.strip(it.pal.p2);
+  },
+  strip(col) { // a 1×64 vertical curtain gradient, cached per colour
+    if (this.strips.has(col)) return this.strips.get(col);
+    const c = document.createElement('canvas'); c.width = 1; c.height = 64; const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, 0, 64); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.38, col); g.addColorStop(.6, col); g.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 1, 64); this.strips.set(col, c); return c;
+  },
+  active(it) {
+    if (!it.vis || !it.W || !it.c.isConnected) return false;
+    return !(document.documentElement.classList.contains('editor-open') && !it.host.closest('#editor')); // cards behind the editor rest
+  },
+  paint(it, now) {
+    if (!it.W) return;
+    if (!it.pal || it.au !== (it.host.dataset.au || '')) this.palette(it);
+    const { ctx, W, H, pal: P } = it; const t = (this.reduced ? 4000 : now) * .001 + it.seed;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    const M = Math.max(W, H);
+    // drifting glows; each fades between two colours, so the hue travels like light through a prism
+    const B = [[P.a1, P.p1, .30, .28, .55], [P.a2, P.p2, .70, .24, .6], [P.a3, P.a1, .55, .70, .62], [P.p1, P.a2, .20, .72, .45], [P.p2, P.a3, .82, .60, .42]];
+    for (let i = 0; i < B.length; i++) {
+      const [c1, c2, x, y, r] = B[i]; const ph = t * (.11 + i * .027) + i * 1.9;
+      const cx = (x + Math.sin(ph) * .16) * W, cy = (y + Math.cos(ph * 1.27) * .13) * H, rr = r * M * (1 + Math.sin(ph * .71) * .14);
+      const mix = (Math.sin(t * .17 + i * 1.3) + 1) / 2;
+      for (const [col, a] of [[c1, .42 * (1 - mix)], [c2, .42 * mix]]) {
+        if (a < .02) continue; const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rr); g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.globalAlpha = a; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      }
+    }
+    // curtains: slanted rippling bands, colour drifting along the sky
+    ctx.setTransform(1, 0, -.32, 1, H * .2, 0);
+    for (let x = -4; x < W + 4; x++) {
+      const u = x / W; const k = Math.sin(u * 7 + t * .41 + Math.sin(u * 2.3 + t * .23) * 1.8);
+      let a = Math.max(0, Math.sin(u * 26 + t * .62 + k * 1.7)); a = a * a * a * (.25 + .75 * Math.max(0, Math.sin(u * 3.7 - t * .29 + 1.2)));
+      if (a < .03) continue;
+      const top = H * (.1 + .07 * Math.sin(u * 5 + t * .5)), hh = H * (.58 + .12 * Math.sin(u * 6.5 + t * .31));
+      const hue = (Math.sin(u * 2.2 + t * .15) + 1) / 2;
+      ctx.globalAlpha = a * .5 * (1 - hue); ctx.drawImage(it.curtA, 0, 0, 1, 64, x, top, 1.4, hh);
+      ctx.globalAlpha = a * .5 * hue; ctx.drawImage(hue > .5 ? it.curtC : it.curtB, 0, 0, 1, 64, x, top, 1.4, hh);
+    }
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+  },
+  kick() { if (!this.raf && !this.reduced) this.raf = requestAnimationFrame(n => this.loop(n)); },
+  loop(now) {
+    this.raf = 0; let any = false;
+    const typing = Editor.el?.root?.classList.contains('typing') || Editor.el?.root?.classList.contains('typing-title');
+    const fps = typing ? 12 : 30;
+    const due = now - this.last >= 1000 / fps - 3;
+    for (const it of this.items.values()) { if (!this.active(it)) continue; any = true; if (due) this.paint(it, now); }
+    if (due) this.last = now;
+    if (any) this.raf = requestAnimationFrame(n => this.loop(n));
+  }
+};
 
 /* ---------- Questions: rotate quietly while the card is visible ---------- */
 const PROMPT_COUNT = 48;
