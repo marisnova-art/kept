@@ -1115,7 +1115,6 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .faq-i p{margin:0;padding:0 18px 18px;font-size:var(--t-body);color:var(--text-2);line-height:1.7;animation:viewIn .25s var(--ease)}
 
 #editor.skin-capture .ed-panel{background:linear-gradient(172deg,var(--b1) 0%,var(--b2) 30%,var(--b3) 58%,var(--b4) 100%)}
-#editor.skin-capture .ed-panel{--a1:#ff8a3d;--a2:#e8432c;--a3:rgba(255,150,60,.5);--b1:#3d3a2a;--b2:#154447;--b3:#102c33;--b4:#151a21}
 #editor.skin-capture .ed-panel::after{content:"";position:absolute;inset:0;background:var(--grain);opacity:.16;mix-blend-mode:overlay;pointer-events:none;border-radius:inherit}
 #editor.skin-capture .ed-panel > :not(.au-l){position:relative;z-index:1}
 #editor:not(.skin-capture) .ed-panel > .au-l{display:none}
@@ -1294,6 +1293,72 @@ img.avatar,img.face{object-fit:cover;background:var(--surface-2)}
 .ag-ev,.ag-td{grid-template-columns:76px auto minmax(0,1fr)}
 .ag-time b,.ag-time small{white-space:nowrap}
 
+/* =====================================================================
+   v1.4 — one calm column: content never wider than a tablet
+   ===================================================================== */
+:root{--content:820px}
+.wrap,.wrap[style]{max-width:var(--content)!important}
+#topbar{max-width:calc(var(--content) + 56px);width:100%;margin:0 auto}
+.today-grid{display:flex;flex-direction:column;gap:16px;margin-top:26px}
+.today-grid > .col{display:contents}
+.today-grid .capture{order:1}
+.today-grid .week-card{order:2;margin-top:10px}
+.today-grid .sheet{order:3}
+.today-grid .st-card{order:4}
+.today-grid .fav-stack{order:5}
+.today-grid .tip-note{order:6}
+.today-grid .recent-box{order:7}
+.cal-wrap{grid-template-columns:1fr}
+.capture{min-height:300px;justify-content:flex-end}
+@media (min-width:901px){
+  .capture{padding:30px 30px 24px;min-height:340px}
+  .capture h2{font-size:clamp(30px,3.4vw,40px);max-width:600px}
+}
+
+/* ---------- aurora v2: a single soft diagonal light sweep, like a long-exposure sky ---------- */
+.aurora{background:linear-gradient(180deg,var(--b2) 0%,var(--b2) 32%,var(--b3) 68%,var(--b4) 100%);clip-path:inset(0 round var(--r-xl));-webkit-mask-image:-webkit-radial-gradient(white,black)}
+.ed-panel.aurora{clip-path:none;-webkit-mask-image:none}
+.au-pick.aurora{clip-path:circle(50%)}
+.au-l{inset:-45%;animation:auSweep 26s ease-in-out infinite alternate;
+  background:
+    linear-gradient(135deg,color-mix(in oklab,var(--b1) 85%,#000) 0%,transparent 22%),
+    linear-gradient(205deg,var(--a1) 0%,color-mix(in oklab,var(--a1) 55%,var(--a2)) 12%,var(--a2) 24%,color-mix(in oklab,var(--a2) 0%,transparent) 46%)}
+.aurora::before{inset:-40%;opacity:.55;animation:auSweep2 33s ease-in-out infinite alternate;
+  background:linear-gradient(20deg,transparent 30%,color-mix(in oklab,var(--a3) 70%,transparent) 55%,transparent 80%)}
+.aurora::after{opacity:.22}
+@keyframes auSweep{0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}100%{transform:translate3d(-7%,5%,0) rotate(-6deg) scale(1.08)}}
+@keyframes auSweep2{0%{transform:translate3d(-5%,6%,0) rotate(0deg)}100%{transform:translate3d(6%,-4%,0) rotate(8deg)}}
+/* palettes: --a1 bright edge, --a2 warm body, --a3 soft secondary light, --b1 corner shade, --b2..b4 sky from top to bottom */
+.aurora,[data-au="sunset"]{--a1:#f7963f;--a2:#e8402a;--a3:rgba(255,170,90,.35);--b1:#1d1517;--b2:#1d4446;--b3:#173033;--b4:#20252b}
+[data-au="ocean"]{--a1:#62c3ff;--a2:#3a5bff;--a3:rgba(110,220,255,.32);--b1:#0d1424;--b2:#123c55;--b3:#0f2a3a;--b4:#141a22}
+[data-au="forest"]{--a1:#d8e47a;--a2:#3fae7c;--a3:rgba(240,210,120,.3);--b1:#121810;--b2:#1a4038;--b3:#13302b;--b4:#171d1b}
+[data-au="dusk"]{--a1:#ff8fc8;--a2:#8256ff;--a3:rgba(255,160,140,.32);--b1:#160f20;--b2:#2b2552;--b3:#1c1c3a;--b4:#17171f}
+[data-au="rose"]{--a1:#ffc08f;--a2:#ff5876;--a3:rgba(255,215,170,.35);--b1:#1e1214;--b2:#3d2433;--b3:#2a1a27;--b4:#1b161b}
+[data-au="storm"]{--a1:#a9c8e8;--a2:#5274bf;--a3:rgba(170,205,235,.28);--b1:#11151c;--b2:#223244;--b3:#182433;--b4:#14181e}
+[data-au="snow"]{--a1:#ffffff;--a2:#9cc6ff;--a3:rgba(255,255,255,.3);--b1:#1a2029;--b2:#34465a;--b3:#243243;--b4:#181e27}
+[data-au="night"]{--a1:#8c9bff;--a2:#4535b8;--a3:rgba(160,140,255,.28);--b1:#08091a;--b2:#16193a;--b3:#10132a;--b4:#0c0e18}
+#editor.skin-capture .ed-panel{background:linear-gradient(180deg,var(--b2) 0%,var(--b2) 30%,var(--b3) 65%,var(--b4) 100%)}
+#editor.skin-capture .ed-panel > .au-l{inset:-45%}
+
+/* editor header: Cancel · status … Save/Done */
+.ed-cancel{color:var(--text-2);padding:0 12px}
+.ed-cancel:hover{color:var(--text)}
+#editor.skin-capture .ed-cancel{color:rgba(255,255,255,.85)}
+/* the question is a hint, not part of your text: small, labelled, and it steps aside once you start */
+.ed-prompt{display:flex;align-items:flex-start;gap:8px;font-size:var(--t-sub)!important;line-height:1.5!important;letter-spacing:0!important;color:var(--text-2);margin:2px 0 12px!important;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.08);opacity:1!important;max-height:80px;overflow:hidden;transition:max-height .3s var(--ease),opacity .25s,margin .3s,padding .3s}
+.ed-prompt svg.i{width:16px;height:16px;flex:none;margin-top:2px;opacity:.8}
+#editor.typing .ed-prompt,#editor.typing-title .ed-prompt,.kb-open .ed-prompt,#editor.has-text .ed-prompt{max-height:0;opacity:0!important;padding-top:0;padding-bottom:0;margin:0!important}
+.ed-typesel{display:flex;flex-wrap:wrap;gap:6px}
+.ed-typesel button{flex-direction:row;gap:6px;padding:0 12px;height:34px;font-size:var(--t-sub)}
+.ed-typesel button svg.i{width:16px;height:16px}
+@media (max-width:900px){.ed-typesel span{font-size:var(--t-sub)}}
+.today-grid{align-items:stretch}.today-grid > .col > *{width:100%}
+#editor .ed-panel > .ed-saved{position:absolute!important;inset:0}
+/* keep the question visible until something is actually written */
+#editor.typing:not(.has-text) .ed-prompt,#editor.typing-title:not(.has-text) .ed-prompt,.kb-open #editor:not(.has-text) .ed-prompt{max-height:80px;opacity:1!important;padding:10px 12px;margin:2px 0 12px!important}
+.prose{position:relative}
+.prose.is-empty::before{content:attr(data-ph);position:absolute;left:0;top:0;color:var(--text-3);pointer-events:none;white-space:pre-wrap}
+
 </style>
 </head>
 <body>
@@ -1315,6 +1380,7 @@ const ICONS={"search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\"
 /* UI strings. Add a language by copying `en` and translating values; keys are shared. */
 const I18N = {
 en: {
+  'ed.cancelTitle': 'Discard changes?', 'ed.cancelNew': 'This new record won’t be saved.', 'ed.cancelEdit': 'Your edits from this session will be undone.', 'ed.discard': 'Discard', 'ed.discarded': 'Changes discarded',
   "prompt.0": "What’s on your mind right now?",
   "prompt.1": "Where did you put it?",
   "prompt.2": "What should future you remember?",
@@ -1662,6 +1728,7 @@ en: {
   'sc.lists': 'Bulleted / numbered list', 'sc.quote': 'Quote', 'sc.icon': 'Insert icon', 'sc.emoji': 'Insert emoji', 'sc.undo': 'Undo / redo', 'sc.save': 'Save & sync now', 'sc.md': 'Type at line start for list, numbered, quote, heading', 'sc.capture': 'Save quick capture (Shift+Enter for new line)'
 },
 ko: {
+  'ed.cancelTitle': '작성한 내용을 버릴까요?', 'ed.cancelNew': '새 기록은 저장되지 않아요.', 'ed.cancelEdit': '이번에 수정한 내용이 모두 되돌려져요.', 'ed.discard': '버리기', 'ed.discarded': '변경 내용을 버렸어요',
   "prompt.0": "지금 머릿속에 무엇이 있나요?",
   "prompt.1": "그거, 어디에 두었나요?",
   "prompt.2": "미래의 나에게 꼭 남길 말은?",
@@ -2014,7 +2081,7 @@ ko: {
    ===================================================================== */
 const CFG = Object.assign({ SUPABASE_URL:'', SUPABASE_ANON_KEY:'', DONATE:{}, PRIVACY_CONTACT:'', OPERATOR:'' }, window.KEPT_CONFIG || {});
 const LIMITS = { entries: 20000, entryChars: 200000, categories: 200, tagsPerEntry: 30, tagLen: 40 };
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 
 /* ---------- small utils ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -2849,8 +2916,7 @@ const Editor = {
       <section class="ed-panel" role="dialog" aria-modal="true" aria-label="${esc(t('ed.label'))}">
         <span class="au-l" aria-hidden="true"></span><div class="ed-grab" aria-hidden="true"><span></span></div>
         <div class="ed-top">
-          <button class="icon-btn ed-x" data-ed="close" data-i18n-title="common.close">${icon('x')}</button>
-          <span class="ed-kicker" data-i18n="cap.kicker"></span>
+          <button class="btn sm ghost ed-cancel" data-ed="cancel"><span data-i18n="common.cancel"></span></button>
           <button class="ed-status" id="edStatus" data-s="saved" data-ed="retry"><span class="led"></span><span class="txt"></span></button>
           <span class="tb-spacer"></span>
           <button class="icon-btn" data-ed="pin" id="edPin" data-i18n-title="ed.pin">${icon('pin')}</button>
@@ -2861,7 +2927,7 @@ const Editor = {
         <div class="ed-scroll" id="edScroll">
           <div class="ed-inner">
             <div id="edTrash" class="note warn" hidden style="margin:6px 0 10px"></div>
-            <div class="ed-prompt" id="edPrompt"></div>
+            <div class="ed-prompt" id="edPrompt" aria-hidden="true"></div>
             <div class="ed-typesel" id="edTypeSel" role="radiogroup"></div>
             <textarea class="ed-title" id="edTitle" rows="1" maxlength="300" enterkeyhint="next"></textarea>
             <div class="ed-meta">
@@ -2913,7 +2979,7 @@ const Editor = {
     const { root, title, body, tagIn, bubble, tools, opt } = this.el;
     root.addEventListener('click', e => {
       const b = e.target.closest('[data-ed]'); if (!b) return; const a = b.dataset.ed;
-      ({ close: () => this.close(), fav: () => this.toggle('favorite', b), pin: () => this.toggle('pinned', b), more: () => this.moreMenu(b), type: () => this.typeMenu(b), cat: () => this.catMenu(b),
+      ({ close: () => this.close(), cancel: () => this.cancel(), fav: () => this.toggle('favorite', b), pin: () => this.toggle('pinned', b), more: () => this.moreMenu(b), type: () => this.typeMenu(b), cat: () => this.catMenu(b),
          retry: () => { if (S.sync === 'error' || S.sync === 'offline') Sync.run(); } }[a])?.();
     });
     // keep the caret (and the on-screen keyboard) while tapping tools
@@ -2966,9 +3032,11 @@ const Editor = {
     const ex = id && S.entries.get(id);
     this.isNew = !ex; this.touched = false;
     this.e = ex || newEntry(preset);
+    this.snapshot = ex ? JSON.parse(JSON.stringify({ title: ex.title, content: ex.content, text: ex.text, type: ex.type, category_id: ex.category_id, tags: ex.tags, favorite: ex.favorite, pinned: ex.pinned, meta: ex.meta })) : null;
+    this._cancelled = false;
     this.dirty = false; this.pending = null; this.savedRange = null;
     const { root, title, body } = this.el;
-    root.classList.remove('closing', 'saved'); root.classList.add('open'); this.el.panelEl.style.transform = '';
+    root.classList.remove('closing', 'saved', 'has-text'); root.classList.add('open'); this.el.panelEl.style.transform = '';
     root.classList.toggle('skin-capture', this.skin === 'capture'); this.el.panelEl.classList.toggle('aurora', this.skin === 'capture');
     document.documentElement.classList.add('editor-open');
     this.fitViewport();
@@ -2990,12 +3058,25 @@ const Editor = {
     // focus synchronously, inside the tap, so iOS raises the keyboard
     if (!ro && this.isNew) { if (['item', 'contact', 'todo', 'event'].includes(this.e.type)) title.focus({ preventScroll: true }); else this.focusBody(true); }
     else if (!ro && opts.focus) this.focusBody(true);
-    this.updateToolState();
+    this.updateToolState(); this.markEmpty();
   },
+  /* cancel = leave without keeping anything typed in this session */
+  async cancel() {
+    if (!this.e) return;
+    const had = this.touched;
+    if (this.touched && !(await confirmDlg(t('ed.cancelTitle'), this.isNew ? t('ed.cancelNew') : t('ed.cancelEdit'), t('ed.discard'), true))) return;
+    this.commit.cancel?.(); this.histLater.cancel?.(); this.dirty = false;
+    const e = this.e;
+    if (this.isNew) { if (S.entries.has(e.id)) await purgeEntries([e.id]); }
+    else if (this.snapshot && this.touched) { Object.assign(e, JSON.parse(JSON.stringify(this.snapshot))); await saveEntry(e); }
+    this._cancelled = true; this.touched = false; this.close();
+    if (had) toast(t('ed.discarded'));
+  },
+  markEmpty() { const b = this.el.body; b.classList.toggle('is-empty', !b.textContent.replace(ZWRE, '').trim() && !b.querySelector('.ico,li')); },
   renderSkin() {
     const cap = this.skin === 'capture'; const e = this.e;
     $('.ed-done .lbl', this.el.root).textContent = cap ? t('common.save') : t('common.done');
-    const pr = $('#edPrompt'); pr.textContent = cap ? Prompts.current() : '';
+    const pr = $('#edPrompt'); pr.innerHTML = cap ? `${icon('message-circle')}<span>${esc(Prompts.current())}</span>` : '';
     if (cap) this.el.panelEl.dataset.au = Aurora.name(); else delete this.el.panelEl.dataset.au;
     const types = ['note', 'idea', 'todo', 'event', 'item', 'contact'];
     $('#edTypeSel').innerHTML = cap ? types.map(ty => `<button data-t="${ty}" role="radio" aria-checked="${ty === e.type}" class="${ty === e.type ? 'on' : ''}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('') : '';
@@ -3006,7 +3087,7 @@ const Editor = {
   },
   close(fromPop = false) {
     if (!this.e) return;
-    if (this.skin === 'capture' && !this._savedAnim && this.touched && !isEmptyEntry({ ...this.e, title: this.el.title.value, text: this.el.body.textContent.replace(ZWRE, '') })) {
+    if (this.skin === 'capture' && !this._savedAnim && !this._cancelled && this.touched && !isEmptyEntry({ ...this.e, title: this.el.title.value, text: this.el.body.textContent.replace(ZWRE, '') })) {
       this._savedAnim = true; document.activeElement?.blur?.(); this.commit.flush(); this.el.root.classList.add('saved'); haptic(15);
       setTimeout(() => { this.close(fromPop); this._savedAnim = false; }, 620); return;
     }
@@ -3019,7 +3100,7 @@ const Editor = {
     document.documentElement.classList.remove('editor-open', 'kb-open');
     setTimeout(() => { root.classList.remove('open', 'closing', 'typing'); this.el.panelEl.style.transform = ''; }, 260);
     if (!fromPop && history.state?.editor) history.back();
-    if (wasTouched && S.entries.has(e.id) && !isEmptyEntry(e)) { UI.flash(e.id); toast(this.isNew ? t('cap.saved', { type: typeOf(e.type).label }) : t('ed.savedToast'), { action: t('common.open'), onAction: () => Editor.open(e.id) }); }
+    if (wasTouched && !this._cancelled && S.entries.has(e.id) && !isEmptyEntry(e)) { UI.flash(e.id); toast(this.isNew ? t('cap.saved', { type: typeOf(e.type).label }) : t('ed.savedToast'), { action: t('common.open'), onAction: () => Editor.open(e.id) }); }
     root.classList.remove('saved'); this.skin = null;
     emit('entries');
   },
@@ -3034,6 +3115,7 @@ const Editor = {
     const vv = window.visualViewport; const r = this.el.root; if (!vv || !r) return;
     r.style.setProperty('--vvh', vv.height + 'px'); r.style.setProperty('--vvt', vv.offsetTop + 'px');
     document.documentElement.style.setProperty('--vvh', vv.height + 'px'); document.documentElement.style.setProperty('--vvt', vv.offsetTop + 'px');
+    if (this.e && (window.scrollY || document.scrollingElement?.scrollTop)) window.scrollTo(0, 0);
     const kb = innerHeight - vv.height > 140; document.documentElement.classList.toggle('kb-open', kb);
     if (kb) this.kbH = innerHeight - vv.height;
     if (this.e) this.ensureCaret();
@@ -3042,6 +3124,8 @@ const Editor = {
   changed() {
     if (!this.e || this.e.deleted_at) return;
     this.dirty = true; this.touched = true; this.setStatus('saving'); this.commit();
+    this.el.root.classList.toggle('has-text', !!(this.el.title.value.trim() || this.el.body.textContent.replace(ZWRE, '').trim()));
+    this.markEmpty();
   },
   commit: null, // assigned below (debounced)
   async doCommit() {
@@ -3848,11 +3932,11 @@ function viewToday() {
         ${pinned.map(e => `<section class="st-card" data-act="open" data-id="${e.id}"><div class="lbl">${esc(t('today.pinnedLabel', { type: typeOf(e.type).label }))}</div>
           <button class="more" data-act="stMore" data-id="${e.id}" aria-label="${esc(t('common.more'))}">${icon('more-horizontal')}</button>
           <div class="st-body">${e.title ? `<b>${esc(e.title)}</b> ` : ''}${hydrateIcons(Object.assign(document.createElement('div'), { innerHTML: sanitizeHTML(e.content) })).innerHTML}</div></section>`).join('')}
-        ${favs.length ? `<div style="display:flex;flex-direction:column;gap:10px">${favs.map((e, i) => { const c = catOf(e.category_id); return `<article class="warm" style="--tint:${esc(c?.color || tints[i % 4])}" data-act="open" data-id="${e.id}">
+        ${favs.length ? `<div class="fav-stack" style="display:flex;flex-direction:column;gap:10px">${favs.map((e, i) => { const c = catOf(e.category_id); return `<article class="warm" style="--tint:${esc(c?.color || tints[i % 4])}" data-act="open" data-id="${e.id}">
           <div class="top"><span class="tic">${icon(typeOf(e.type).icon)}</span><span>${esc(typeOf(e.type).label)}</span></div>
           <button class="heart on" data-act="fav" data-id="${e.id}" aria-label="${esc(t('ed.favorite'))}">${icon('heart')}</button>
           <h3>${esc(entryDisplayTitle(e))}</h3><p>${esc(snippet(e, null, 140).replace(e.title ? '' : entryDisplayTitle(e), '').trim() || ' ')}</p></article>`; }).join('')}</div>` : ''}
-        ${!pinned.length && !favs.length && total ? `<div class="note">${icon('info')}<span>${esc(t('today.tipPin'))}</span></div>` : ''}
+        ${!pinned.length && !favs.length && total ? `<div class="note tip-note">${icon('info')}<span>${esc(t('today.tipPin'))}</span></div>` : ''}
       </div>
       <div class="col">
         <section class="week-card">
@@ -3867,7 +3951,7 @@ function viewToday() {
             <span style="display:flex;gap:4px"><button class="btn sm" data-act="new" data-type="event" data-date="${V.selDay}">${icon('plus')}${esc(t('type.event'))}</button><button class="btn sm" data-act="new" data-type="todo" data-date="${V.selDay}">${icon('plus')}${esc(t('type.todo'))}</button></span></div>
           ${agRows.length ? agRows.join('') : `<div class="ag-empty"><span>${esc(t('today.agendaEmpty'))}</span></div>`}
         </section>
-        ${recent.length ? `<div><div class="sb-label" style="padding:14px 4px 8px">${esc(t('today.recent'))}<a href="#/recent" style="color:var(--text-2);text-decoration:none">${esc(t('common.viewAll'))}</a></div>
+        ${recent.length ? `<div class="recent-box"><div class="sb-label" style="padding:14px 4px 8px">${esc(t('today.recent'))}<a href="#/recent" style="color:var(--text-2);text-decoration:none">${esc(t('common.viewAll'))}</a></div>
           <div class="list">${recent.map(e => rowS(e)).join('')}</div></div>` : ''}
       </div>
     </div></div>`;
