@@ -64,7 +64,7 @@ const Editor = {
       <section class="ed-panel" role="dialog" aria-modal="true" aria-label="${esc(t('ed.label'))}">
         <div class="ed-grab" aria-hidden="true"><span></span></div>
         <div class="ed-top">
-          <button class="btn sm ghost ed-cancel" data-ed="cancel"><span data-i18n="common.cancel"></span></button>
+          <button class="btn sm ed-cancel" data-ed="cancel"><span data-i18n="common.cancel"></span></button>
           <button class="ed-status" id="edStatus" data-s="saved" data-ed="retry"><span class="led"></span><span class="txt"></span></button>
           <span class="tb-spacer"></span>
           <button class="ed-optbtn" data-ed="drawer" id="edOptBtn" aria-expanded="false" aria-controls="edDrawer"><span class="ob-ic" id="edOptIc"></span><span class="ob-t" id="edOptSum"></span>${icon('sliders-horizontal', 'ob-sl')}</button>

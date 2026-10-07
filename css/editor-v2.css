@@ -91,3 +91,9 @@
 @media (prefers-reduced-motion: reduce){
   .ed-tools.expanded .tb-x > *,#editor .ed-tools .tb-x,.tpl-card,.prose .tpl-in,#bubble.mini.show,.mo-pop,.mo-land,.mo-off,.mo-nudge{animation:none!important}
 }
+
+/* the cancel button sits like the done button, in grey */
+#editor .ed-cancel{height:36px;padding:0 16px;border-radius:var(--r-pill);background:var(--surface-2);color:var(--text-2);border:1px solid var(--line);font-weight:600}
+#editor .ed-cancel:hover{background:var(--surface);color:var(--text)}
+#editor.skin-capture .ed-cancel{background:rgba(255,255,255,.16);color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.18)}
+#editor.skin-capture .ed-cancel:hover{background:rgba(255,255,255,.24);color:#fff}

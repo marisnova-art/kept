@@ -99,7 +99,7 @@ function viewToday() {
         <div class="cap-main">
           <h2 class="cap-q" aria-live="polite">${esc(Prompts.current())}</h2>
           <button class="cap-fake" data-act="composer" data-t="${V.capType}"><span>${esc(t('cap.ph.' + V.capType))}</span><span class="send">${icon('arrow-up')}</span></button>
-          <div class="cap-row">${capTypes.map(ty => `<button class="chip-t" data-act="composer" data-t="${ty}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('')}</div>
+          <div class="cap-row">${capTypes.map(ty => `<button class="chip-t" data-act="composer" data-t="${ty}" aria-label="${esc(typeOf(ty).label)}">${icon(typeOf(ty).icon)}<span>${esc(typeOf(ty).label)}</span></button>`).join('')}</div>
         </div>
       </section>`;
   const planHTML = `      <section class="tg tg-plan" aria-label="${esc(t('today.agenda'))}">
