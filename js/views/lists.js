@@ -1,6 +1,6 @@
 /* Kept — Record lists */
 import { S, catOf, live, typeList, typeOf } from '../data/store.js';
-import { runSearch, sortEntries, words } from '../features/search.js';
+import { byDay, runSearch, sortEntries, words } from '../features/search.js';
 import { fmtNum, t, tn } from '../lib/i18n.js';
 import { esc, icon } from '../lib/utils.js';
 import { emptyState, entryList, header, listControls } from '../ui/entries.js';
@@ -23,7 +23,7 @@ function viewList(kind, arg) {
   list = kind === 'recent' ? sortEntries(list, 'updated') : sortEntries(list);
   const ttl = ['category', 'tag'].includes(kind) ? title : esc(title);
   return `<div class="wrap view-enter">${header(ttl + ` <span class="mut">${fmtNum(list.length)}</span>`, sub ? esc(sub) : '', listControls())}
-    ${entryList(list, { grouped: kind !== 'recent' && S.prefs.sort === 'date', empty: kind === 'favorites' ? emptyState(t('empty.favTitle'), t('empty.favSub')) : emptyState(t('empty.title'), t('empty.sub'), true, type) })}</div>`;
+    ${entryList(list, { grouped: kind !== 'recent' && byDay(), empty: kind === 'favorites' ? emptyState(t('empty.favTitle'), t('empty.favSub')) : emptyState(t('empty.title'), t('empty.sub'), true, type) })}</div>`;
 }
 function viewSearch() {
   const f = V.search; const ws = words(f.q); const list = runSearch(f);
@@ -40,7 +40,7 @@ function viewSearch() {
       <label class="select adv" style="display:inline-flex;align-items:center;gap:6px;background-image:none;padding-right:10px">→<input type="date" data-chg="sTo" value="${esc(f.to)}" style="border:0;background:transparent;outline:0;font-size:var(--t-cap)" aria-label="${esc(t('search.to'))}"></label>
       ${f.type || f.cat || f.tag || f.from || f.to || f.scope !== 'all' ? `<button class="btn sm ghost" data-act="clearFilters">${icon('x')}${esc(t('search.clear'))}</button>` : ''}
     </div>
-    ${entryList(list, { ws, grouped: !f.q && S.prefs.sort === 'date', empty: emptyState(t('search.none'), t('search.noneSub'), false) })}</div>`;
+    ${entryList(list, { ws, grouped: !f.q && byDay(), empty: emptyState(t('search.none'), t('search.noneSub'), false) })}</div>`;
 }
 
 export { viewList, viewSearch };

@@ -4,6 +4,7 @@ import { showShortcuts, toggleSidebar } from './menus.js';
 import { S, applyPrefs, newEntry, onChange, restoreEntries, saveCategory, saveEntry, trashEntries } from '../data/store.js';
 import { Sync } from '../data/sync.js';
 import { Editor, haptic, isTouch } from '../editor/editor.js';
+import { Gate } from '../features/story.js';
 import { Weather } from '../features/weather.js';
 import { t } from '../lib/i18n.js';
 import { $, debounce, esc, icon, nowISO } from '../lib/utils.js';
@@ -58,7 +59,11 @@ function bindGlobal() {
     else if (e.key === '?') { e.preventDefault(); showShortcuts(); }
   });
   bindSwipe(); bindKeyboardChrome(); bindPager();
-  onChange(w => { if (w !== 'weather') return; const sl = $('.wx-slot'); if (sl) { sl.innerHTML = Weather.html(); sl.hidden = !sl.innerHTML; } });
+  onChange(w => {
+    if (w === 'weather' || w === 'sync') Gate.poke();
+    if (w === 'story') { if (route().name === 'today') renderView(); return; }
+    if (w !== 'weather' || $('.story-wait')) return; const sl = $('.wx-slot'); if (sl) { sl.innerHTML = Weather.html(); sl.hidden = !sl.innerHTML; }
+  });
   addEventListener('hashchange', () => { if (Editor.e) Editor.close(true); closeLayers(); render(); $('#view')?.focus({ preventScroll: true }); });
   addEventListener('online', () => { S.online = true; netbar(false); Sync.run(); });
   addEventListener('offline', () => { S.online = false; netbar(true); if (S.mode === 'cloud') Sync.set('offline'); });

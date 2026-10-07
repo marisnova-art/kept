@@ -2,6 +2,7 @@
    Each paragraph may open with a short literary phrase that meets the day (season, time, weather),
    followed by what the records say, with counts and titles woven in as tappable chips.
    Choices are seeded by the date, so the story stays the same through the day until reshuffled. */
+import { S, emit } from '../data/store.js';
 import { LANG } from '../lib/i18n.js';
 import { esc, icon } from '../lib/utils.js';
 import { Weather } from './weather.js';
@@ -42,13 +43,24 @@ function season(d = new Date()) {
   let m = d.getMonth(); if ((Weather.city()?.lat ?? 1) < 0) m = (m + 6) % 12; // southern hemisphere
   return m <= 1 || m === 11 ? 'winter' : m <= 4 ? 'spring' : m <= 7 ? 'summer' : 'autumn';
 }
+const WX_EMO = { rain: '🌧️', snow: '❄️', clear: '☀️', cloudy: '☁️' };
+const SLOT_EMO = { morning: '🌅', afternoon: '🌤️', evening: '🌇', night: '🌙' };
+const SEASON_EMO = { spring: '🌸', summer: '🌿', autumn: '🍂', winter: '⛄' };
 const timeSlot = h => h < 5 ? 'night' : h < 12 ? 'morning' : h < 18 ? 'afternoon' : h < 22 ? 'evening' : 'night';
 function weatherPool() {
   const k = Weather.data && Weather.data.city === Weather.city()?.id ? Weather.kind() : null;
   return { rain: 'rain', drizzle: 'rain', thunder: 'rain', snow: 'snow', clear: 'clear', partly: 'clear', cloudy: 'cloudy', fog: 'cloudy' }[k] || null;
 }
 const count = (key, n) => { const c = pack().counts[key]; return typeof c === 'function' ? c(n) : c.replace('{n}', n); };
-const chip = (key, n, ic, href) => { const txt = count(key, n); return { html: `<a class="sc" href="${href}"><span class="ic">${icon(ic)}</span><b>${esc(txt)}</b></a>`, text: txt }; };
+/* marks mix two kinds, like a sticker sheet: a coloured tile holding a line icon, or a colour emoji */
+const MARKS = {
+  events: { tile: 'calendar', tone: 'red' }, tasks: { tile: 'check', tone: 'green' }, notes: { tile: 'file-text', tone: 'amber' },
+  contacts: { tile: 'contact', tone: 'blue' }, total: { tile: 'archive', tone: 'gray' },
+  ideas: { emoji: '💡' }, items: { emoji: '📍' }
+};
+const mark = m => m.emoji ? `<span class="em" aria-hidden="true">${m.emoji}</span>` : `<span class="tile t-${m.tone}" aria-hidden="true">${icon(m.tile)}</span>`;
+const emo = ch => `<span class="em" aria-hidden="true">${ch}</span>`;
+const chip = (key, n, href) => { const txt = count(key, n); return { html: `<a class="sc" href="${href}">${mark(MARKS[key])}<b>${esc(txt)}</b></a>`, text: txt }; };
 const titleChip = (e, title) => { const q = pack().quote(title); return { html: `<button class="st-t" data-act="open" data-id="${e.id}">${esc(q)}</button>`, text: q }; };
 
 /* data: { greet, nameHTML, nameText, events, tasksOpen, overdue, ideas, items, contacts, notes, featured, streak, total, titleOf, when } */
@@ -58,39 +70,63 @@ function storyHTML(data, shift = 0) {
   const used = new Set();
   const phrase = pools => { const all = pools.flatMap(k => P.phrases[k] || []).filter(x => !used.has(x)); const p = all.length ? pick(all) : ''; used.add(p); return p; };
   const paras = [];
-  const add = (html, lead) => paras.push({ html, lead });
+  const add = (html, lead, em = '') => paras.push({ html, lead, em });
 
   // 1. greeting, led by the hour or the weather
-  const wp = weatherPool();
-  add(fill(pick(P.lines.greet), { greet: data.greet, name: data.nameText ? { html: data.nameHTML, text: data.nameText } : '' }).replace(/, \./, '.').replace(/,\s*$/, ''), phrase(wp && r() < .6 ? [wp] : [timeSlot(now.getHours())]));
-  if (!data.total) { add(fill(pick(P.lines.empty), {}), phrase([season(now)])); return render(paras); }
+  const wp = weatherPool(); const byWx = wp && r() < .6; const slot = timeSlot(now.getHours()); const sea = season(now);
+  add(fill(pick(P.lines.greet), { greet: data.greet, name: data.nameText ? { html: data.nameHTML, text: data.nameText } : '' }).replace(/, \./, '.').replace(/,\s*$/, ''), phrase(byWx ? [wp] : [slot]), byWx ? WX_EMO[wp] : SLOT_EMO[slot]);
+  if (!data.total) { add(fill(pick(P.lines.empty), {}) + ' ' + emo('🌱'), phrase([sea]), SEASON_EMO[sea]); return render(paras); }
 
   // 2. the day's plan
   const plan = [];
-  if (data.events.length) { const e = data.events[0]; plan.push(fill(pick(P.lines.events), { chip: chip('events', data.events.length, 'calendar', '#/calendar'), first: titleChip(e, data.titleOf(e)), when: data.when(e) })); }
-  if (data.tasksOpen.length) { const e = data.tasksOpen[0]; plan.push(fill(pick(P.lines.tasks), { chip: chip('tasks', data.tasksOpen.length, 'check', '#/tasks'), first: titleChip(e, data.titleOf(e)) })); }
-  if (data.overdue) plan.push(fill(pick(P.lines.overdue), { n: data.overdue }));
+  if (data.events.length) { const e = data.events[0]; plan.push(fill(pick(P.lines.events), { chip: chip('events', data.events.length, '#/calendar'), first: titleChip(e, data.titleOf(e)), when: data.when(e) })); }
+  if (data.tasksOpen.length) { const e = data.tasksOpen[0]; plan.push(fill(pick(P.lines.tasks), { chip: chip('tasks', data.tasksOpen.length, '#/tasks'), first: titleChip(e, data.titleOf(e)) })); }
+  if (data.overdue) plan.push(emo('⏰') + fill(pick(P.lines.overdue), { n: data.overdue }));
   if (!plan.length) plan.push(fill(pick(data.events.length ? P.lines.tasksNone : P.lines.eventsNone), {}));
-  add(plan.join(' '), phrase([season(now)]));
+  add(plan.join(' '), phrase([sea]), SEASON_EMO[sea]);
 
   // 3. what the user chose to keep on the home screen
-  if (data.featured.length) add(fill(pick(P.lines.featured), { list: { html: P.joinList(data.featured.map(e => titleChip(e, data.titleOf(e)).html)), text: '' } }));
+  if (data.featured.length) add(emo('📌') + fill(pick(P.lines.featured), { list: { html: P.joinList(data.featured.map(e => titleChip(e, data.titleOf(e)).html)), text: '' } }));
 
   // 4. the collections, two to a paragraph so it reads like prose
   const bits = [];
-  if (data.ideas.length) bits.push(fill(pick(P.lines.ideas), { chip: chip('ideas', data.ideas.length, 'lightbulb', '#/type/idea'), first: titleChip(data.ideas[0], data.titleOf(data.ideas[0])) }));
-  if (data.notes.length) bits.push(fill(pick(P.lines.notes), { chip: chip('notes', data.notes.length, 'file-text', '#/type/note'), first: titleChip(data.notes[0], data.titleOf(data.notes[0])) }));
-  if (data.items.length) bits.push(fill(pick(P.lines.items), { chip: chip('items', data.items.length, 'map-pin', '#/items') }));
-  if (data.contacts.length) bits.push(fill(pick(P.lines.contacts), { chip: chip('contacts', data.contacts.length, 'contact', '#/contacts'), first: titleChip(data.contacts[0], data.titleOf(data.contacts[0])) }));
-  for (let i = 0; i < bits.length; i += 2) add(bits.slice(i, i + 2).join(' '), i === 0 ? phrase([season(now), 'any']) : '');
+  if (data.ideas.length) bits.push(fill(pick(P.lines.ideas), { chip: chip('ideas', data.ideas.length, '#/type/idea'), first: titleChip(data.ideas[0], data.titleOf(data.ideas[0])) }));
+  if (data.notes.length) bits.push(fill(pick(P.lines.notes), { chip: chip('notes', data.notes.length, '#/type/note'), first: titleChip(data.notes[0], data.titleOf(data.notes[0])) }));
+  if (data.items.length) bits.push(fill(pick(P.lines.items), { chip: chip('items', data.items.length, '#/items') }));
+  if (data.contacts.length) bits.push(fill(pick(P.lines.contacts), { chip: chip('contacts', data.contacts.length, '#/contacts'), first: titleChip(data.contacts[0], data.titleOf(data.contacts[0])) }));
+  for (let i = 0; i < bits.length; i += 2) add(bits.slice(i, i + 2).join(' '), i === 0 ? phrase([sea, 'any']) : '');
 
   // 5. closing
-  add(data.streak > 1 ? fill(pick(P.lines.streak), { n: data.streak }) : fill(pick(P.lines.total), { chip: chip('total', data.total, 'archive', '#/all') }), phrase(['any']));
+  add(data.streak > 1 ? fill(pick(P.lines.streak), { n: data.streak }) + ' ' + emo('🔥') : fill(pick(P.lines.total), { chip: chip('total', data.total, '#/all') }), phrase(['any']));
   return render(paras);
 }
 function render(paras) {
-  return paras.map((p, i) => `<p class="st-p" style="--i:${i}">${p.lead ? `<span class="st-lead">${esc(p.lead)}.</span> ` : ''}${p.html}</p>`).join('');
+  return paras.map((p, i) => `<p class="st-p" style="--i:${i}">${p.lead ? `<span class="st-lead">${p.em ? emo(p.em) : ''}${esc(p.lead)}.</span> ` : ''}${p.html}</p>`).join('');
 }
 const phraseCount = () => Object.values(pack().phrases).reduce((n, a) => n + a.length, 0);
 
-export { josa, phraseCount, storyHTML };
+/* The story is told once, after the day's data settles: records from this device, the first sync,
+   the synced settings and the weather (which picks the opening line). Until then the home shows a quiet
+   loading shimmer instead of text that would re-tell itself two or three times. Never waits past MAX_WAIT. */
+const MAX_WAIT = 4500;
+const Gate = {
+  open: false, pending: 0, since: 0, timer: 0,
+  hold(p) { this.pending++; Promise.resolve(p).catch(() => {}).finally(() => { this.pending--; this.poke(); }); return p; },
+  settled() {
+    if (this.pending > 0) return false;
+    if (S.mode === 'cloud' && S.sync === 'syncing') return false;
+    if (Weather.enabled() && !Weather.fresh() && (Weather.busy || !Weather.tried)) return false;
+    return true;
+  },
+  /* true once the story may show; the first call starts the safety timer */
+  ready() {
+    if (this.open) return true;
+    if (!this.since) { this.since = Date.now(); this.timer = setTimeout(() => this.poke(true), MAX_WAIT); }
+    if (this.settled() || Date.now() - this.since >= MAX_WAIT) { this.open = true; clearTimeout(this.timer); }
+    return this.open;
+  },
+  /* something it waits on changed: tell the page if the story can now be shown */
+  poke(force = false) { if (this.open || !this.since) return; if (force || this.settled()) { this.open = true; clearTimeout(this.timer); emit('story'); } }
+};
+
+export { Gate, josa, phraseCount, storyHTML };

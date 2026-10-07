@@ -110,7 +110,7 @@ const ACT = {
   setTheme: el => { savePrefs({ theme: el.dataset.v }); renderView(); },
   setHome: el => { savePrefs({ homeStyle: el.dataset.v }); renderView(); },
   fold: el => { toggleFold(el.dataset.id); haptic(5); },
-  storyShuffle: el => { V.storyShift = (V.storyShift || 0) + 1; const st = document.querySelector('.story'); if (st) { st.classList.add('out'); setTimeout(renderView, 180); } else renderView(); haptic(5); el.classList.remove('spin'); void el.offsetWidth; el.classList.add('spin'); },
+  storyShuffle: el => { V.storyShift = (V.storyShift || 0) + 1; V.storyPlay = true; const st = document.querySelector('.story'); if (st) { st.classList.add('out'); setTimeout(renderView, 180); } else renderView(); haptic(5); el.classList.remove('spin'); void el.offsetWidth; el.classList.add('spin'); },
   setFs: el => { savePrefs({ textSize: el.dataset.v }); applyPrefs(); renderView(); },
   setAccent: el => { savePrefs({ accent: el.dataset.v }); renderView(); },
   setJump: (el, ev) => { ev.preventDefault(); $('#set-' + el.dataset.id)?.scrollIntoView({ behavior: 'smooth' }); },

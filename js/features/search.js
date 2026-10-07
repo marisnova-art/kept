@@ -32,9 +32,11 @@ function runSearch(f) {
 /* the day a record belongs to: an event's date, a task's due date, otherwise the day it was written */
 const entryDay = e => (e.type === 'event' && e.meta?.date) || (e.type === 'todo' && e.meta?.due) || dayKey(new Date(e.created_at));
 const entryWhen = e => entryDay(e) + ' ' + ((e.type === 'event' ? e.meta?.time : e.type === 'todo' ? e.meta?.due_time : '') || '') + '|' + e.created_at;
+/* sorts that read by day get a heading per day */
+const byDay = (s = S.prefs.sort) => s === 'date' || s === 'oldest';
 function sortEntries(list, s = S.prefs.sort) {
   const by = { date: (a, b) => entryWhen(b).localeCompare(entryWhen(a)), updated: (a, b) => b.updated_at.localeCompare(a.updated_at), created: (a, b) => b.created_at.localeCompare(a.created_at),
-    oldest: (a, b) => a.created_at.localeCompare(b.created_at), title: (a, b) => entryDisplayTitle(a).localeCompare(entryDisplayTitle(b), locale()) }[s] || ((a, b) => b.updated_at.localeCompare(a.updated_at));
+    oldest: (a, b) => entryWhen(a).localeCompare(entryWhen(b)), title: (a, b) => entryDisplayTitle(a).localeCompare(entryDisplayTitle(b), locale()) }[s] || ((a, b) => b.updated_at.localeCompare(a.updated_at));
   return list.slice().sort((a, b) => (b.pinned - a.pinned) * 0 || by(a, b));
 }
 function hl(text, ws) {
@@ -51,4 +53,4 @@ function snippet(e, ws, len = 160) {
   return '… ' + tx.slice(i - 30, i - 30 + len);
 }
 
-export { entryDay, hayOf, hl, norm, runSearch, snippet, sortEntries, words };
+export { byDay, entryDay, hayOf, hl, norm, runSearch, snippet, sortEntries, words };

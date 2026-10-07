@@ -34,11 +34,11 @@
   .cal.month .cd:nth-child(7n){border-right:0}
   .cal.month .cd:nth-last-child(-n+7){border-bottom:0}
   .cal.month .cd:hover{background:color-mix(in oklab,var(--surface-2) 60%,transparent)}
-  .cal.month .cd.sel{background:transparent}
-  .cal.month .cd.popped{background:color-mix(in oklab,var(--accent) 7%,transparent)}
+  .cal.month .cd.today{background:color-mix(in oklab,var(--accent) 8%,transparent)}
+  .cal.month .cd.sel,.cal.month .cd.popped{background:color-mix(in oklab,var(--accent) 6%,transparent);box-shadow:inset 0 0 0 2px var(--accent)}
   .cal.month .cd .dn{width:26px;height:26px;margin:0 auto 1px;border-radius:50%;font-size:12px;flex:none}
-  .cal.month .cd.sel .dn{background:transparent;color:inherit}
-  .cal.month .cd.today .dn,.cal.month .cd.today.sel .dn{background:var(--accent);color:var(--accent-ink,#fff)}
+  .cal.month .cd.sel .dn{background:var(--text);color:var(--text-inv);font-weight:700}
+  .cal.month .cd.today .dn,.cal.month .cd.today.sel .dn{background:var(--accent);color:var(--accent-ink,#fff);font-weight:700;box-shadow:0 2px 8px -2px color-mix(in oklab,var(--accent) 70%,transparent)}
   .cal.month .cd.out{opacity:1}
   .cal.month .cd.out .dn{color:var(--text-3)}
   .cal.month .cd.out .ch{opacity:.6}
@@ -68,3 +68,15 @@
 .cal-pop .cp-empty{font-size:13px;color:var(--text-3);text-align:center;padding:10px 0 12px}
 .cal-pop .cp-a{display:flex;gap:6px;margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
 @media (prefers-reduced-motion:reduce){.cal-pop,.cal-pop .ch{animation:none}}
+
+/* today and the chosen day, easy to find at a glance (phones, week view) */
+@media (max-width:900px){
+  .cal.month .cd.today .dn{background:var(--accent);color:var(--accent-ink,#fff);font-weight:700;box-shadow:0 3px 10px -3px color-mix(in oklab,var(--accent) 80%,transparent)}
+  .cal.month .cd.sel{background:color-mix(in oklab,var(--accent) 9%,transparent)}
+  .cal.month .cd.sel:not(.today) .dn{background:var(--text);color:var(--text-inv);font-weight:700}
+  .cal.month .cd.today.sel .dn{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+}
+.cal.week .wcol.today{background:color-mix(in oklab,var(--accent) 7%,transparent)}
+.cal.week .wcol.today .wh b{display:inline-grid;place-items:center;min-width:1.7em;height:1.7em;padding:0 .2em;border-radius:999px;background:var(--accent);color:var(--accent-ink,#fff)}
+.cal.week .wcol.sel{background:color-mix(in oklab,var(--accent) 6%,transparent);box-shadow:inset 0 0 0 2px var(--accent);border-radius:16px}
+.cal.week .wcol.sel .wh span{color:var(--accent);font-weight:600}

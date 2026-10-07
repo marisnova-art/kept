@@ -8,7 +8,7 @@ import { Prompts } from '../features/prompts.js';
 import { snippet, sortEntries } from '../features/search.js';
 import { Weather } from '../features/weather.js';
 import { LANG, fmtDate, fmtTime, t, tn } from '../lib/i18n.js';
-import { storyHTML } from '../features/story.js';
+import { Gate, storyHTML } from '../features/story.js';
 import { htmlToText, hydrateIcons, sanitizeHTML } from '../lib/sanitize.js';
 import { $, addDays, dayKey, esc, icon, ls, pad, parseDay, startOfWeek, todayKey } from '../lib/utils.js';
 import { rowS } from '../ui/entries.js';
@@ -165,6 +165,9 @@ function storyHome({ now, k, greet, name, ev, openTd, total, wx, capHTML, planHT
   const overdue = L.filter(e => e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.due < k).length;
   const featured = sortEntries(L.filter(e => e.pinned), 'updated').slice(0, 5);
   const nameHTML = name ? `${avatarHTML('face')}<b>${esc(name)}</b>${esc(t('today.nameSuffix'))}` : '';
+  if (!Gate.ready()) return storyWait({ now, capHTML });
+  /* the reveal animation plays once (and on reshuffle); later re-renders swap the text in place */
+  const play = !V.storyPlayed || V.storyPlay; V.storyPlayed = true; V.storyPlay = false;
   const story = storyHTML({
     greet, nameHTML, nameText: name ? name + t('today.nameSuffix') : '',
     events: ev, tasksOpen: openTd, overdue, featured, total, streak: streak(),
@@ -185,13 +188,32 @@ function storyHome({ now, k, greet, name, ev, openTd, total, wx, capHTML, planHT
         <div class="th-ymd"><span>${esc(fmtDate(now, { month: 'long', day: 'numeric' }))}</span><span>${esc(String(now.getFullYear()))}</span></div>
       </div>
       <div class="wx-slot" ${wx ? '' : 'hidden'}>${wx}</div>
-      <div class="story" aria-live="polite">${story}</div>
+      <div class="story ${play ? 'play' : ''}" aria-live="polite">${story}</div>
       <button class="st-shuffle" data-act="storyShuffle">${icon('refresh-cw')}<span>${esc(t('story.shuffle'))}</span></button>
     </header>
     <div class="today-stack">
 ${capHTML}
       ${fold('plan', 'calendar-days', t('today.planH'), planSum, planHTML.replace('<section class="tg tg-plan"', '<section class="tg tg-plan in-fold"'))}
       ${notesHTML ? fold('notes', 'notebook-pen', t('today.notesH'), notesSum, notesHTML.replace('<section class="tg tg-notes"', '<section class="tg tg-notes in-fold"')) : ''}
+    </div></div>`;
+}
+/* while the day's data is still arriving: the date, a breathing shimmer where the story will be, and the capture box */
+function storyWait({ now, capHTML }) {
+  const bar = (w, i) => `<span class="sk" style="--w:${w}%;--i:${i}"></span>`;
+  return `<div class="wrap today-v story-v">
+    <header class="th">
+      <div class="th-date">
+        <h1 class="day-big">${esc(fmtDate(now, { weekday: 'long' }))}<i></i></h1>
+        <div class="th-ymd"><span>${esc(fmtDate(now, { month: 'long', day: 'numeric' }))}</span><span>${esc(String(now.getFullYear()))}</span></div>
+      </div>
+      <div class="story story-wait" role="status" aria-label="${esc(t('story.loading'))}">
+        <p class="sk-p">${[94, 81].map(bar).join('')}</p><p class="sk-p">${[88, 97, 46].map((w, i) => bar(w, i + 2)).join('')}</p><p class="sk-p">${[72].map((w, i) => bar(w, i + 5)).join('')}</p>
+        <span class="sk-note"><span class="sk-dots"><i></i><i></i><i></i></span>${esc(t('story.loading'))}</span>
+      </div>
+    </header>
+    <div class="today-stack">
+${capHTML}
+      <div class="sk-fold"></div><div class="sk-fold" style="--i:1"></div>
     </div></div>`;
 }
 function toggleFold(id) {

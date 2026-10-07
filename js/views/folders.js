@@ -1,6 +1,6 @@
 /* Kept — Shared folders: the folder list, one folder's records, members and invites */
 import { CAT_COLORS, S, live } from '../data/store.js';
-import { sortEntries } from '../features/search.js';
+import { byDay, sortEntries } from '../features/search.js';
 import { Share } from '../features/share.js';
 import { fmtNum, t, tn } from '../lib/i18n.js';
 import { esc, icon } from '../lib/utils.js';
@@ -42,7 +42,7 @@ function viewFolder(id) {
   const sub = `${esc(tn('share.membersN', f.members.filter(m => m.status === 'active').length))} · ${esc(roleLabel(f.role))}`;
   const canAdd = f.role !== 'viewer';
   return `<div class="wrap view-enter">${header(`<span style="color:${esc(f.color || 'inherit')}">●</span> ${esc(f.name)} <span class="mut">${fmtNum(list.length)}</span>`, sub, actions)}
-    ${entryList(list, { grouped: S.prefs.sort === 'date', empty: `<div class="empty"><div class="orb"></div><div class="big">${esc(t('share.folderEmpty'))}</div><div>${esc(t(canAdd ? 'share.folderEmptySub' : 'share.folderEmptyView'))}</div>${canAdd ? `<div style="margin-top:20px"><button class="btn primary" data-act="new" data-folder="${f.id}">${icon('plus')}<span>${esc(t('common.newRecord'))}</span></button></div>` : ''}</div>` })}</div>`;
+    ${entryList(list, { grouped: byDay(), empty: `<div class="empty"><div class="orb"></div><div class="big">${esc(t('share.folderEmpty'))}</div><div>${esc(t(canAdd ? 'share.folderEmptySub' : 'share.folderEmptyView'))}</div>${canAdd ? `<div style="margin-top:20px"><button class="btn primary" data-act="new" data-folder="${f.id}">${icon('plus')}<span>${esc(t('common.newRecord'))}</span></button></div>` : ''}</div>` })}</div>`;
 }
 
 /* ---------- dialogs ---------- */

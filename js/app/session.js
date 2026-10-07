@@ -7,6 +7,7 @@ import { getSupabase } from '../data/supabase.js';
 import { Sync } from '../data/sync.js';
 import { Editor } from '../editor/editor.js';
 import { Billing } from '../features/billing.js';
+import { Gate } from '../features/story.js';
 import { Reminders } from '../features/reminders.js';
 import { Share } from '../features/share.js';
 import { Weather } from '../features/weather.js';
@@ -36,8 +37,8 @@ async function startCloud(user, { offline = false } = {}) {
   S.mode = 'cloud'; S.user = { id: user.id, email: user.email }; await loadNamespace(user.id); Sync.set(navigator.onLine && !offline ? 'syncing' : 'offline');
   ls.set('kept.lastUser', S.user); ls.del('kept.mode'); enterApp();
   if (offline) { reconnectLater(); return; }
-  Sync.pullPrefs().then(() => render()).catch(() => {});
-  await Sync.run();
+  Gate.hold(Sync.pullPrefs().then(() => render()));
+  await Gate.hold(Sync.run());
   Billing.refresh().catch(() => {});
   // offer to move device-only records into the account
   try { const loc = await new LocalDB('local').open(); const n = (await loc.all('entries')).length; if (n) { const ok = await confirmDlg(t('mig.title'), tn('mig.body', n), t('mig.go')); if (ok) await migrateLocal(loc); } } catch {}

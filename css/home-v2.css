@@ -7,27 +7,51 @@
 #topbar .avatar{width:40px;height:40px;font-size:var(--t-body)}
 @media (max-width:900px){#topbar .avatar{width:38px;height:38px}}
 
-/* ---------- story ---------- */
-.story{display:flex;flex-direction:column;gap:.55em;max-width:780px;font-size:clamp(21px,2.5vw,29px);line-height:1.38;letter-spacing:-.022em;color:var(--text-2);font-weight:450;margin:2px 0 0;text-wrap:pretty}
-.story .st-p{margin:0;animation:stIn .6s var(--ease) both;animation-delay:calc(var(--i) * 70ms)}
-.story .st-p:first-child{color:var(--text-2)}
-.story .st-lead{color:var(--text-3);font-weight:400;font-style:italic;letter-spacing:-.01em}
-.story b{color:var(--text);font-weight:600}
-.story .sc{display:inline;color:var(--text);text-decoration:none;white-space:nowrap;border-radius:.3em;transition:background .2s}
+/* ---------- story ----------
+   Bold, high-contrast prose with stickers in the line: coloured tiles that hold a line icon,
+   plain colour emoji, and the mono line icons elsewhere on the page. */
+.story{display:flex;flex-direction:column;gap:.62em;max-width:780px;font-size:clamp(21px,2.4vw,28px);line-height:1.5;letter-spacing:-.018em;color:var(--text);font-weight:560;margin:2px 0 0;text-wrap:pretty}
+.story .st-p{margin:0}
+.story.play .st-p{animation:stIn .6s var(--ease) both;animation-delay:calc(var(--i) * 70ms)}
+.story .st-lead{color:var(--text-2);font-weight:500;letter-spacing:-.012em}
+.story b{color:var(--text);font-weight:700}
+.story .em{display:inline-block;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-weight:400;font-size:1.02em;line-height:1;margin-right:.22em;vertical-align:-.04em}
+.story .sc{display:inline;color:var(--text);text-decoration:none;white-space:nowrap;border-radius:.3em;padding:0 .08em;transition:background .2s}
 .story .sc:hover{background:var(--surface)}
-.story .sc .ic{display:inline-grid;place-items:center;width:1.02em;height:1.02em;border:2px solid currentColor;border-radius:.22em;vertical-align:-.12em;margin-right:.18em}
-.story .sc .ic svg{width:.64em;height:.64em}
-.story .st-t{display:inline;font:inherit;color:var(--text);font-weight:500;padding:0;background:linear-gradient(transparent 62%,color-mix(in oklab,var(--accent) 26%,transparent) 0);border-radius:2px;cursor:pointer;transition:background-size .3s}
+.story .sc .em{margin-right:.12em}
+.story .tile{display:inline-grid;place-items:center;width:1.18em;height:1.18em;border-radius:.3em;vertical-align:-.2em;margin-right:.2em;color:#fff;background:var(--tg);box-shadow:inset 0 -2px 0 rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.12)}
+.story .tile svg{width:.72em;height:.72em;stroke-width:2.6}
+.story .tile.t-red{--tg:linear-gradient(160deg,#ff6b5e,#e5354a)}
+.story .tile.t-green{--tg:linear-gradient(160deg,#4fd67b,#1fa855)}
+.story .tile.t-amber{--tg:linear-gradient(160deg,#ffc94a,#f59a0c)}
+.story .tile.t-blue{--tg:linear-gradient(160deg,#5fb2ff,#2f6fe8)}
+.story .tile.t-gray{--tg:linear-gradient(160deg,#8e939c,#5d636d)}
+.story .st-t{display:inline;font:inherit;color:var(--text);font-weight:650;padding:0;background:linear-gradient(transparent 64%,color-mix(in oklab,var(--accent) 30%,transparent) 0);border-radius:2px;cursor:pointer;transition:color .2s}
 .story .st-t:hover{color:var(--accent)}
 .story.out .st-p{animation:stOut .18s var(--ease) forwards}
 @keyframes stIn{from{opacity:0;transform:translateY(10px);filter:blur(3px)}}
 @keyframes stOut{to{opacity:0;transform:translateY(-6px)}}
-.st-shuffle{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:14px;padding:6px 12px 6px 10px;border-radius:999px;font-size:var(--t-sub);color:var(--text-3);border:1px solid var(--line-2);transition:color .2s,border-color .2s}
+.st-shuffle{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:14px;padding:6px 12px 6px 10px;border-radius:999px;font-size:var(--t-sub);color:var(--text-2);border:1px solid var(--line-2);transition:color .2s,border-color .2s}
 .st-shuffle:hover{color:var(--text);border-color:var(--text-3)}
 .st-shuffle svg{width:15px;height:15px}
 .st-shuffle.spin svg{animation:spin .5s var(--ease)}
 .story-v .th{display:flex;flex-direction:column}
-@media (max-width:900px){.story{font-size:20px;line-height:1.42;gap:.6em}}
+@media (max-width:900px){.story{font-size:20px;line-height:1.52;gap:.66em}}
+
+/* loading: bars where the lines will be, breathing in a slow wave, then the story arrives at once */
+.story-wait{gap:.7em;width:100%;max-width:640px}
+.story-wait .sk-p{margin:0;display:flex;flex-direction:column;gap:.38em}
+.story-wait .sk{display:block;width:var(--w);height:.8em;border-radius:.4em;background:linear-gradient(90deg,var(--surface-2) 0%,color-mix(in oklab,var(--surface-2) 40%,var(--line-2)) 45%,var(--surface-2) 90%) 0 0/250% 100%;
+  animation:skIn .5s var(--ease) both,skWave 1.6s ease-in-out infinite;animation-delay:calc(var(--i) * 60ms),calc(var(--i) * 90ms)}
+.story-wait .sk-note{display:inline-flex;align-items:center;gap:10px;margin-top:4px;font-size:var(--t-sub);font-weight:500;letter-spacing:0;color:var(--text-3);animation:skIn .5s .4s var(--ease) both}
+.sk-dots{display:inline-flex;gap:4px}
+.sk-dots i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:skDot 1.2s ease-in-out infinite}
+.sk-dots i:nth-child(2){animation-delay:.15s}.sk-dots i:nth-child(3){animation-delay:.3s}
+.sk-fold{height:66px;border-radius:22px;background:var(--surface);border:1px solid var(--line);animation:skIn .5s var(--ease) both,skPulse 1.6s ease-in-out infinite;animation-delay:calc(var(--i,0) * 80ms + .2s),calc(var(--i,0) * 200ms)}
+@keyframes skIn{from{opacity:0;transform:translateY(6px)}}
+@keyframes skWave{0%{background-position:100% 0}100%{background-position:-50% 0}}
+@keyframes skDot{0%,80%,100%{transform:scale(.6);opacity:.35}40%{transform:scale(1);opacity:1}}
+@keyframes skPulse{50%{opacity:.6}}
 
 /* ---------- folded groups: a one-line summary, open on tap ---------- */
 .fold{border-radius:22px;background:var(--surface);border:1px solid var(--line);overflow:hidden;transition:background .25s}
@@ -49,4 +73,7 @@
 .fold .tg.in-fold{background:none;border:0;box-shadow:none;margin:0;padding-top:0}
 .fold .tg.in-fold > .tg-h h2{display:none}
 .fold .tg.in-fold > .tg-h{justify-content:flex-end}
-@media (prefers-reduced-motion: reduce){.story .st-p,.story.out .st-p{animation:none}.fold-b,.fold-chev,.fold-in > .tg{transition:none}}
+@media (prefers-reduced-motion: reduce){.story .st-p,.story.out .st-p,.story-wait .sk,.sk-dots i,.sk-fold{animation:none}.fold-b,.fold-chev,.fold-in > .tg{transition:none}}
+.fold[data-fold="plan"] .fold-ic{background:linear-gradient(160deg,#5fb2ff,#2f6fe8);color:#fff}
+.fold[data-fold="notes"] .fold-ic{background:linear-gradient(160deg,#ffc94a,#f59a0c);color:#fff}
+.fold-ic{box-shadow:inset 0 -2px 0 rgba(0,0,0,.1)}

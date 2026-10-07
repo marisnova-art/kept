@@ -10,6 +10,7 @@ const WMO = c => c === 0 ? 'clear' : c <= 2 ? 'partly' : c === 3 ? 'cloudy' : c 
 const Weather = {
   data: ls.get('kept.weather', null),
   busy: false,
+  tried: false, // a fetch was attempted this session (done or failed)
   city() { return cityLookup(S.prefs.wxCity); },
   enabled() { return !!this.city(); },
   fresh(ms = 50 * 60e3) { return !!(this.data && this.data.city === S.prefs.wxCity && Date.now() - this.data.at < ms); },
@@ -36,7 +37,7 @@ const Weather = {
       this.data = { city: c.id, at: Date.now(), temp: Math.round(j.current.temperature_2m), code: j.current.weather_code, isDay: j.current.is_day, max: Math.round(j.daily.temperature_2m_max[0]), min: Math.round(j.daily.temperature_2m_min[0]) };
       ls.set('kept.weather', this.data);
     } catch (e) { console.warn(e); }
-    finally { this.busy = false; emit('weather'); }
+    finally { this.busy = false; this.tried = true; emit('weather'); }
   },
   html() {
     const c = this.city(); if (!c) return '';
