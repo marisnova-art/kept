@@ -108,7 +108,7 @@ const Editor = {
         <div class="ed-tools collapsed" id="edTools" role="toolbar" aria-label="${esc(t('fmt.toolbar'))}">
           ${tb('data-cmd="undo"', 'undo-2', 'fmt.undo')}${tb('data-cmd="redo"', 'redo-2', 'fmt.redo')}
           <span class="tb-sep"></span>
-          <button class="tb tb-fmt" data-cmd="fmt" aria-expanded="false" aria-controls="edToolsX" data-i18n-title="fmt.tools"><span class="fg" aria-hidden="true">Aa</span><span class="fl" data-i18n="fmt.tools"></span>${icon('chevron-up', 'fc')}</button>${tb('data-panel="tpl"', 'layout-template', 'tpl.title')}
+          <button class="tb tb-pill tb-fmt" data-cmd="fmt" aria-expanded="false" aria-controls="edToolsX" data-i18n-title="fmt.tools"><span class="fg" aria-hidden="true">Aa</span><span class="fl" data-i18n="fmt.tools"></span>${icon('chevron-up', 'fc')}</button><button class="tb tb-pill tb-tpl" data-panel="tpl" data-i18n-title="tpl.title"><span class="fg" aria-hidden="true">${icon('layout-template')}</span><span class="fl" data-i18n="tpl.short"></span></button>
           <span class="tb-x" id="edToolsX">
             <span class="tb-sep"></span>
             ${tb('data-mark="b"', 'bold', 'fmt.bold')}${tb('data-mark="i"', 'italic', 'fmt.italic')}${tb('data-mark="u"', 'underline', 'fmt.underline')}${tb('data-mark="s"', 'strikethrough', 'fmt.strike')}

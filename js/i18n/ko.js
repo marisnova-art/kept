@@ -799,6 +799,7 @@ export default {
   /* v2 — editor */
   "fmt.tools": "서식",
   "tpl.title": "서식 템플릿",
+  "tpl.short": "템플릿",
   "tpl.sub": "눌러서 바로 그 형식으로 쓰기 시작해요",
   "spacing.xtight": "아주 좁게",
   "spacing.tight": "좁게",

@@ -42,7 +42,7 @@ kbd{font-family:var(--mono);font-size:var(--t-cap);color:var(--text-3);border:1p
 .icon-btn:hover{background:var(--surface);color:var(--text)}
 .icon-btn:active{transform:scale(.92)}
 .icon-btn .badge{position:absolute;top:7px;right:7px;min-width:16px;height:16px;border-radius:8px;background:var(--dot);color:#fff;
-  font-size:10px;font-weight:600;display:grid;place-items:center;padding:0 4px;border:2px solid var(--bg)}
+  font-size:10px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:content-box;text-indent:0;letter-spacing:0;border:2px solid var(--bg)}
 .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#7a2cff);color:#fff;
   display:grid;place-items:center;font-weight:600;font-size:var(--t-body);flex:none}
 .btn,.pill-btn,a.btn{text-decoration:none;color:inherit}

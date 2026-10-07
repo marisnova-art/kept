@@ -818,6 +818,7 @@ export default {
   /* v2 — editor */
   "fmt.tools": "Formatting",
   "tpl.title": "Templates",
+  "tpl.short": "Templates",
   "tpl.sub": "Tap one to start writing with it",
   "spacing.xtight": "Extra tight",
   "spacing.tight": "Tight",
