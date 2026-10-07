@@ -2,7 +2,7 @@
 /* ---------- TODAY (reference 2 header + statement) ---------- */
 .today-hero{display:grid;grid-template-columns:1fr auto;align-items:start;margin:22px 0 26px}
 .day-big{font-size:var(--t-display);font-weight:600;letter-spacing:-.055em;line-height:.9;display:flex;align-items:flex-start;gap:.06em}
-.day-big i{width:.17em;height:.17em;border-radius:50%;background:var(--dot);margin-top:.22em;display:block}
+.day-big i{width:.15em;height:.15em;border-radius:.035em;background:var(--mark);margin-top:.22em;display:block;transform:rotate(14deg);box-shadow:inset 0 -.025em 0 rgba(0,0,0,.14)}
 .date-stack{text-align:right;color:var(--text-3);font-size:var(--t-h1);line-height:1.05;letter-spacing:-.02em;font-weight:500;padding-top:8px}
 .statement{font-size:var(--t-hero);line-height:1.2;letter-spacing:-.03em;color:var(--text-3);font-weight:500;max-width:880px;margin:0}
 .statement b{color:var(--text);font-weight:600}

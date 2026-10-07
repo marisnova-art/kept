@@ -804,7 +804,6 @@ export default {
   "stat.places": "Places saved",
   "today.planH": "Schedule",
   "nav.home": "Home",
-  "dock.menu": "Open menu",
   "dock.all": "Records",
   "set.textSize": "Text size",
   "set.textSizeSub": "Make everything easier to read.",

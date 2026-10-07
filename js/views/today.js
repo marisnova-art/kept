@@ -63,9 +63,9 @@ function viewToday() {
   const { ev, td } = dayAgenda(k); const openTd = td.filter(e => !e.meta.done);
   const ideas = live().filter(e => e.type === 'idea' && dayKey(new Date(e.created_at)) === k).length;
   const parts = [];
-  if (ev.length) parts.push(`<span class="ic">${icon('calendar')}</span><b>${esc(tn('today.events', ev.length))}</b>`);
-  if (openTd.length) parts.push(`<span class="ic">${icon('check')}</span><b>${esc(tn('today.tasks', openTd.length))}</b>`);
-  if (ideas) parts.push(`<span class="ic">${icon('lightbulb')}</span><b>${esc(tn('today.ideas', ideas))}</b>`);
+  if (ev.length) parts.push(`<span class="ic t-red">${icon('calendar')}</span><b>${esc(tn('today.events', ev.length))}</b>`);
+  if (openTd.length) parts.push(`<span class="ic t-green">${icon('check')}</span><b>${esc(tn('today.tasks', openTd.length))}</b>`);
+  if (ideas) parts.push(`<span class="ic t-amber">${icon('lightbulb')}</span><b>${esc(tn('today.ideas', ideas))}</b>`);
   let tail = '';
   const timed = ev.filter(e => e.meta.time);
   if (timed.length) {

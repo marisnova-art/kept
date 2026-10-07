@@ -786,7 +786,6 @@ export default {
   "today.planH": "일정",
   "nav.home": "홈",
   "dock.all": "기록",
-  "dock.menu": "메뉴 열기",
   "set.textSize": "글자 크기",
   "set.textSizeSub": "눈이 편하도록 화면 전체 글자를 키웁니다.",
   "fs.m": "보통",

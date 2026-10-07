@@ -11,7 +11,7 @@ import { $, debounce, esc, icon, nowISO } from '../lib/utils.js';
 import { fmtDue } from '../ui/entries.js';
 import { burst, closeLayers, toast } from '../ui/feedback.js';
 import { V, route } from '../ui/router.js';
-import { InstallPrompt, dockOpen, render, renderBell, renderView, rerender, syncLabel } from '../ui/shell.js';
+import { InstallPrompt, render, renderBell, renderView, rerender, syncLabel } from '../ui/shell.js';
 
 /* ---------- Global events ---------- */
 function bindGlobal() {
@@ -22,7 +22,6 @@ function bindGlobal() {
     if (el.tagName === 'A' && el.dataset.act !== 'setJump') return fn(el, e);
     fn(el, e);
   });
-  document.addEventListener('pointerdown', e => { if ($('#dock.open') && !e.target.closest('#dock')) dockOpen(false); }, true);
   document.addEventListener('keydown', e => {
     const el = e.target.closest?.('[data-act="open"],[data-act="calDay"]'); if (el && (e.key === 'Enter' || e.key === ' ') && e.target === el) { e.preventDefault(); el.click(); }
   });
@@ -46,7 +45,6 @@ function bindGlobal() {
     const typing = /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || e.target.isContentEditable;
     if (e.key === 'Escape') {
       if ($('.menu,.dialog,.cal-pop')) { closeLayers(); return; }
-      if ($('#dock.open')) { dockOpen(false); return; }
       if (Editor.e && Editor.panel) { Editor.closePanel(); Editor.updateToolState(); return; }
       if (Editor.e && Editor.drawerOpen) { Editor.toggleDrawer(false); return; }
       if (Editor.e) { Editor.close(); return; }
@@ -66,7 +64,7 @@ function bindGlobal() {
     if (w === 'story') { if (route().name === 'today') renderView(); return; }
     if (w !== 'weather' || $('.story-wait')) return; const sl = $('.wx-slot'); if (sl) { sl.innerHTML = Weather.html(); sl.hidden = !sl.innerHTML; }
   });
-  addEventListener('hashchange', () => { if (Editor.e) Editor.close(true); closeLayers(); dockOpen(false); render(); $('#view')?.focus({ preventScroll: true }); });
+  addEventListener('hashchange', () => { if (Editor.e) Editor.close(true); closeLayers(); render(); $('#view')?.focus({ preventScroll: true }); });
   addEventListener('online', () => { S.online = true; netbar(false); Sync.run(); });
   addEventListener('offline', () => { S.online = false; netbar(true); if (S.mode === 'cloud') Sync.set('offline'); });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { Sync.schedule(300); renderBell(); } else Editor.commit?.flush?.(); });
