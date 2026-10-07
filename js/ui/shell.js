@@ -82,10 +82,12 @@ function shell() {
     </header>
     <main id="view" tabindex="-1"></main>
   </div>`;
-  $('#dock').innerHTML = `<nav class="dock-seg" aria-label="${esc(t('nav.main'))}">
+  $('#dock').innerHTML = `<button class="dock-tg" data-act="dockToggle" aria-expanded="false" aria-controls="dockNav" aria-label="${esc(t('dock.menu'))}"><span class="dt-ic">${icon('home')}</span>${icon('x', 'dt-x')}</button>
+    <nav class="dock-seg" id="dockNav" aria-label="${esc(t('nav.main'))}">
     <a href="#/today" data-r="today" aria-label="${esc(t('nav.home'))}">${icon('home')}<span>${esc(t('nav.home'))}</span></a><a href="#/all" data-r="all" aria-label="${esc(t('nav.all'))}">${icon('inbox')}<span>${esc(t('dock.all'))}</span></a>
     <a href="#/tasks" data-r="tasks" aria-label="${esc(t('nav.tasks'))}">${icon('check-square')}<span>${esc(t('nav.tasks'))}</span></a><a href="#/calendar" data-r="calendar" aria-label="${esc(t('nav.calendar'))}">${icon('calendar')}<span>${esc(t('nav.calendar'))}</span></a></nav>
     <button class="dock-new" data-act="new" aria-label="${esc(t('common.newRecord'))}">${icon('plus')}</button>`;
+  dockOpen(false);
   const mq = matchMedia('(max-width:900px)'); const fixMenu = () => $('#menuBtn').style.display = mq.matches ? '' : 'none'; mq.addEventListener('change', fixMenu); fixMenu();
   const q = $('#q');
   q.addEventListener('input', debounce(() => { V.search.q = q.value; V.listLimit = 60; if (route().name !== 'search') { if (q.value.trim()) go('search'); } else renderView(); }, 90));
@@ -103,6 +105,12 @@ const VIEWS = { today: viewToday, all: () => viewList('all'), recent: () => view
   uncategorized: () => viewList('uncategorized'), tag: a => viewList('tag', a), search: viewSearch, tasks: viewTasks, calendar: viewCalendar, items: viewItems, contacts: viewContacts,
   categories: viewCategories, folders: viewFolders, folder: viewFolder, tags: viewTags, trash: viewTrash, settings: viewSettings, support: viewSupport, privacy: () => viewLegal('privacy'), terms: () => viewLegal('terms'), about: viewAbout, faq: viewFaq };
 let lastRoute = '';
+const DOCK_IC = { today: 'home', all: 'inbox', tasks: 'check-square', calendar: 'calendar' };
+/* phones: the tab bar stays folded behind one button (showing where you are); the write button is always out */
+function dockOpen(open = !$('#dock')?.classList.contains('open')) {
+  const d = $('#dock'); if (!d) return; d.classList.toggle('open', open);
+  d.querySelector('.dock-tg')?.setAttribute('aria-expanded', String(open)); d.querySelector('.dock-seg').inert = !open;
+}
 function renderView(keepScroll = true) {
   const r = route(); const fn = VIEWS[r.name] || viewToday; const v = $('#view'); if (!v) return;
   const key = r.name + '/' + r.arg; const same = key === lastRoute; const st = v.scrollTop;
@@ -113,6 +121,7 @@ function renderView(keepScroll = true) {
   lastRoute = key;
   if (focusId && same) { const f = document.getElementById(focusId); if (f && f !== document.body) { f.focus(); try { if (caret != null) f.setSelectionRange(caret, caret); } catch {} } }
   $$('#dock a').forEach(a => a.classList.toggle('on', a.dataset.r === r.name));
+  const dti = $('#dock .dt-ic'); if (dti) dti.innerHTML = icon(DOCK_IC[r.name] || 'layout-grid');
   if (!same) $$('#view .card, #view .sw-wrap, #view .task, #view .item-card, #view .contact-row, #view .warm, #view .st-card').slice(0, 30).forEach((n, i) => { n.classList.add('rise'); n.style.setProperty('--i', i); });
   if (V.flash && Date.now() - V.flash.at < 4000) $$(`#view [data-act="open"][data-id="${V.flash.id}"]`).forEach(n => { n.classList.remove('just-saved'); void n.offsetWidth; n.classList.add('just-saved'); });
   const ld = $('#loadMore'); if (ld && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); V.listLimit += 60; renderView(); } }, { root: v, rootMargin: '400px' }); io.observe(ld); }
@@ -137,4 +146,4 @@ const UI = {
   }
 };
 
-export { InstallPrompt, UI, render, renderBell, renderView, rerender, shell, syncLabel };
+export { InstallPrompt, UI, dockOpen, render, renderBell, renderView, rerender, shell, syncLabel };

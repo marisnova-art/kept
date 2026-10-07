@@ -22,7 +22,7 @@ import { applyI18n, t, tn } from '../lib/i18n.js';
 import { $, $$, addDays, esc, ls, nowISO, startOfWeek, todayKey, uid } from '../lib/utils.js';
 import { burst, closeLayers, confirmDlg, dialog, menu, promptDlg, toast } from '../ui/feedback.js';
 import { V, go, route } from '../ui/router.js';
-import { InstallPrompt, UI, render, renderView, rerender, shell } from '../ui/shell.js';
+import { InstallPrompt, UI, dockOpen, render, renderView, rerender, shell } from '../ui/shell.js';
 import { Share } from '../features/share.js';
 import { dayPop, popMode } from '../views/calendar.js';
 import { acceptInvite, declineInvite, manageFolder, newFolder } from '../views/folders.js';
@@ -110,7 +110,8 @@ const ACT = {
   setTheme: el => { savePrefs({ theme: el.dataset.v }); renderView(); },
   setHome: el => { savePrefs({ homeStyle: el.dataset.v }); renderView(); },
   fold: el => { toggleFold(el.dataset.id); haptic(5); },
-  storyShuffle: el => { V.storyShift = (V.storyShift || 0) + 1; V.storyPlay = true; const st = document.querySelector('.story'); if (st) { st.classList.add('out'); setTimeout(renderView, 180); } else renderView(); haptic(5); el.classList.remove('spin'); void el.offsetWidth; el.classList.add('spin'); },
+  dockToggle: () => { dockOpen(); haptic(5); },
+  storyShuffle: () => { V.storyShift = (V.storyShift || 0) + 1; V.storyPlay = true; const st = document.querySelector('.story:not(.story-wait)'); if (st) { st.classList.add('out'); setTimeout(renderView, 420); } },
   setFs: el => { savePrefs({ textSize: el.dataset.v }); applyPrefs(); renderView(); },
   setAccent: el => { savePrefs({ accent: el.dataset.v }); renderView(); },
   setJump: (el, ev) => { ev.preventDefault(); $('#set-' + el.dataset.id)?.scrollIntoView({ behavior: 'smooth' }); },

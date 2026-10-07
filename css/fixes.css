@@ -5,3 +5,9 @@ html, body, button, a, input, select, textarea, [contenteditable] { touch-action
 /* tag pills share the .tg class name with the Today group cards (v1.6), which turned
    the #tag in record cards into a tall rounded box; tags are always spans, groups never are */
 span.tg{display:inline-block;flex-direction:initial;gap:0;background:var(--surface-3);border:0;padding:1px 8px;border-radius:var(--r-pill);font-size:var(--t-cap);line-height:1.6;color:var(--text-2)}
+
+/* v2: on wide screens the content sits next to the sidebar (left-aligned) instead of floating in the middle */
+@media (min-width:901px){
+  #view .wrap,#view .wrap[style]{margin-left:0;margin-right:auto}
+  #topbar{margin-left:0;margin-right:auto}
+}

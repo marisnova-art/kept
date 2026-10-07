@@ -189,7 +189,6 @@ function storyHome({ now, k, greet, name, ev, openTd, total, wx, capHTML, planHT
       </div>
       <div class="wx-slot" ${wx ? '' : 'hidden'}>${wx}</div>
       <div class="story ${play ? 'play' : ''}" aria-live="polite">${story}</div>
-      <button class="st-shuffle" data-act="storyShuffle">${icon('refresh-cw')}<span>${esc(t('story.shuffle'))}</span></button>
     </header>
     <div class="today-stack">
 ${capHTML}

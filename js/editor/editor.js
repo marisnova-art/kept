@@ -108,7 +108,7 @@ const Editor = {
         <div class="ed-tools collapsed" id="edTools" role="toolbar" aria-label="${esc(t('fmt.toolbar'))}">
           ${tb('data-cmd="undo"', 'undo-2', 'fmt.undo')}${tb('data-cmd="redo"', 'redo-2', 'fmt.redo')}
           <span class="tb-sep"></span>
-          ${tb('data-cmd="fmt" aria-expanded="false" aria-controls="edToolsX"', 'a-large-small', 'fmt.tools', 'tb-fmt')}${tb('data-panel="tpl"', 'layout-template', 'tpl.title')}
+          <button class="tb tb-fmt" data-cmd="fmt" aria-expanded="false" aria-controls="edToolsX" data-i18n-title="fmt.tools"><span class="fg" aria-hidden="true">Aa</span><span class="fl" data-i18n="fmt.tools"></span>${icon('chevron-up', 'fc')}</button>${tb('data-panel="tpl"', 'layout-template', 'tpl.title')}
           <span class="tb-x" id="edToolsX">
             <span class="tb-sep"></span>
             ${tb('data-mark="b"', 'bold', 'fmt.bold')}${tb('data-mark="i"', 'italic', 'fmt.italic')}${tb('data-mark="u"', 'underline', 'fmt.underline')}${tb('data-mark="s"', 'strikethrough', 'fmt.strike')}
@@ -127,7 +127,7 @@ const Editor = {
       </section>`;
     const bubble = document.createElement('div'); bubble.id = 'bubble'; bubble.setAttribute('role', 'toolbar');
     bubble.className = 'mini';
-    bubble.innerHTML = `<button class="bb-open" data-bb="open" aria-expanded="false" aria-label="${esc(t('fmt.tools'))}">${icon('a-large-small')}</button><span class="bb-full"><button data-mark="b">${icon('bold')}</button><button data-mark="u">${icon('underline')}</button><button data-mark="s">${icon('strikethrough')}</button><span class="sep"></span>` +
+    bubble.innerHTML = `<button class="bb-open" data-bb="open" aria-expanded="false" aria-label="${esc(t('fmt.tools'))}"><span class="fg" aria-hidden="true">Aa</span>${icon('chevron-right', 'fc')}</button><span class="bb-full"><button data-mark="b">${icon('bold')}</button><button data-mark="u">${icon('underline')}</button><button data-mark="s">${icon('strikethrough')}</button><span class="sep"></span>` +
       ['red', 'orange', 'green', 'blue', 'violet'].map(c => `<button data-color="${c}" aria-label="${esc(t('color.' + c))}"><span class="dotc" style="--dc:var(--c-${c})"></span></button>`).join('') +
       `<span class="sep"></span><button data-hl="hl-yellow">${icon('highlighter')}</button><button data-cmd="clear">${icon('eraser')}</button></span>`;
     $('#bubble')?.remove(); document.body.appendChild(bubble);

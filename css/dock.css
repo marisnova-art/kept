@@ -10,3 +10,27 @@
 .dock-new{width:66px;height:66px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .25s var(--spring)}
 .dock-new:active{transform:scale(.9)}
 .dock-new svg.i{width:26px;height:26px}
+
+/* ---------- v2: the tab bar folds away; one button (showing where you are) opens it, the write button stays ---------- */
+@media (max-width:900px){
+  #dock{left:16px;right:16px;transform:none;justify-content:space-between;align-items:flex-end;pointer-events:none}
+  #dock > *{pointer-events:auto}
+  .typing-any #dock,.kb-open #dock,.editor-open #dock,.composer-open #dock{transform:translateY(140%)}
+  .dock-tg{position:relative;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--text);
+    background:var(--glass);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--line);box-shadow:var(--shadow);
+    transition:transform .25s var(--spring),background .25s,color .25s}
+  .dock-tg:active{transform:scale(.9)}
+  .dock-tg svg.i{width:22px;height:22px;grid-area:1/1;transition:transform .35s var(--spring),opacity .2s}
+  .dock-tg .dt-ic{grid-area:1/1;display:grid;place-items:center}
+  .dock-tg .dt-x{opacity:0;transform:rotate(-90deg) scale(.6)}
+  #dock.open .dock-tg{background:var(--text);color:var(--text-inv)}
+  #dock.open .dock-tg .dt-ic svg{opacity:0;transform:rotate(90deg) scale(.6)}
+  #dock.open .dock-tg .dt-x{opacity:1;transform:none}
+  .dock-seg{position:absolute;left:0;bottom:66px;transform-origin:28px 100%;opacity:0;visibility:hidden;transform:translateY(12px) scale(.6);
+    transition:opacity .18s,transform .3s var(--ease),visibility 0s .3s}
+  #dock.open .dock-seg{opacity:1;visibility:visible;transform:none;transition:opacity .2s,transform .42s var(--spring),visibility 0s}
+  .dock-seg a{opacity:0;transform:translateY(8px)}
+  #dock.open .dock-seg a{opacity:1;transform:none;transition:opacity .25s,transform .4s var(--spring),background .3s var(--ease),color .3s}
+  #dock.open .dock-seg a:nth-child(2){transition-delay:30ms}#dock.open .dock-seg a:nth-child(3){transition-delay:60ms}#dock.open .dock-seg a:nth-child(4){transition-delay:90ms}
+}
+@media (prefers-reduced-motion:reduce){.dock-seg,.dock-seg a,.dock-tg svg.i{transition:none!important}}

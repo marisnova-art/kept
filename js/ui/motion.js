@@ -28,7 +28,7 @@ function land(html, from, target) {
 function saveTarget(id) {
   const card = document.querySelector(`#view [data-act="open"][data-id="${id}"]`);
   if (card) { const r = card.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) return card; }
-  const dock = $('#dock a[data-r="all"]'); if (dock && dock.offsetParent) return dock;
+  const dock = $('#dock.open a[data-r="all"]') || $('#dock .dock-tg'); if (dock && dock.offsetParent) return dock;
   return $('#sidebar a[href="#/all"]');
 }
 

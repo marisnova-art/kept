@@ -1,42 +1,39 @@
 /* Kept — v2 editor: folded toolbar, mini selection ticker, templates, 5-step spacing, motion */
 
 /* ---------- toolbar under the text: undo / redo first, formatting folded behind one icon ---------- */
-.ed-tools .tb-x{display:contents}
-.ed-tools.collapsed .tb-x{display:none}
+/* the formatting set opens as a tray that rises over the toolbar row, grouped, scrolling sideways on phones */
+#editor .ed-tools{position:relative;flex-wrap:wrap;overflow:visible;row-gap:0}
+#editor .ed-tools .tb-x{order:-1;flex:0 0 100%;display:flex;align-items:center;gap:2px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+  max-height:0;margin:0;padding:0 6px;border-radius:16px;background:color-mix(in oklab,var(--surface) 70%,transparent);box-shadow:inset 0 0 0 1px var(--line);
+  opacity:0;visibility:hidden;transform:translateY(10px);transition:max-height .34s var(--ease),margin .34s var(--ease),padding .34s var(--ease),opacity .2s,transform .34s var(--spring),visibility 0s .34s}
+#editor .ed-tools .tb-x::-webkit-scrollbar{display:none}
+@media (max-width:700px){#editor .ed-tools .tb-x{mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}}
+#editor .ed-tools.expanded .tb-x{max-height:64px;margin:2px 0 8px;padding:5px 6px;opacity:1;visibility:visible;transform:none;transition:max-height .34s var(--ease),margin .34s var(--ease),padding .34s var(--ease),opacity .22s .04s,transform .4s var(--spring),visibility 0s}
+#editor .ed-tools .tb-x > .tb-sep:first-child{display:none}
+#editor .ed-tools .tb-x .tb-sep{display:block;width:4px;height:4px;border-radius:50%;background:var(--text-3);opacity:.45;margin:0 5px;flex:none}
+#editor .ed-tools .tb-x .tb{flex:none}
+#editor .ed-tools.expanded .tb-x > *{animation:tbIn .36s var(--spring) both}
+@keyframes tbIn{from{opacity:0;transform:translateY(10px) scale(.86)}}
+#editor .ed-tools.expanded .tb-x > :nth-child(1){animation-delay:0ms}#editor .ed-tools.expanded .tb-x > :nth-child(2){animation-delay:14ms}#editor .ed-tools.expanded .tb-x > :nth-child(3){animation-delay:28ms}#editor .ed-tools.expanded .tb-x > :nth-child(4){animation-delay:42ms}#editor .ed-tools.expanded .tb-x > :nth-child(5){animation-delay:56ms}#editor .ed-tools.expanded .tb-x > :nth-child(6){animation-delay:70ms}#editor .ed-tools.expanded .tb-x > :nth-child(7){animation-delay:84ms}#editor .ed-tools.expanded .tb-x > :nth-child(8){animation-delay:98ms}#editor .ed-tools.expanded .tb-x > :nth-child(9){animation-delay:112ms}#editor .ed-tools.expanded .tb-x > :nth-child(10){animation-delay:126ms}#editor .ed-tools.expanded .tb-x > :nth-child(11){animation-delay:140ms}#editor .ed-tools.expanded .tb-x > :nth-child(12){animation-delay:154ms}#editor .ed-tools.expanded .tb-x > :nth-child(13){animation-delay:168ms}#editor .ed-tools.expanded .tb-x > :nth-child(14){animation-delay:182ms}#editor .ed-tools.expanded .tb-x > :nth-child(15){animation-delay:196ms}#editor .ed-tools.expanded .tb-x > :nth-child(16){animation-delay:210ms}#editor .ed-tools.expanded .tb-x > :nth-child(17){animation-delay:224ms}#editor .ed-tools.expanded .tb-x > :nth-child(18){animation-delay:238ms}#editor .ed-tools.expanded .tb-x > :nth-child(19){animation-delay:252ms}#editor .ed-tools.expanded .tb-x > :nth-child(20){animation-delay:266ms}#editor .ed-tools.expanded .tb-x > :nth-child(21){animation-delay:280ms}#editor .ed-tools.expanded .tb-x > :nth-child(22){animation-delay:294ms}
+#editor.skin-capture .ed-tools .tb-x{background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 .ed-tools .tb-fill{flex:1 1 auto;min-width:4px}
-.ed-tools .tb-fmt svg{transition:transform .3s var(--spring)}
-.ed-tools .tb-fmt.on svg{transform:scale(1.08)}
-.ed-tools.expanded .tb-x > *{animation:tbIn .28s var(--ease) both}
-@keyframes tbIn{from{opacity:0;transform:translateX(-8px) scale(.9)}}
-.ed-tools.expanded .tb-x > :nth-child(1){animation-delay:0ms}
-.ed-tools.expanded .tb-x > :nth-child(2){animation-delay:12ms}
-.ed-tools.expanded .tb-x > :nth-child(3){animation-delay:24ms}
-.ed-tools.expanded .tb-x > :nth-child(4){animation-delay:36ms}
-.ed-tools.expanded .tb-x > :nth-child(5){animation-delay:48ms}
-.ed-tools.expanded .tb-x > :nth-child(6){animation-delay:60ms}
-.ed-tools.expanded .tb-x > :nth-child(7){animation-delay:72ms}
-.ed-tools.expanded .tb-x > :nth-child(8){animation-delay:84ms}
-.ed-tools.expanded .tb-x > :nth-child(9){animation-delay:96ms}
-.ed-tools.expanded .tb-x > :nth-child(10){animation-delay:108ms}
-.ed-tools.expanded .tb-x > :nth-child(11){animation-delay:120ms}
-.ed-tools.expanded .tb-x > :nth-child(12){animation-delay:132ms}
-.ed-tools.expanded .tb-x > :nth-child(13){animation-delay:144ms}
-.ed-tools.expanded .tb-x > :nth-child(14){animation-delay:156ms}
-.ed-tools.expanded .tb-x > :nth-child(15){animation-delay:168ms}
-.ed-tools.expanded .tb-x > :nth-child(16){animation-delay:180ms}
-.ed-tools.expanded .tb-x > :nth-child(17){animation-delay:192ms}
-.ed-tools.expanded .tb-x > :nth-child(18){animation-delay:204ms}
-.ed-tools.expanded .tb-x > :nth-child(19){animation-delay:216ms}
-.ed-tools.expanded .tb-x > :nth-child(20){animation-delay:228ms}
-.ed-tools.expanded .tb-x > :nth-child(21){animation-delay:240ms}
-.ed-tools.expanded .tb-x > :nth-child(22){animation-delay:252ms}
+/* the toggle: a typeset "Aa", the word, and a caret that turns as the tray opens */
+#editor .ed-tools .tb.tb-fmt{width:auto;display:inline-flex;align-items:center;gap:6px;padding:0 10px 0 9px;border-radius:999px;font-size:var(--t-sub);font-weight:600;color:var(--text);
+  box-shadow:inset 0 0 0 1px var(--line-2);transition:background .2s,color .2s,box-shadow .2s,transform .2s var(--spring)}
+.tb-fmt .fg,.bb-open .fg{font-family:Georgia,"Times New Roman",serif;font-size:17px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.tb-fmt .fg{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:8px;background:linear-gradient(150deg,var(--accent),color-mix(in oklab,var(--accent) 60%,#7a2cff));color:#fff;font-size:14px}
+.tb-fmt .fc{width:14px;height:14px;opacity:.6;transition:transform .35s var(--spring)}
+#editor .ed-tools .tb.tb-fmt.on{background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 45%,transparent)}
+.tb-fmt.on .fc{transform:rotate(180deg)}
+@media (max-width:560px){.tb-fmt .fl{display:none}#editor .ed-tools .tb.tb-fmt{padding:0 8px 0 7px;gap:4px}}
 
 /* ---------- selection ticker: one small icon that opens into the full set ---------- */
 #bubble .bb-full{display:flex;align-items:center;gap:2px}
 #bubble .bb-open{display:none}
 #bubble.mini{padding:3px;border-radius:12px}
 #bubble.mini .bb-full{display:none}
-#bubble.mini .bb-open{display:grid}
+#bubble.mini .bb-open{display:inline-flex;align-items:center;gap:2px;height:34px;padding:0 6px 0 9px;border-radius:10px}
+#bubble .bb-open .fc{width:13px;height:13px;opacity:.6}
 #bubble.mini.show{animation:bbIn .2s var(--spring)}
 @keyframes bbIn{from{opacity:0;transform:scale(.6)}}
 
@@ -92,5 +89,5 @@
   @keyframes edDiscardM{to{transform:translateY(140px) scale(.96);opacity:0}}
 }
 @media (prefers-reduced-motion: reduce){
-  .ed-tools.expanded .tb-x > *,.tpl-card,.prose .tpl-in,#bubble.mini.show,.mo-pop,.mo-land,.mo-off,.mo-nudge{animation:none!important}
+  .ed-tools.expanded .tb-x > *,#editor .ed-tools .tb-x,.tpl-card,.prose .tpl-in,#bubble.mini.show,.mo-pop,.mo-land,.mo-off,.mo-nudge{animation:none!important}
 }
