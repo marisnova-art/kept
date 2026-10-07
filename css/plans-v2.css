@@ -1,0 +1,40 @@
+/* Kept — v2 subscription page (Free · monthly · yearly) and "Tell people about Kept" */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.pl-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:22px 20px 20px;border-radius:22px;background:var(--surface);box-shadow:0 0 0 1px var(--line);transition:transform .25s var(--ease),box-shadow .25s}
+.pl-card:hover{transform:translateY(-2px)}
+.pl-card.yearly{box-shadow:0 0 0 2px var(--accent)}
+.pl-card.on{box-shadow:0 0 0 2px var(--text)}
+.pl-badge{position:absolute;top:-11px;right:16px;padding:3px 10px;border-radius:var(--r-pill);background:var(--accent);color:var(--accent-ink,#fff);font-size:11px;font-weight:700;letter-spacing:.02em;animation:plBadge .5s .2s var(--ease) both}
+@keyframes plBadge{from{opacity:0;transform:translateY(6px) scale(.9)}}
+.pl-name{font-size:var(--t-sub);font-weight:600;color:var(--text-2)}
+.pl-price{display:flex;align-items:baseline;gap:6px}
+.pl-price b{font-size:calc(34px*var(--fz,1));font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pl-price span{color:var(--text-3);font-size:var(--t-sub)}
+.pl-sub{margin-top:-6px;font-size:var(--t-cap);color:var(--accent);font-weight:600}
+.pl-f{list-style:none;margin:4px 0 6px;padding:0;display:flex;flex-direction:column;gap:7px;flex:1}
+.pl-f li{display:flex;gap:8px;align-items:flex-start;font-size:var(--t-sub);color:var(--text-2);line-height:1.4}
+.pl-f svg.i{width:15px;height:15px;flex:none;margin-top:2px;color:var(--accent)}
+.pl-cta{width:100%;justify-content:center;height:46px}
+.pl-cta:disabled{opacity:.6}
+.pl-note{margin:0;font-size:var(--t-cap);color:var(--text-3);line-height:1.5}
+.pl-status{align-items:center;margin-top:16px}
+.pl-status .spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pl-manage{margin-top:16px}
+.pl-manage .r{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pl-warn{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:var(--r-pill);background:color-mix(in oklab,var(--c-red,#ff3b30) 15%,transparent);color:var(--c-red,#ff3b30);font-size:11px;font-weight:600}
+.pl-legal{color:var(--text-3);font-size:var(--t-cap);text-align:center;line-height:1.6;max-width:640px;margin:20px auto}
+.pl-chip{display:inline-flex;align-items:center;gap:4px;margin-left:6px;padding:1px 8px;border-radius:var(--r-pill);background:color-mix(in oklab,var(--accent) 14%,transparent);color:var(--accent);font-size:11px;font-weight:600;vertical-align:1px}
+.pl-chip svg.i{width:11px;height:11px}
+@media (max-width:820px){.plans{grid-template-columns:1fr}.pl-card.yearly{order:-1}}
+
+/* promo */
+.pm-l{display:flex;flex-direction:column;gap:6px;font-size:var(--t-cap);color:var(--text-2);margin-top:6px}
+.pm-msg{width:100%;resize:vertical;font-size:var(--t-sub);line-height:1.5}
+.pm-link{display:flex;align-items:center;gap:8px;margin:10px 0;padding:8px 8px 8px 12px;border-radius:12px;background:var(--surface-2)}
+.pm-link span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--t-sub);color:var(--text-2)}
+.pm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
+.pm-t{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:14px;background:var(--surface-2);color:var(--text);text-decoration:none;font:inherit;font-size:var(--t-cap);border:0;cursor:pointer;transition:transform .15s,background .15s}
+.pm-t:hover{background:var(--surface-3)}
+.pm-t:active{transform:scale(.95)}
+.pm-t svg.i{width:18px;height:18px}

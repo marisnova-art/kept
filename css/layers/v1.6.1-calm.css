@@ -1,0 +1,58 @@
+/* Kept — v1.6.1 calmer gradient, fixes */
+/* =====================================================================
+   v1.6.1 — still colour light, emphasis on the question + writing, fixes
+   ===================================================================== */
+/* still, layered gradient: soft entry glow + multi-stop band + gentle floor for legibility + grain */
+.aurora,#editor.skin-capture .ed-panel.aurora{
+  --ga:160deg;--g1:#ff4b1f;--g2:#f2a05a;--g3:#1d4a4b;--g4:#13292c;--g5:#1a1c21;--gp1:14%;--gp2:38%;--gp3:66%;--gx:30%;--gy:0%;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.22) 100%),
+    radial-gradient(80% 62% at var(--gx) var(--gy),color-mix(in oklab,var(--g1) 72%,transparent) 0%,color-mix(in oklab,var(--g2) 26%,transparent) 38%,transparent 72%),
+    linear-gradient(var(--ga),var(--g1) 0%,var(--g2) var(--gp1),var(--g3) var(--gp2),var(--g4) var(--gp3),var(--g5) 100%)!important}
+.aurora::before{display:none!important}
+.aurora::after,#editor.skin-capture .ed-panel::after{mix-blend-mode:overlay!important;opacity:.2!important}
+.au-l{display:none!important}
+.au-pick.aurora{background-size:cover}
+
+/* the question card is the heart of Today */
+.today-v .statement{color:var(--text-2);font-size:clamp(24px,3vw,34px);line-height:1.28}
+.today-v .metrics{margin:-4px 0 0 -8px}
+.today-v .capture{min-height:480px;padding:30px 32px 30px}
+.today-v .capture .kicker{margin:0}
+.today-v .capture h2{font-size:clamp(34px,4vw,48px);line-height:1.1;letter-spacing:-.035em;margin:0 0 18px;max-width:640px;text-wrap:balance}
+.today-v .cap-main{gap:14px}
+.today-v .cap-fake{min-height:104px;align-items:stretch;padding:16px 12px 12px 20px;border-radius:24px;border-color:rgba(255,255,255,.12)}
+.today-v .cap-fake > span:first-child{align-self:flex-start;color:rgba(255,255,255,.72)}
+.today-v .cap-fake .send{align-self:flex-end;background:rgba(255,255,255,.16);color:#fff;width:42px;height:42px}
+.today-v .cap-fake:hover .send{background:#fff;color:#111}
+@media (max-width:900px){
+  .today-v .statement{font-size:23px}
+  .today-v .capture{min-height:clamp(440px,66svh,600px);padding:22px 20px 20px;border-radius:28px}
+  .today-v .capture h2{font-size:clamp(30px,8.6vw,38px);margin-bottom:12px}
+  .today-v .cap-fake{min-height:96px}
+}
+
+/* bigger wordmark */
+.sb-head .wordmark,#sidebar .wordmark{font-size:27px}
+.tb-logo,.tb-logo .wordmark{font-size:25px}
+
+/* week strip: the picked day must never vanish (touch devices kept hover:transparent on it) */
+.wd.sel,.wd.sel:hover{background:var(--text)!important;color:var(--text-inv)}
+.wd.sel.is-today,.wd.sel.is-today:hover{background:var(--accent)!important}
+.wd.sel .w,.wd.sel .n{color:var(--text-inv)!important}
+.wd.sel.is-today .w,.wd.sel.is-today .n{color:#fff!important}
+/* event marks: small true circles */
+.dots{align-items:center;height:6px}
+.dots i.ev{padding:0!important;border:0;overflow:visible;background:var(--dc,var(--accent))}
+.dots i{flex:0 0 6px;width:6px!important;height:6px!important;min-width:6px;aspect-ratio:1;border-radius:50%!important;display:block}
+.wd.sel .dots i:not(.td){background:var(--text-inv)}
+.wd.sel.is-today .dots i:not(.td){background:#fff}
+.wd.sel.is-today .dots i.td{box-shadow:inset 0 0 0 1.4px #fff}
+
+/* task due date: readable label, native picker underneath */
+.qa-date{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:10px;background:var(--surface-2);color:var(--text-2);font-size:var(--t-sub);cursor:pointer;flex:none;white-space:nowrap}
+.qa-date svg.i{width:15px;height:15px}
+.qa-date.set{color:var(--text)}
+.qa-date input[type=date]{position:absolute;inset:0;width:100%;height:100%;opacity:0;padding:0;border:0;margin:0;cursor:pointer;font-size:16px!important}
+.qa-date input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+@media (max-width:900px){.quick-add .qa-date{flex:1 1 auto;justify-content:center}}

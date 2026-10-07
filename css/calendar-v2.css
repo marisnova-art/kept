@@ -1,0 +1,70 @@
+/* Kept — v2 calendar: a Google Calendar style month on wide screens.
+   Sunday first, thin grid lines, rows that fill the screen, one line per record,
+   "+N more" when a day overflows, and a popover with the day's records on click. */
+
+/* record lines (month cells and the popover) */
+.ch{display:flex;align-items:center;gap:5px;min-width:0;height:21px;padding:0 6px;border-radius:6px;font-size:12px;line-height:21px;color:var(--text);white-space:nowrap;overflow:hidden;cursor:pointer;flex:none;transition:background .15s}
+.ch:hover{background:var(--surface-2)}
+.ch:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.ch[hidden],.cmore[hidden]{display:none}
+.ch .x{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ch .t{color:var(--text-2);flex:none;font-variant-numeric:tabular-nums}
+.ch .dt{width:8px;height:8px;border-radius:50%;background:var(--evc,var(--accent));flex:none}
+.ch.allday{background:color-mix(in oklab,var(--evc,var(--accent)) 20%,transparent);font-weight:500}
+.ch.allday:hover{background:color-mix(in oklab,var(--evc,var(--accent)) 30%,transparent)}
+.ch.allday svg.i{width:11px;height:11px;flex:none;color:var(--text-2)}
+.ch.td{color:var(--text-2)}
+.ch.td .bx{width:11px;height:11px;border-radius:3px;box-shadow:inset 0 0 0 1.5px currentColor;flex:none;display:grid;place-items:center;padding:0;border:0;background:transparent;color:inherit}
+.ch.td .bx svg.i{width:9px;height:9px;stroke-width:3;opacity:0}
+.ch.td.done{opacity:.6}
+.ch.td.done .x{text-decoration:line-through}
+.ch.td.done .bx{background:var(--text-3);box-shadow:none;color:var(--surface)}
+.ch.td.done .bx svg.i{opacity:1}
+.cmore{display:block;width:100%;text-align:left;font:inherit;font-size:12px;font-weight:600;color:var(--text-2);height:20px;line-height:20px;padding:0 6px;border:0;border-radius:6px;background:transparent;cursor:pointer;flex:none}
+.cmore:hover{background:var(--surface-2);color:var(--text)}
+
+@media (min-width:901px){
+  .wrap.cal-page.m-month{max-width:min(1360px,100%)!important}
+  .cal-page.m-month .cal-wrap{grid-template-columns:minmax(0,1fr)}
+  .cal-page.m-month .cal-wrap > aside{display:none}
+  .cal.month{padding:0;border-radius:var(--r-xl);overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+  .cal.month .cal-head{margin:0;padding:10px 0 8px;border-bottom:1px solid var(--line);font-size:11px;font-weight:600;letter-spacing:.04em}
+  .cal.month .cal-grid{gap:0;grid-auto-rows:minmax(0,1fr);height:max(540px,calc(100dvh - 214px))}
+  .cal.month .cd{min-height:0;border-radius:0;border-top:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 4px 3px;gap:2px;overflow:hidden;align-items:stretch}
+  .cal.month .cd:nth-child(7n){border-right:0}
+  .cal.month .cd:nth-last-child(-n+7){border-bottom:0}
+  .cal.month .cd:hover{background:color-mix(in oklab,var(--surface-2) 60%,transparent)}
+  .cal.month .cd.sel{background:transparent}
+  .cal.month .cd.popped{background:color-mix(in oklab,var(--accent) 7%,transparent)}
+  .cal.month .cd .dn{width:26px;height:26px;margin:0 auto 1px;border-radius:50%;font-size:12px;flex:none}
+  .cal.month .cd.sel .dn{background:transparent;color:inherit}
+  .cal.month .cd.today .dn,.cal.month .cd.today.sel .dn{background:var(--accent);color:var(--accent-ink,#fff)}
+  .cal.month .cd.out{opacity:1}
+  .cal.month .cd.out .dn{color:var(--text-3)}
+  .cal.month .cd.out .ch{opacity:.6}
+  .cal.month .cd .evs{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:2px}
+}
+@media (max-width:900px){
+  .cmore{display:none}
+}
+
+/* the day popover */
+.cal-pop{position:fixed;z-index:90;width:300px;max-height:min(460px,calc(100dvh - 24px));display:flex;flex-direction:column;padding:12px 12px 10px;border-radius:18px;
+  background:var(--surface);color:var(--text);box-shadow:0 22px 60px -16px rgba(0,0,0,.38),0 0 0 1px var(--line);transform-origin:var(--ox,50%) 24px;animation:calPopIn .2s var(--ease) both}
+@keyframes calPopIn{from{opacity:0;transform:scale(.92)}}
+.cal-pop .cp-h{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 0 8px}
+.cal-pop .cp-h .wd{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-2)}
+.cal-pop .cp-h b{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}
+.cal-pop .cp-h b.today{background:var(--accent);color:var(--accent-ink,#fff)}
+.cal-pop .cp-x{position:absolute;right:-4px;top:-4px}
+.cal-pop .cp-l{display:flex;flex-direction:column;gap:3px;overflow:auto;min-height:0;margin:0 -4px;padding:0 4px}
+.cal-pop .ch{height:30px;font-size:13px;padding:0 8px;animation:calRowIn .24s var(--ease) both}
+.cal-pop .ch:nth-child(2){animation-delay:20ms}.cal-pop .ch:nth-child(3){animation-delay:40ms}.cal-pop .ch:nth-child(n+4){animation-delay:60ms}
+@keyframes calRowIn{from{opacity:0;transform:translateY(4px)}}
+.cal-pop .ch.td .bx{width:15px;height:15px;border-radius:4px;cursor:pointer}
+.cal-pop .ch.td .bx svg.i{width:11px;height:11px}
+.cal-pop .ch.td .bx:hover svg.i{opacity:.5}
+.cal-pop .ch.td.done .bx svg.i{opacity:1}
+.cal-pop .cp-empty{font-size:13px;color:var(--text-3);text-align:center;padding:10px 0 12px}
+.cal-pop .cp-a{display:flex;gap:6px;margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){.cal-pop,.cal-pop .ch{animation:none}}

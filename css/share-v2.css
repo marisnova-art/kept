@@ -1,0 +1,55 @@
+/* Kept — v2 shared folders: badges, sidebar, folder list, members dialog, editor share chip */
+
+/* folder badge on record cards and rows */
+.shr{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:140px;height:20px;padding:0 7px;border-radius:var(--r-pill);font-size:11px;font-weight:600;
+  color:var(--fc,var(--accent));background:color-mix(in oklab,var(--fc,var(--accent)) 13%,transparent)}
+.shr svg.i{width:12px!important;height:12px!important;flex:none}
+.shr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .k .shr{margin-left:auto}
+
+/* sidebar */
+.sb-new{display:inline-block;margin-left:6px;padding:0 6px;border-radius:var(--r-pill);background:var(--accent);color:var(--accent-ink,#fff);font-size:10px;font-weight:700;line-height:16px;vertical-align:1px}
+.sb-fi{display:inline-grid;color:var(--accent)}
+
+/* folders page */
+.fl-note{margin:4px 0 18px;align-items:center}
+.fl-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.fl-card,.fl-inv{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:var(--surface);color:var(--text);text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s}
+.fl-card:hover{box-shadow:0 0 0 1px var(--line-2)}
+.fl-card:active{transform:scale(.99)}
+.fl-inv{box-shadow:inset 0 0 0 1.5px color-mix(in oklab,var(--accent) 40%,transparent)}
+.fl-ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;color:var(--fc,var(--accent));background:color-mix(in oklab,var(--fc,var(--accent)) 15%,transparent)}
+.fl-ic svg.i{width:19px;height:19px}
+.fl-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.fl-mid b{font-size:var(--t-body);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fl-mid span{font-size:var(--t-cap);color:var(--text-3)}
+.fl-how{display:flex;gap:8px;align-items:flex-start;margin:22px 4px 0;font-size:var(--t-cap);color:var(--text-3);line-height:1.6}
+.fl-how svg.i{width:14px;height:14px;flex:none;margin-top:2px}
+.fm-faces{display:inline-flex;flex:none}
+.fm-faces i,.fm-av{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--accent),color-mix(in oklab,var(--accent) 50%,#7c3aed));box-shadow:0 0 0 2px var(--surface)}
+.fm-faces i + i{margin-left:-8px}
+.fm-open{gap:8px}
+.fm-open .fm-faces i{width:20px;height:20px;font-size:9px}
+
+/* members dialog */
+.fm-body{display:flex;flex-direction:column;gap:12px;transition:opacity .2s}
+.fm-body.busy{opacity:.55;pointer-events:none}
+.fm-name .input{font-weight:600}
+.fm-inv{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px}
+.fm-hint{margin:-4px 2px 0;font-size:var(--t-cap);color:var(--text-3);line-height:1.5}
+.fm-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.fm-row{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line);animation:calRowIn .25s var(--ease) both}
+.fm-mid{flex:1;min-width:0;display:flex;flex-direction:column}
+.fm-mid b{font-size:var(--t-sub);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fm-mid small{color:var(--text-3);font-weight:400}
+.fm-pend{font-size:var(--t-cap);color:var(--accent)}
+.fm-role{font-size:var(--t-cap);color:var(--text-3)}
+.fm-row .select.sm{height:32px;font-size:var(--t-cap);padding-left:10px}
+.fm-foot{display:flex;justify-content:flex-start}
+.fm-note{width:100%;resize:none;font-size:var(--t-sub);line-height:1.5;margin-top:6px}
+@media (max-width:560px){.fm-inv{grid-template-columns:minmax(0,1fr) auto}.fm-inv .input{grid-column:1/-1}}
+
+/* editor: the share chip */
+.mchip.share.on{color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--surface))}
+.mchip.share:disabled{opacity:1;cursor:default}

@@ -1,0 +1,6 @@
+/* Kept — v2 lists: day headings when records are sorted by date */
+.dgrp{display:flex;align-items:baseline;gap:8px;margin:22px 2px 10px;font-size:var(--t-sub);font-weight:600;color:var(--text);animation:rise .4s var(--ease) both;animation-delay:calc(var(--i,0) * 30ms)}
+.dgrp:first-child{margin-top:4px}
+.dgrp .c{font-size:var(--t-cap);font-weight:500;color:var(--text-3);font-variant-numeric:tabular-nums}
+.dgrp + .list,.dgrp + .grid-cards{margin-top:0}
+@media (prefers-reduced-motion:reduce){.dgrp{animation:none}}

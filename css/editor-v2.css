@@ -1,0 +1,96 @@
+/* Kept — v2 editor: folded toolbar, mini selection ticker, templates, 5-step spacing, motion */
+
+/* ---------- toolbar under the text: undo / redo first, formatting folded behind one icon ---------- */
+.ed-tools .tb-x{display:contents}
+.ed-tools.collapsed .tb-x{display:none}
+.ed-tools .tb-fill{flex:1 1 auto;min-width:4px}
+.ed-tools .tb-fmt svg{transition:transform .3s var(--spring)}
+.ed-tools .tb-fmt.on svg{transform:scale(1.08)}
+.ed-tools.expanded .tb-x > *{animation:tbIn .28s var(--ease) both}
+@keyframes tbIn{from{opacity:0;transform:translateX(-8px) scale(.9)}}
+.ed-tools.expanded .tb-x > :nth-child(1){animation-delay:0ms}
+.ed-tools.expanded .tb-x > :nth-child(2){animation-delay:12ms}
+.ed-tools.expanded .tb-x > :nth-child(3){animation-delay:24ms}
+.ed-tools.expanded .tb-x > :nth-child(4){animation-delay:36ms}
+.ed-tools.expanded .tb-x > :nth-child(5){animation-delay:48ms}
+.ed-tools.expanded .tb-x > :nth-child(6){animation-delay:60ms}
+.ed-tools.expanded .tb-x > :nth-child(7){animation-delay:72ms}
+.ed-tools.expanded .tb-x > :nth-child(8){animation-delay:84ms}
+.ed-tools.expanded .tb-x > :nth-child(9){animation-delay:96ms}
+.ed-tools.expanded .tb-x > :nth-child(10){animation-delay:108ms}
+.ed-tools.expanded .tb-x > :nth-child(11){animation-delay:120ms}
+.ed-tools.expanded .tb-x > :nth-child(12){animation-delay:132ms}
+.ed-tools.expanded .tb-x > :nth-child(13){animation-delay:144ms}
+.ed-tools.expanded .tb-x > :nth-child(14){animation-delay:156ms}
+.ed-tools.expanded .tb-x > :nth-child(15){animation-delay:168ms}
+.ed-tools.expanded .tb-x > :nth-child(16){animation-delay:180ms}
+.ed-tools.expanded .tb-x > :nth-child(17){animation-delay:192ms}
+.ed-tools.expanded .tb-x > :nth-child(18){animation-delay:204ms}
+.ed-tools.expanded .tb-x > :nth-child(19){animation-delay:216ms}
+.ed-tools.expanded .tb-x > :nth-child(20){animation-delay:228ms}
+.ed-tools.expanded .tb-x > :nth-child(21){animation-delay:240ms}
+.ed-tools.expanded .tb-x > :nth-child(22){animation-delay:252ms}
+
+/* ---------- selection ticker: one small icon that opens into the full set ---------- */
+#bubble .bb-full{display:flex;align-items:center;gap:2px}
+#bubble .bb-open{display:none}
+#bubble.mini{padding:3px;border-radius:12px}
+#bubble.mini .bb-full{display:none}
+#bubble.mini .bb-open{display:grid}
+#bubble.mini.show{animation:bbIn .2s var(--spring)}
+@keyframes bbIn{from{opacity:0;transform:scale(.6)}}
+
+/* ---------- templates ---------- */
+.tpl-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:2px 4px 10px}
+.tpl-head b{font-weight:600;font-size:var(--t-body)}
+.tpl-head span{font-size:var(--t-cap);opacity:.6}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px;max-height:min(44vh,380px);overflow:auto;overscroll-behavior:contain;padding-bottom:4px}
+.tpl-card{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;row-gap:1px;align-items:center;text-align:left;padding:10px 12px;border-radius:14px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:inherit;animation:tplCard .32s var(--ease) both;animation-delay:calc(var(--i,0) * 22ms);transition:transform .2s var(--spring),background .2s}
+.tpl-card:hover{background:rgba(255,255,255,.12)}
+.tpl-card:active{transform:scale(.96)}
+.tpl-ic{grid-row:1 / span 2;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.1)}
+.tpl-ic svg{width:18px;height:18px}
+.tpl-card b{font-weight:500;font-size:var(--t-sub);line-height:1.25}
+.tpl-card small{font-size:var(--t-cap);opacity:.62;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes tplCard{from{opacity:0;transform:translateY(8px) scale(.97)}}
+.prose .tpl-in{animation:tplIn .42s var(--ease) both;animation-delay:calc(var(--i,0) * 45ms)}
+@keyframes tplIn{from{opacity:0;transform:translateY(8px)}}
+@media (max-width:900px){.tpl-grid{grid-template-columns:1fr 1fr;max-height:min(40vh,340px)}.tpl-card{padding:9px 10px;column-gap:8px}.tpl-ic{width:30px;height:30px}}
+
+/* ---------- paragraph spacing, five steps (base = the old "compact" look) ---------- */
+.prose.sp-xtight{line-height:1.38}.prose.sp-xtight p,.prose.sp-xtight div{margin-bottom:0}
+.prose.sp-tight{line-height:1.44}.prose.sp-tight p,.prose.sp-tight div{margin-bottom:.06em}
+.prose.sp-base{line-height:1.5}.prose.sp-base p,.prose.sp-base div{margin-bottom:.15em}
+.prose.sp-loose{line-height:1.7}.prose.sp-loose p,.prose.sp-loose div{margin-bottom:.55em}
+.prose.sp-xloose{line-height:1.9}.prose.sp-xloose p,.prose.sp-xloose div{margin-bottom:1.1em}
+.opt-row.spacings{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.opt-row.spacings .sz{width:auto}
+.sp-ic{display:flex;flex-direction:column;width:20px;height:20px;justify-content:center;margin:0 auto 2px}
+.sp-ic i{display:block;height:2px;border-radius:1px;background:currentColor;opacity:.85}
+.sp-ic-xtight{gap:1px}.sp-ic-tight{gap:2.5px}.sp-ic-base{gap:4px}.sp-ic-loose{gap:5.5px}.sp-ic-xloose{gap:7px}
+.sp-ic i:last-child{width:70%}
+
+/* ---------- motion instead of toasts ---------- */
+.mo-chip{position:fixed;left:0;top:0;z-index:90;display:inline-flex;align-items:center;gap:6px;padding:8px 14px 8px 10px;border-radius:999px;
+  background:var(--sheet);color:var(--sheet-text);font-size:var(--t-sub);font-weight:500;box-shadow:var(--shadow);pointer-events:none;white-space:nowrap}
+.mo-chip .mo-ck{width:18px;height:18px;padding:2px;border-radius:50%;background:var(--accent);color:var(--accent-ink)}
+.mo-pop{animation:moPop .38s var(--spring)}
+@keyframes moPop{40%{transform:scale(1.12)}}
+.mo-land{animation:moLand .5s var(--spring)}
+@keyframes moLand{0%{transform:scale(1)}35%{transform:scale(1.18)}100%{transform:scale(1)}}
+#dock a.mo-land{color:var(--accent)}
+.mo-off{animation:moOff .3s var(--ease)}
+@keyframes moOff{40%{transform:scale(.9);opacity:.7}}
+.mo-nudge{animation:moNudge .4s var(--spring)}
+@keyframes moNudge{30%{transform:translateY(-2px) scale(1.04)}}
+/* cancel: the sheet drops away, a different gesture from saving */
+#editor.discarding.closing .ed-panel{animation:edDiscard .3s cubic-bezier(.5,0,.75,0) forwards}
+@keyframes edDiscard{to{transform:translate(-50%,120px) scale(.94) rotate(-1.5deg);opacity:0}}
+@media (max-width:900px){
+  #editor.discarding.closing .ed-panel{animation:edDiscardM .3s cubic-bezier(.5,0,.75,0) forwards}
+  @keyframes edDiscardM{to{transform:translateY(140px) scale(.96);opacity:0}}
+}
+@media (prefers-reduced-motion: reduce){
+  .ed-tools.expanded .tb-x > *,.tpl-card,.prose .tpl-in,#bubble.mini.show,.mo-pop,.mo-land,.mo-off,.mo-nudge{animation:none!important}
+}

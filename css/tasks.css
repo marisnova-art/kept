@@ -1,0 +1,29 @@
+/* Kept — Tasks */
+/* ---------- Tasks ---------- */
+.quick-add{display:flex;gap:8px;align-items:center;background:var(--surface);border-radius:var(--r-lg);padding:8px 8px 8px 16px;margin-bottom:22px;border:1px solid var(--line);
+  transition:border-color .2s,box-shadow .2s}
+.quick-add:focus-within{border-color:var(--line-2);box-shadow:0 0 0 4px var(--accent-soft)}
+.quick-add input[type=text]{flex:1;min-width:120px;height:40px;background:transparent;border:0;outline:0;font-size:var(--t-body)}
+.quick-add input[type=date],.quick-add input[type=time]{height:36px;background:var(--surface-2);border:0;border-radius:10px;padding:0 10px;color:var(--text-2);font-size:var(--t-sub);outline:0}
+.tgroup{margin-bottom:26px}
+.tgroup h4{font-size:var(--t-sub);font-weight:500;color:var(--text-2);margin:0 0 10px 4px;display:flex;align-items:center;gap:8px}
+.tgroup h4 .c{color:var(--text-3)}
+.tgroup h4.over{color:var(--err)}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border-radius:16px;margin-bottom:6px;cursor:pointer;
+  transition:background .15s,transform .3s var(--ease),opacity .3s}
+.task:hover{background:var(--surface-2)}
+.chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--text-3);display:grid;place-items:center;flex:none;color:transparent;
+  transition:all .25s var(--spring)}
+.chk:hover{border-color:var(--accent)}
+.chk.on{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.04)}
+.chk svg.i{width:14px;height:14px;stroke-width:3}
+.task .tt{flex:1;min-width:0;font-size:var(--t-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.task.done .tt{text-decoration:line-through;color:var(--text-3)}
+.due{font-size:var(--t-cap);color:var(--text-2);background:var(--surface-3);padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap}
+.due.over{color:#fff;background:var(--err)}
+.due.today{color:var(--accent-ink);background:var(--accent)}
+.prio{font-size:var(--t-cap);font-weight:600;padding:2px 7px;border-radius:6px;border:1px solid currentColor}
+.prio.p1{color:var(--c-red)}.prio.p2{color:var(--c-orange)}.prio.p3{color:var(--c-blue)}
+.star-btn{color:var(--text-3);width:30px;height:30px;display:grid;place-items:center;border-radius:50%}
+.star-btn.on{color:var(--c-amber)}
+.star-btn.on svg{fill:currentColor}

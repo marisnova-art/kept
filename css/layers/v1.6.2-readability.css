@@ -1,0 +1,132 @@
+/* Kept — v1.6.2 type scale, readability */
+/* =====================================================================
+   v1.6.2 — readability first (bigger type, stronger contrast, text-size setting), calmer card, dock
+   ===================================================================== */
+/* type scale: larger base sizes + one multiplier for the Settings › Text size choice */
+:root{--fz:1;
+  --t-h1:calc(30px*var(--fz));--t-h2:calc(19px*var(--fz));--t-body:calc(16px*var(--fz));--t-sub:calc(14.5px*var(--fz));--t-cap:calc(13px*var(--fz));--t-read:calc(18px*var(--fz))}
+@media (max-width:900px){:root{--t-h1:calc(28px*var(--fz));--t-h2:calc(19px*var(--fz));--t-body:calc(17px*var(--fz));--t-sub:calc(15px*var(--fz));--t-cap:calc(13.5px*var(--fz));--t-read:calc(18.5px*var(--fz))}}
+:root[data-fs="l"]{--fz:1.12}
+:root[data-fs="xl"]{--fz:1.25}
+/* secondary text was too faint for tired eyes — lift contrast (dark ≈ 7:1 / 4.8:1, light ≈ 6:1 / 4.6:1) */
+:root,:root[data-theme="dark"]{--text-2:#b4b5bc;--text-3:#8b8c94}
+:root[data-theme="light"]{--text-2:#55555c;--text-3:#76767d}
+/* Korean wraps between words, never mid-word; headings balance their lines */
+html[lang="ko"] body,:lang(ko){word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,.statement,.cap-q{text-wrap:balance}
+.ed-typesel span{font-size:var(--t-sub)!important}
+.dots i{flex-basis:6px}
+
+/* ---------- Today question card: compact, the question sits right under the label ---------- */
+.today-v .capture{min-height:0!important;justify-content:flex-start;padding:26px 30px 28px}
+.today-v .capture .kicker{margin:0 0 14px;font-size:var(--t-sub);opacity:.92}
+.today-v .cap-main{gap:14px}
+.today-v .capture h2{margin:0 0 10px;font-size:clamp(32px,3.6vw,44px);line-height:1.2;max-width:none}
+@media (max-width:900px){
+  .today-v .capture{padding:20px 20px 20px;border-radius:26px}
+  .today-v .capture .kicker{margin-bottom:10px}
+  .today-v .capture h2{font-size:clamp(25px,7vw,30px);line-height:1.3;margin-bottom:6px}
+  .today-v .cap-fake{min-height:88px}
+  .today-v .cap-row .chip-t{height:36px;padding:0 13px;font-size:var(--t-sub)}
+}
+
+/* ---------- week strip: fixed-size day chips, centred — no stretched blocks on wide screens ---------- */
+.tg .week{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:4px;margin:0}
+.tg .wk-track{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;justify-items:center}
+.tg .wd{width:100%;max-width:64px;min-height:70px;padding:9px 0 8px;border-radius:18px;gap:3px;justify-content:center}
+.tg .wd .w{font-size:var(--t-cap);color:var(--text-2)}
+.tg .wd .n{font-size:calc(19px*var(--fz));font-weight:600;line-height:1.1}
+.tg .wd.sun .w,.tg .wd.sun .n{color:var(--c-red)}
+.tg .wd:not(.sel):hover{background:var(--surface-2)}
+.tg .wd.is-today:not(.sel){background:color-mix(in oklab,var(--accent) 14%,transparent)}
+.tg .wd.is-today:not(.sel) .n{color:var(--accent)}
+.tg .wd.sel .w{opacity:.8}
+.tg .week .nav{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:var(--text-2)}
+.tg .week .nav:hover{background:var(--surface-2);color:var(--text)}
+@media (hover:none){.tg .week{grid-template-columns:minmax(0,1fr)}.tg .week .nav{display:none}}
+@media (max-width:900px){.tg .wd{min-height:64px;border-radius:16px}.tg .wk-track{gap:2px}}
+
+/* ---------- dock: labelled, a home icon, sitting lower ---------- */
+#dock{bottom:calc(6px + env(safe-area-inset-bottom) * .4)}
+.dock-seg{padding:5px;gap:2px;border-radius:30px}
+.dock-seg a{width:64px!important;height:56px!important;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.dock-seg a{text-decoration:none}
+.dock-seg a span{font-size:12px;font-weight:600;line-height:1;letter-spacing:-.01em}
+.dock-seg a svg.i{width:22px!important;height:22px!important}
+.dock-new{width:62px!important;height:62px!important}
+@media (max-width:380px){.dock-seg a{width:56px!important}}
+
+/* calendar week view: .cal.week must not inherit the Today week-strip grid (.week = 28px|1fr|28px) */
+.cal.week{display:block!important;grid-template-columns:none!important;touch-action:pan-y}
+.cal.week .week-cols{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;min-height:380px}
+.cal.week .wcol{min-width:0;display:flex;flex-direction:column;gap:8px;padding:12px 8px;border-left:1px solid var(--line);border-radius:0}
+.cal.week .wcol:first-child{border-left:0}
+.cal.week .wcol.sel{background:var(--surface-2);border-radius:16px}
+.cal.week .wcol .wh{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin:0 0 4px}
+.cal.week .wcol .wh b{font-size:calc(22px*var(--fz));font-weight:600;line-height:1.1}
+.cal.week .wcol .wh span{font-size:var(--t-cap);color:var(--text-2)}
+.cal.week .wcol.today .wh b{color:var(--accent)}
+.cal.week .wcol .none{font-size:var(--t-cap);color:var(--text-3)}
+.cal.week .wcol .ev{font-size:var(--t-cap)}
+@media (max-width:900px){
+  .cal.week .week-cols{grid-template-columns:minmax(0,1fr);min-height:0}
+  .cal.week .wcol{display:grid;grid-template-columns:56px minmax(0,1fr);gap:10px;align-items:start;border-left:0;border-top:1px solid var(--line);padding:12px 8px}
+  .cal.week .wcol:first-child{border-top:0}
+  .cal.week .wcol .wh{align-items:center;margin:0}
+}
+
+.cal.week .wcol .evs{display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:left;width:100%}
+.cal.week .wcol .none{text-align:left;align-self:flex-start}
+.cal.week .wcol .ev{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;white-space:normal;padding:6px 8px;line-height:1.35}
+.cal.week .wcol .ev .x{flex:1 1 100%;min-width:0;white-space:normal;overflow-wrap:anywhere;-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;color:var(--text)}
+.cal.week .wcol .ev .t{font-weight:600}
+.cal.week .wcol .ev .rp{display:inline-grid}
+@media (max-width:900px){.cal.week .wcol .ev .x{flex:1 1 auto}}
+
+/* ---------- gradient v4: soft, layered light — no hard stops, nothing glaring ----------
+   dark base in oklab + three wide glows whose alpha eases out over many stops (no visible seams),
+   hot colours pulled toward the deep tone so the brightest area stays behind white text comfortably */
+.aurora,#editor.skin-capture .ed-panel.aurora{
+  --hot:color-mix(in oklab,var(--g1) 74%,var(--g4));
+  --warm:color-mix(in oklab,var(--g2) 62%,var(--g4));
+  --echo:color-mix(in oklab,var(--g2) 40%,var(--g3));
+  background:
+    linear-gradient(180deg,rgba(6,7,10,.10) 0%,rgba(6,7,10,.04) 40%,rgba(6,7,10,.26) 100%),
+    radial-gradient(120% 95% at var(--gx) var(--gy),
+      color-mix(in oklab,var(--hot) 70%,transparent) 0%,
+      color-mix(in oklab,var(--hot) 61%,transparent) 10%,
+      color-mix(in oklab,var(--hot) 47%,transparent) 22%,
+      color-mix(in oklab,var(--hot) 32%,transparent) 34%,
+      color-mix(in oklab,var(--hot) 19%,transparent) 46%,
+      color-mix(in oklab,var(--hot) 9%,transparent) 58%,
+      color-mix(in oklab,var(--hot) 3%,transparent) 70%,
+      transparent 82%),
+    radial-gradient(105% 85% at var(--hx) var(--hy),
+      color-mix(in oklab,var(--warm) 46%,transparent) 0%,
+      color-mix(in oklab,var(--warm) 38%,transparent) 14%,
+      color-mix(in oklab,var(--warm) 25%,transparent) 30%,
+      color-mix(in oklab,var(--warm) 13%,transparent) 46%,
+      color-mix(in oklab,var(--warm) 5%,transparent) 62%,
+      transparent 78%),
+    radial-gradient(95% 80% at var(--kx) var(--ky),
+      color-mix(in oklab,var(--echo) 30%,transparent) 0%,
+      color-mix(in oklab,var(--echo) 20%,transparent) 22%,
+      color-mix(in oklab,var(--echo) 9%,transparent) 44%,
+      transparent 70%),
+    linear-gradient(var(--ga),var(--g3) 0%,color-mix(in oklab,var(--g3) 50%,var(--g4)) 35%,var(--g4) 65%,var(--g5) 100%)!important}
+@supports (background:linear-gradient(in oklab,red,blue)){
+  .aurora,#editor.skin-capture .ed-panel.aurora{
+    background:
+      linear-gradient(180deg,rgba(6,7,10,.10) 0%,rgba(6,7,10,.04) 40%,rgba(6,7,10,.26) 100%),
+      radial-gradient(120% 95% at var(--gx) var(--gy) in oklab,color-mix(in oklab,var(--hot) 70%,transparent) 0%,color-mix(in oklab,var(--hot) 61%,transparent) 10%,color-mix(in oklab,var(--hot) 47%,transparent) 22%,color-mix(in oklab,var(--hot) 32%,transparent) 34%,color-mix(in oklab,var(--hot) 19%,transparent) 46%,color-mix(in oklab,var(--hot) 9%,transparent) 58%,color-mix(in oklab,var(--hot) 3%,transparent) 70%,transparent 82%),
+      radial-gradient(105% 85% at var(--hx) var(--hy) in oklab,color-mix(in oklab,var(--warm) 46%,transparent) 0%,color-mix(in oklab,var(--warm) 38%,transparent) 14%,color-mix(in oklab,var(--warm) 25%,transparent) 30%,color-mix(in oklab,var(--warm) 13%,transparent) 46%,color-mix(in oklab,var(--warm) 5%,transparent) 62%,transparent 78%),
+      radial-gradient(95% 80% at var(--kx) var(--ky) in oklab,color-mix(in oklab,var(--echo) 30%,transparent) 0%,color-mix(in oklab,var(--echo) 20%,transparent) 22%,color-mix(in oklab,var(--echo) 9%,transparent) 44%,transparent 70%),
+      linear-gradient(var(--ga) in oklab,var(--g3) 0%,color-mix(in oklab,var(--g3) 50%,var(--g4)) 35%,var(--g4) 65%,var(--g5) 100%)!important}
+}
+/* fine grain dithers any remaining 8-bit banding */
+.aurora::after,#editor.skin-capture .ed-panel::after{opacity:.24!important}
+/* white text keeps a soft lift off any light behind it */
+.aurora .cap-q,.aurora .kicker,.aurora h2{text-shadow:0 1px 18px rgba(0,0,0,.28)}
+.aurora .cap-fake,.aurora .cap-box{background:rgba(12,14,18,.30)!important;border-color:rgba(255,255,255,.14)!important}
+.aurora .chip-t{background:rgba(12,14,18,.28);color:rgba(255,255,255,.92)}
+.aurora .chip-t:hover{background:rgba(12,14,18,.42)}

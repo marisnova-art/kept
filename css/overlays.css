@@ -1,0 +1,40 @@
+/* Kept — Menus, dialogs, toasts */
+/* ---------- Overlays: menus, dialogs, toasts ---------- */
+.scrim{position:fixed;inset:0;background:var(--overlay);z-index:40;opacity:0;transition:opacity .3s var(--ease);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.scrim.show{opacity:1}
+.menu{position:fixed;z-index:70;min-width:220px;max-width:min(320px,92vw);max-height:min(460px,70vh);overflow:auto;background:var(--surface);border:1px solid var(--line-2);border-radius:18px;padding:6px;
+  box-shadow:var(--shadow);animation:menuIn .18s var(--ease);transform-origin:top left}
+@keyframes menuIn{from{opacity:0;transform:scale(.96) translateY(-4px)}}
+.menu .mi{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border-radius:12px;font-size:var(--t-body);text-align:left;color:var(--text)}
+.menu .mi:hover,.menu .mi.kb{background:var(--surface-2)}
+.menu .mi .sw{width:12px;height:12px;border-radius:4px;flex:none}
+.menu .mi .chkm{margin-left:auto;color:var(--accent)}
+.menu .mi.danger{color:var(--err)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:5px 6px}
+.menu .mh{font-size:var(--t-cap);color:var(--text-3);padding:8px 12px 4px}
+.menu input{width:100%;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--bg-2);padding:0 10px;outline:0;margin-bottom:4px}
+
+.dialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:80;width:min(460px,calc(100vw - 32px));max-height:calc(100dvh - 40px);overflow:auto;
+  background:var(--surface);border:1px solid var(--line-2);border-radius:26px;padding:24px;box-shadow:var(--shadow);animation:dlgIn .3s var(--spring)}
+@keyframes dlgIn{from{opacity:0;transform:translate(-50%,-46%) scale(.97)}}
+.dialog h2{margin:0 0 8px;font-size:var(--t-h2);font-weight:500;letter-spacing:-.02em}
+.dialog p{color:var(--text-2);margin:0 0 16px;font-size:var(--t-body)}
+.dialog .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;flex-wrap:wrap}
+.dialog.wide{width:min(620px,calc(100vw - 32px))}
+
+#toasts{position:fixed;left:16px;right:16px;bottom:calc(28px + env(safe-area-inset-bottom));z-index:90;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--sheet);color:var(--sheet-text);padding:10px 12px 10px 16px;border-radius:var(--r-pill);font-size:var(--t-body);
+  box-shadow:var(--shadow);animation:toastIn .4s var(--spring);max-width:calc(100vw - 32px)}
+.toast.out{animation:toastOut .25s var(--ease) forwards}
+.toast button{font-weight:600;padding:4px 10px;border-radius:var(--r-pill);background:color-mix(in oklab,var(--sheet-text) 10%,transparent)}
+.toast .tick{width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;flex:none}
+.toast .tick.e{background:var(--err)}
+.toast .tick svg.i{width:13px;height:13px;stroke-width:3}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.96)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(10px)}}
+
+/* Notifications panel */
+.notif-item{display:flex;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer}
+.notif-item:hover{background:var(--surface-2)}
+.notif-item .w{font-size:var(--t-cap);color:var(--text-2)}
+.notif-item.over .w{color:var(--err)}

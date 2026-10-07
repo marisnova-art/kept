@@ -1,0 +1,73 @@
+/* Kept — v1.4 single column layout */
+/* =====================================================================
+   v1.4 — one calm column: content never wider than a tablet
+   ===================================================================== */
+:root{--content:820px}
+.wrap,.wrap[style]{max-width:var(--content)!important}
+#topbar{max-width:calc(var(--content) + 56px);width:100%;margin:0 auto}
+.today-grid{display:flex;flex-direction:column;gap:16px;margin-top:26px}
+.today-grid > .col{display:contents}
+.today-grid .capture{order:1}
+.today-grid .week-card{order:2;margin-top:10px}
+.today-grid .sheet{order:3}
+.today-grid .st-card{order:4}
+.today-grid .fav-stack{order:5}
+.today-grid .tip-note{order:6}
+.today-grid .recent-box{order:7}
+.cal-wrap{grid-template-columns:1fr}
+.capture{min-height:300px;justify-content:flex-end}
+@media (min-width:901px){
+  .capture{padding:30px 30px 24px;min-height:340px}
+  .capture h2{font-size:clamp(30px,3.4vw,40px);max-width:600px}
+}
+
+/* ---------- aurora v2: a single soft diagonal light sweep, like a long-exposure sky ---------- */
+.aurora{background:linear-gradient(180deg,var(--b2) 0%,var(--b2) 32%,var(--b3) 68%,var(--b4) 100%);clip-path:inset(0 round var(--r-xl));-webkit-mask-image:-webkit-radial-gradient(white,black)}
+.ed-panel.aurora{clip-path:none;-webkit-mask-image:none}
+.au-pick.aurora{clip-path:circle(50%)}
+.au-l{inset:-45%;animation:auSweep 26s ease-in-out infinite alternate;
+  background:
+    linear-gradient(135deg,color-mix(in oklab,var(--b1) 85%,#000) 0%,transparent 22%),
+    linear-gradient(205deg,var(--a1) 0%,color-mix(in oklab,var(--a1) 55%,var(--a2)) 12%,var(--a2) 24%,color-mix(in oklab,var(--a2) 0%,transparent) 46%)}
+.aurora::before{inset:-40%;opacity:.55;animation:auSweep2 33s ease-in-out infinite alternate;
+  background:linear-gradient(20deg,transparent 30%,color-mix(in oklab,var(--a3) 70%,transparent) 55%,transparent 80%)}
+.aurora::after{opacity:.22}
+@keyframes auSweep{0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}100%{transform:translate3d(-7%,5%,0) rotate(-6deg) scale(1.08)}}
+@keyframes auSweep2{0%{transform:translate3d(-5%,6%,0) rotate(0deg)}100%{transform:translate3d(6%,-4%,0) rotate(8deg)}}
+/* palettes: --a1 bright edge, --a2 warm body, --a3 soft secondary light, --b1 corner shade, --b2..b4 sky from top to bottom */
+.aurora,[data-au="sunset"]{--a1:#f7963f;--a2:#e8402a;--a3:rgba(255,170,90,.35);--b1:#1d1517;--b2:#1d4446;--b3:#173033;--b4:#20252b}
+[data-au="ocean"]{--a1:#62c3ff;--a2:#3a5bff;--a3:rgba(110,220,255,.32);--b1:#0d1424;--b2:#123c55;--b3:#0f2a3a;--b4:#141a22}
+[data-au="forest"]{--a1:#d8e47a;--a2:#3fae7c;--a3:rgba(240,210,120,.3);--b1:#121810;--b2:#1a4038;--b3:#13302b;--b4:#171d1b}
+[data-au="dusk"]{--a1:#ff8fc8;--a2:#8256ff;--a3:rgba(255,160,140,.32);--b1:#160f20;--b2:#2b2552;--b3:#1c1c3a;--b4:#17171f}
+[data-au="rose"]{--a1:#ffc08f;--a2:#ff5876;--a3:rgba(255,215,170,.35);--b1:#1e1214;--b2:#3d2433;--b3:#2a1a27;--b4:#1b161b}
+[data-au="storm"]{--a1:#a9c8e8;--a2:#5274bf;--a3:rgba(170,205,235,.28);--b1:#11151c;--b2:#223244;--b3:#182433;--b4:#14181e}
+[data-au="snow"]{--a1:#ffffff;--a2:#9cc6ff;--a3:rgba(255,255,255,.3);--b1:#1a2029;--b2:#34465a;--b3:#243243;--b4:#181e27}
+[data-au="night"]{--a1:#8c9bff;--a2:#4535b8;--a3:rgba(160,140,255,.28);--b1:#08091a;--b2:#16193a;--b3:#10132a;--b4:#0c0e18}
+#editor.skin-capture .ed-panel{background:linear-gradient(180deg,var(--b2) 0%,var(--b2) 30%,var(--b3) 65%,var(--b4) 100%)}
+#editor.skin-capture .ed-panel > .au-l{inset:-45%}
+
+/* editor header: Cancel · status … Save/Done */
+.ed-cancel{color:var(--text-2);padding:0 12px}
+.ed-cancel:hover{color:var(--text)}
+#editor.skin-capture .ed-cancel{color:rgba(255,255,255,.85)}
+/* the question is a hint, not part of your text: small, labelled, and it steps aside once you start */
+.ed-prompt{display:flex;align-items:flex-start;gap:8px;font-size:var(--t-sub)!important;line-height:1.5!important;letter-spacing:0!important;color:var(--text-2);margin:2px 0 12px!important;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.08);opacity:1!important;max-height:80px;overflow:hidden;transition:max-height .3s var(--ease),opacity .25s,margin .3s,padding .3s}
+.ed-prompt svg.i{width:16px;height:16px;flex:none;margin-top:2px;opacity:.8}
+#editor.typing .ed-prompt,#editor.typing-title .ed-prompt,.kb-open .ed-prompt,#editor.has-text .ed-prompt{max-height:0;opacity:0!important;padding-top:0;padding-bottom:0;margin:0!important}
+.ed-typesel{display:flex;flex-wrap:wrap;gap:6px}
+.ed-typesel button{flex-direction:row;gap:6px;padding:0 12px;height:34px;font-size:var(--t-sub)}
+.ed-typesel button svg.i{width:16px;height:16px}
+@media (max-width:900px){.ed-typesel span{font-size:var(--t-sub)}}
+.today-grid{align-items:stretch}.today-grid > .col > *{width:100%}
+#editor .ed-panel > .ed-saved{position:absolute!important;inset:0}
+/* keep the question visible until something is actually written */
+#editor.typing:not(.has-text) .ed-prompt,#editor.typing-title:not(.has-text) .ed-prompt,.kb-open #editor:not(.has-text) .ed-prompt{max-height:80px;opacity:1!important;padding:10px 12px;margin:2px 0 12px!important}
+.prose{position:relative}
+.prose.is-empty::before{content:attr(data-ph);position:absolute;left:0;top:0;color:var(--text-3);pointer-events:none;white-space:pre-wrap}
+.today-grid .tip-note{order:9}
+.wx-pick{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.wx-pick .select{min-width:150px}
+.wx-pick .select[disabled]{opacity:.45}
+.wx-wait{color:var(--text-3);font-size:var(--t-sub);gap:6px}
+.wx-wait svg.i{width:16px;height:16px;animation:spin 1s linear infinite}
+@media (max-width:900px){.wx-pick{width:100%}.wx-pick .select{flex:1 1 140px;min-width:0}}

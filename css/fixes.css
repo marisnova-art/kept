@@ -1,0 +1,7 @@
+/* Kept — v2 fixes */
+/* Phones: no double-tap zoom (pinch zoom stays available for accessibility). */
+html, body, button, a, input, select, textarea, [contenteditable] { touch-action: manipulation; }
+
+/* tag pills share the .tg class name with the Today group cards (v1.6), which turned
+   the #tag in record cards into a tall rounded box; tags are always spans, groups never are */
+span.tg{display:inline-block;flex-direction:initial;gap:0;background:var(--surface-3);border:0;padding:1px 8px;border-radius:var(--r-pill);font-size:var(--t-cap);line-height:1.6;color:var(--text-2)}

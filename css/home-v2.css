@@ -1,0 +1,52 @@
+/* Kept — v2 home: story (감성형) and folded groups, bigger profile */
+
+/* ---------- profile: the face in the greeting and the top-bar avatar read at a glance ---------- */
+.statement .face,.story .face{display:inline-grid;place-items:center;width:2.3em;height:2.3em;font-size:.6em;font-weight:600;letter-spacing:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),#7a2cff);color:#fff;vertical-align:.12em;margin:0 .35em 0 .15em;box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px color-mix(in oklab,var(--accent) 55%,transparent)}
+.statement img.face,.story img.face{width:1.42em;height:1.42em;vertical-align:-.3em;font-size:inherit}
+.story img.face{width:1.25em;height:1.25em}
+#topbar .avatar{width:40px;height:40px;font-size:var(--t-body)}
+@media (max-width:900px){#topbar .avatar{width:38px;height:38px}}
+
+/* ---------- story ---------- */
+.story{display:flex;flex-direction:column;gap:.55em;max-width:780px;font-size:clamp(21px,2.5vw,29px);line-height:1.38;letter-spacing:-.022em;color:var(--text-2);font-weight:450;margin:2px 0 0;text-wrap:pretty}
+.story .st-p{margin:0;animation:stIn .6s var(--ease) both;animation-delay:calc(var(--i) * 70ms)}
+.story .st-p:first-child{color:var(--text-2)}
+.story .st-lead{color:var(--text-3);font-weight:400;font-style:italic;letter-spacing:-.01em}
+.story b{color:var(--text);font-weight:600}
+.story .sc{display:inline;color:var(--text);text-decoration:none;white-space:nowrap;border-radius:.3em;transition:background .2s}
+.story .sc:hover{background:var(--surface)}
+.story .sc .ic{display:inline-grid;place-items:center;width:1.02em;height:1.02em;border:2px solid currentColor;border-radius:.22em;vertical-align:-.12em;margin-right:.18em}
+.story .sc .ic svg{width:.64em;height:.64em}
+.story .st-t{display:inline;font:inherit;color:var(--text);font-weight:500;padding:0;background:linear-gradient(transparent 62%,color-mix(in oklab,var(--accent) 26%,transparent) 0);border-radius:2px;cursor:pointer;transition:background-size .3s}
+.story .st-t:hover{color:var(--accent)}
+.story.out .st-p{animation:stOut .18s var(--ease) forwards}
+@keyframes stIn{from{opacity:0;transform:translateY(10px);filter:blur(3px)}}
+@keyframes stOut{to{opacity:0;transform:translateY(-6px)}}
+.st-shuffle{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:14px;padding:6px 12px 6px 10px;border-radius:999px;font-size:var(--t-sub);color:var(--text-3);border:1px solid var(--line-2);transition:color .2s,border-color .2s}
+.st-shuffle:hover{color:var(--text);border-color:var(--text-3)}
+.st-shuffle svg{width:15px;height:15px}
+.st-shuffle.spin svg{animation:spin .5s var(--ease)}
+.story-v .th{display:flex;flex-direction:column}
+@media (max-width:900px){.story{font-size:20px;line-height:1.42;gap:.6em}}
+
+/* ---------- folded groups: a one-line summary, open on tap ---------- */
+.fold{border-radius:22px;background:var(--surface);border:1px solid var(--line);overflow:hidden;transition:background .25s}
+.fold-h{display:flex;align-items:center;gap:10px;width:100%;padding:16px 18px;text-align:left;color:var(--text)}
+.fold-ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none}
+.fold-ic svg{width:18px;height:18px}
+.fold-t{font-weight:600;font-size:var(--t-body)}
+.fold-sum{flex:1;min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;font-size:var(--t-sub);color:var(--text-2)}
+.fold-sum svg{width:14px;height:14px;vertical-align:-2px;margin-right:3px}
+.fold-sum .muted{color:var(--text-3)}
+.fold-sum .dot{width:3px;height:3px;border-radius:50%;background:var(--text-3);display:inline-block}
+.fold-chev{width:18px;height:18px;color:var(--text-3);transition:transform .35s var(--spring);flex:none}
+.fold.open .fold-chev{transform:rotate(180deg)}
+.fold-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--ease)}
+.fold.open .fold-b{grid-template-rows:1fr}
+.fold-in{min-height:0;overflow:hidden}
+.fold-in > .tg{opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .35s var(--ease)}
+.fold.open .fold-in > .tg{opacity:1;transform:none;transition-delay:.06s}
+.fold .tg.in-fold{background:none;border:0;box-shadow:none;margin:0;padding-top:0}
+.fold .tg.in-fold > .tg-h h2{display:none}
+.fold .tg.in-fold > .tg-h{justify-content:flex-end}
+@media (prefers-reduced-motion: reduce){.story .st-p,.story.out .st-p{animation:none}.fold-b,.fold-chev,.fold-in > .tg{transition:none}}
