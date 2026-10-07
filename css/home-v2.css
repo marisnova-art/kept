@@ -10,7 +10,7 @@
 /* ---------- story ----------
    Bold, high-contrast prose with stickers in the line: coloured tiles that hold a line icon,
    plain colour emoji, and the mono line icons elsewhere on the page. */
-.story{display:flex;flex-direction:column;gap:.62em;max-width:780px;font-size:clamp(21px,2.4vw,28px);line-height:1.5;letter-spacing:-.018em;color:var(--text);font-weight:560;margin:2px 0 0;text-wrap:pretty}
+.story{display:flex;flex-direction:column;gap:var(--hgap);max-width:780px;font-size:clamp(21px,2.4vw,28px);line-height:1.5;letter-spacing:-.018em;color:var(--text);font-weight:560;margin:0;text-wrap:pretty}
 .story .st-p{margin:0}
 .story.play .st-p{animation:stIn .6s var(--ease) both;animation-delay:calc(var(--i) * 70ms)}
 .story .st-lead{color:var(--text-2);font-weight:500;letter-spacing:-.012em}
@@ -39,11 +39,10 @@
 /* phones: big type for the story, three paragraphs (details live in the folds below),
    and a one-line writing box so the card sits close under the story */
 @media (max-width:900px){
-  .story{font-size:22px;line-height:1.46;gap:.55em}
+  .story{font-size:22px;line-height:1.46}
   .story .st-p:nth-child(n+4){display:none}
   .story .st-p:not(:first-child) .st-lead{display:none}
   .story-wait .sk-p:nth-child(3){display:none}
-  .story-v .th{gap:0}
   .story-v .today-stack{margin-top:18px}
   .story-v .capture .cap-fake{min-height:0!important;height:46px;padding:0 6px 0 16px!important;border-radius:16px!important;display:flex;align-items:center;justify-content:space-between}
   .story-v .capture .cap-fake{align-items:center!important}
@@ -96,3 +95,11 @@
 .statement .ic.t-red{--tg:linear-gradient(160deg,#ff6b5e,#e5354a)}
 .statement .ic.t-green{--tg:linear-gradient(160deg,#4fd67b,#1fa855)}
 .statement .ic.t-amber{--tg:linear-gradient(160deg,#ffc94a,#f59a0c)}
+
+/* one vertical rhythm for the home header (both styles): date, weather, then each text block sit the same distance apart */
+.today-v{--hgap:20px}
+.today-v .th{gap:var(--hgap);margin:16px 0 28px}
+.today-v .th-date{margin:0}
+.today-v .th .metrics{margin:0 0 0 -8px}
+.th-date .day-big i{width:.13em;height:.13em;margin:0 0 0 .04em;align-self:center}
+@media (max-width:900px){.today-v{--hgap:16px}.today-v .th{margin:6px 0 22px}}
