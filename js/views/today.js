@@ -160,7 +160,8 @@ const FOLD_KEY = 'kept.fold';
 const foldOpen = id => !!(ls.get(FOLD_KEY, {})[id]);
 function storyHome({ now, k, greet, name, ev, openTd, total, wx, capHTML, planHTML, notesHTML, pinned, days }) {
   const L = live(); const by = ty => sortEntries(L.filter(e => e.type === ty), 'updated');
-  const noteTypes = new Set(['note', 'reference', 'personal', ...(S.prefs.customTypes || []).map(x => x.id)]);
+  const others = ['reference', 'personal', ...(S.prefs.customTypes || []).map(x => x.id)]
+    .map(id => ({ id, label: typeOf(id).label, href: '#/type/' + id, list: by(id) })).filter(o => o.list.length);
   const short = e => { const s = entryDisplayTitle(e); return s.length > 26 ? s.slice(0, 25).trimEnd() + '…' : s; };
   const overdue = L.filter(e => e.type === 'todo' && !e.meta.done && e.meta.due && e.meta.due < k).length;
   const featured = sortEntries(L.filter(e => e.pinned), 'updated').slice(0, 5);
@@ -171,7 +172,7 @@ function storyHome({ now, k, greet, name, ev, openTd, total, wx, capHTML, planHT
   const story = storyHTML({
     greet, nameHTML, nameText: name ? name + t('today.nameSuffix') : '',
     events: ev, tasksOpen: openTd, overdue, featured, total, streak: streak(),
-    ideas: by('idea'), items: by('item'), contacts: by('contact'), notes: sortEntries(L.filter(e => noteTypes.has(e.type)), 'updated'),
+    ideas: by('idea'), items: by('item'), contacts: by('contact'), notes: by('note'), others,
     titleOf: short, when: e => e.meta?.time ? fmtTime(e.meta.time) + (LANG === 'ko' ? ' ' : ', ') : ''
   }, V.storyShift || 0);
   const weekItems = days.reduce((n, d) => n + dayItems(dayKey(d)).length, 0);

@@ -10,10 +10,13 @@
 /* ---------- story ----------
    Bold, high-contrast prose with stickers in the line: coloured tiles that hold a line icon,
    plain colour emoji, and the mono line icons elsewhere on the page. */
-.story{display:flex;flex-direction:column;gap:var(--hgap);max-width:780px;font-size:clamp(21px,2.4vw,28px);line-height:1.5;letter-spacing:-.018em;color:var(--text);font-weight:560;margin:0;text-wrap:pretty}
+.story{display:flex;flex-direction:column;gap:var(--hgap);max-width:780px;font-size:clamp(21px,2.4vw,28px);line-height:1.5;letter-spacing:-.018em;color:var(--text-2);font-weight:500;margin:0;text-wrap:pretty}
 .story .st-p{margin:0}
 .story.play .st-p{animation:stIn .6s var(--ease) both;animation-delay:calc(var(--i) * 70ms)}
-.story .st-lead{color:var(--text-2);font-weight:500;letter-spacing:-.012em}
+.story .st-lead{color:var(--text-3);font-weight:450;font-style:italic;letter-spacing:-.01em;padding-right:.04em}
+.story .st-lead .em{font-style:normal}
+.story .n{color:var(--accent);font-weight:750;font-variant-numeric:tabular-nums}
+.story .tm{color:var(--text);font-weight:700}
 .story b{color:var(--text);font-weight:700}
 .story .em{display:inline-block;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-weight:400;font-size:1.02em;line-height:1;margin-right:.22em;vertical-align:-.04em}
 .story .sc{display:inline;color:var(--text);text-decoration:none;white-space:nowrap;border-radius:.3em;padding:0 .08em;transition:background .2s}
@@ -28,6 +31,7 @@
 .story .tile.t-gray{--tg:linear-gradient(160deg,#8e939c,#5d636d)}
 .story .st-t{display:inline;font:inherit;color:var(--text);font-weight:650;padding:0;background:linear-gradient(transparent 64%,color-mix(in oklab,var(--accent) 30%,transparent) 0);border-radius:2px;cursor:pointer;transition:color .2s}
 .story .st-t:hover{color:var(--accent)}
+.story .nw{white-space:nowrap}
 .story.out .st-p{animation:stOut .4s var(--ease) forwards}
 @keyframes stIn{from{opacity:0;transform:translateY(10px);filter:blur(3px)}}
 @keyframes stOut{to{opacity:0;transform:translateY(-4px);filter:blur(2px)}}
@@ -40,7 +44,8 @@
    and a one-line writing box so the card sits close under the story */
 @media (max-width:900px){
   .story{font-size:22px;line-height:1.46}
-  .story .st-p:nth-child(n+4){display:none}
+  .story .st-feat,.story .st-more,.story .st-end{display:none}
+  .story:not(:has(.st-col)) .st-end{display:block}
   .story .st-p:not(:first-child) .st-lead{display:none}
   .story-wait .sk-p:nth-child(3){display:none}
   .story-v .today-stack{margin-top:18px}

@@ -88,6 +88,10 @@ export default {
       '{chip}, quietly gathered. The last line: {first}.',
       'Past thoughts, {chip}. The most recent sentence: {first}.'
     ],
+    others: [
+      '{chip}, gathered one by one. The latest: {first}.',
+      '{chip} close by too. The last one you kept: {first}.'
+    ],
     featured: ['And the pieces you keep close: {list}.', 'Some writing you pinned to your heart: {list}.'],
     streak: ['{n} days of writing in a row. One line is enough today.', 'You have written {n} days straight. That steadiness is lovely.'],
     total: ['{chip}, remembering your days for you.'],
@@ -95,7 +99,8 @@ export default {
   },
   counts: {
     events: n => n === 1 ? '1 event' : `${n} events`, tasks: n => n === 1 ? '1 task' : `${n} tasks`, ideas: n => n === 1 ? '1 idea' : `${n} ideas`,
-    items: n => n === 1 ? '1 item' : `${n} items`, contacts: n => n === 1 ? '1 person' : `${n} people`, notes: n => n === 1 ? '1 note' : `${n} notes`, total: n => n === 1 ? '1 record' : `${n} records`
+    items: n => n === 1 ? '1 item' : `${n} items`, contacts: n => n === 1 ? '1 person' : `${n} people`, notes: n => n === 1 ? '1 note' : `${n} notes`, total: n => n === 1 ? '1 record' : `${n} records`,
+    other: (n, label) => `${label} · ${n}`
   },
   quote: s => `“${s}”`,
   joinList: a => a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1] : a.join('')

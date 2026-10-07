@@ -51,16 +51,18 @@ function weatherPool() {
   const k = Weather.data && Weather.data.city === Weather.city()?.id ? Weather.kind() : null;
   return { rain: 'rain', drizzle: 'rain', thunder: 'rain', snow: 'snow', clear: 'clear', partly: 'clear', cloudy: 'cloudy', fog: 'cloudy' }[k] || null;
 }
-const count = (key, n) => { const c = pack().counts[key]; return typeof c === 'function' ? c(n) : c.replace('{n}', n); };
+const count = (key, n, label = '') => { const c = pack().counts[key]; return typeof c === 'function' ? c(n, label) : c.replace('{n}', n).replace('{label}', label); };
 /* marks mix two kinds, like a sticker sheet: a coloured tile holding a line icon, or a colour emoji */
 const MARKS = {
   events: { tile: 'calendar', tone: 'red' }, tasks: { tile: 'check', tone: 'green' }, notes: { tile: 'file-text', tone: 'amber' },
   contacts: { tile: 'contact', tone: 'blue' }, total: { tile: 'archive', tone: 'gray' },
   ideas: { emoji: '💡' }, items: { emoji: '📍' }
 };
+const OTHER_EMO = { reference: '🔖', personal: '🪶' };
 const mark = m => m.emoji ? `<span class="em" aria-hidden="true">${m.emoji}</span>` : `<span class="tile t-${m.tone}" aria-hidden="true">${icon(m.tile)}</span>`;
 const emo = ch => `<span class="em" aria-hidden="true">${ch}</span>`;
-const chip = (key, n, href) => { const txt = count(key, n); return { html: `<a class="sc" href="${href}">${mark(MARKS[key])}<b>${esc(txt)}</b></a>`, text: txt }; };
+/* the count inside a chip is the point colour; the rest of the chip is the readable dark */
+const chip = (key, n, href, m = MARKS[key], label) => { const txt = count(key, n, label); return { html: `<a class="sc" href="${href}">${mark(m)}<b>${esc(txt).replace(/\d+/, d => `<span class="n">${d}</span>`)}</b></a>`, text: txt }; };
 const titleChip = (e, title) => { const q = pack().quote(title); return { html: `<button class="st-t" data-act="open" data-id="${e.id}">${esc(q)}</button>`, text: q }; };
 
 /* data: { greet, nameHTML, nameText, events, tasksOpen, overdue, ideas, items, contacts, notes, featured, streak, total, titleOf, when } */
@@ -70,7 +72,7 @@ function storyHTML(data, shift = 0) {
   const used = new Set();
   const phrase = pools => { const all = pools.flatMap(k => P.phrases[k] || []).filter(x => !used.has(x)); const p = all.length ? pick(all) : ''; used.add(p); return p; };
   const paras = [];
-  const add = (html, lead, em = '') => paras.push({ html, lead, em });
+  const add = (html, lead, em = '', kind = '') => paras.push({ html, lead, em, kind });
 
   // 1. greeting, led by the hour or the weather
   const wp = weatherPool(); const byWx = wp && r() < .6; const slot = timeSlot(now.getHours()); const sea = season(now);
@@ -79,29 +81,34 @@ function storyHTML(data, shift = 0) {
 
   // 2. the day's plan
   const plan = [];
-  if (data.events.length) { const e = data.events[0]; plan.push(fill(pick(P.lines.events), { chip: chip('events', data.events.length, '#/calendar'), first: titleChip(e, data.titleOf(e)), when: data.when(e) })); }
+  if (data.events.length) { const e = data.events[0]; const w = data.when(e); plan.push(fill(pick(P.lines.events), { chip: chip('events', data.events.length, '#/calendar'), first: titleChip(e, data.titleOf(e)), when: w ? { html: w.replace(/^(.*?)([,\s]*)$/, (_, tm, tail) => `<b class="tm">${esc(tm)}</b>${esc(tail)}`), text: w } : '' })); }
   if (data.tasksOpen.length) { const e = data.tasksOpen[0]; plan.push(fill(pick(P.lines.tasks), { chip: chip('tasks', data.tasksOpen.length, '#/tasks'), first: titleChip(e, data.titleOf(e)) })); }
-  if (data.overdue) plan.push(emo('⏰') + fill(pick(P.lines.overdue), { n: data.overdue }));
+  if (data.overdue) plan.push(emo('⏰') + fill(pick(P.lines.overdue), { n: { html: `<b class="n">${data.overdue}</b>`, text: String(data.overdue) } }));
   if (!plan.length) plan.push(fill(pick(data.events.length ? P.lines.tasksNone : P.lines.eventsNone), {}));
   add(plan.join(' '), phrase([sea]), SEASON_EMO[sea]);
 
   // 3. what the user chose to keep on the home screen
-  if (data.featured.length) add(emo('📌') + fill(pick(P.lines.featured), { list: { html: P.joinList(data.featured.map(e => titleChip(e, data.titleOf(e)).html)), text: '' } }));
+  if (data.featured.length) add(emo('📌') + fill(pick(P.lines.featured), { list: { html: P.joinList(data.featured.map(e => titleChip(e, data.titleOf(e)).html)), text: '' } }), '', '', 'feat');
 
   // 4. the collections, two to a paragraph so it reads like prose
   const bits = [];
+  const pushOther = o => bits.push(fill(pick(P.lines.others), { chip: chip('other', o.list.length, o.href, { emoji: OTHER_EMO[o.id] || '🗂️' }, o.label), first: titleChip(o.list[0], data.titleOf(o.list[0])) }));
   if (data.ideas.length) bits.push(fill(pick(P.lines.ideas), { chip: chip('ideas', data.ideas.length, '#/type/idea'), first: titleChip(data.ideas[0], data.titleOf(data.ideas[0])) }));
   if (data.notes.length) bits.push(fill(pick(P.lines.notes), { chip: chip('notes', data.notes.length, '#/type/note'), first: titleChip(data.notes[0], data.titleOf(data.notes[0])) }));
   if (data.items.length) bits.push(fill(pick(P.lines.items), { chip: chip('items', data.items.length, '#/items') }));
   if (data.contacts.length) bits.push(fill(pick(P.lines.contacts), { chip: chip('contacts', data.contacts.length, '#/contacts'), first: titleChip(data.contacts[0], data.titleOf(data.contacts[0])) }));
-  for (let i = 0; i < bits.length; i += 2) add(bits.slice(i, i + 2).join(' '), i === 0 ? phrase([sea, 'any']) : '');
+  (data.others || []).forEach(pushOther);
+  for (let i = bits.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [bits[i], bits[j]] = [bits[j], bits[i]]; }
+  for (let i = 0; i < bits.length; i += 2) add(bits.slice(i, i + 2).join(' '), i === 0 ? phrase([sea, 'any']) : '', '', i === 0 ? 'col' : 'col more');
 
   // 5. closing
-  add(data.streak > 1 ? fill(pick(P.lines.streak), { n: data.streak }) + ' ' + emo('🔥') : fill(pick(P.lines.total), { chip: chip('total', data.total, '#/all') }), phrase(['any']));
+  add(data.streak > 1 ? fill(pick(P.lines.streak), { n: { html: `<b class="n">${data.streak}</b>`, text: String(data.streak) } }) + ' ' + emo('🔥') : fill(pick(P.lines.total), { chip: chip('total', data.total, '#/all') }), phrase(['any']), '', 'end');
   return render(paras);
 }
+/* keep a title (an atomic button) together with the particle or punctuation right after it */
+const glue = html => html.replace(/(<button class="st-t"[^>]*>[^<]*<\/button>)([.,!?]+|[\uac00-\ud7a3]+[.,!?]?)/g, '<span class="nw">$1$2</span>');
 function render(paras) {
-  return paras.map((p, i) => `<p class="st-p" style="--i:${i}">${p.lead ? `<span class="st-lead">${p.em ? emo(p.em) : ''}${esc(p.lead)}.</span> ` : ''}${p.html}</p>`).join('');
+  return paras.map((p, i) => `<p class="st-p ${p.kind ? 'st-' + p.kind.split(' ').join(' st-') : ''}" style="--i:${i}">${p.lead ? `<span class="st-lead">${p.em ? emo(p.em) : ''}${esc(p.lead)}.</span> ` : ''}${glue(p.html)}</p>`).join('');
 }
 const phraseCount = () => Object.values(pack().phrases).reduce((n, a) => n + a.length, 0);
 

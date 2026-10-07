@@ -88,12 +88,16 @@ export default {
       '{chip:이/가} 조용히 쌓였어요. 마지막 한 줄은 {first}.',
       '지나간 생각 {chip}. 가장 최근의 문장은 {first}.'
     ],
+    others: [
+      '{chip:이/가} 차곡차곡 모였어요. 가장 최근엔 {first}.',
+      '{chip}도 곁에 있어요. 마지막으로 남긴 건 {first}.'
+    ],
     featured: ['그리고 곁에 두고 싶은 글, {list}.', '마음에 걸어 둔 글도 있어요. {list}.'],
     streak: ['{n}일째 이어지는 기록. 오늘도 한 줄이면 충분해요.', '{n}일 동안 하루도 빠짐없이 적었어요. 그 꾸준함이 멋져요.'],
     total: ['{chip:이/가} 당신의 하루들을 기억하고 있어요.'],
     empty: ['아직 아무것도 적지 않은 깨끗한 페이지예요. 첫 문장은 무엇이 될까요?']
   },
-  counts: { events: '일정 {n}개', tasks: '할 일 {n}개', ideas: '아이디어 {n}개', items: '물건 위치 {n}곳', contacts: '연락처 {n}명', notes: '메모 {n}개', total: '기록 {n}개' },
+  counts: { events: '일정 {n}개', tasks: '할 일 {n}개', ideas: '아이디어 {n}개', items: '물건 위치 {n}곳', contacts: '연락처 {n}명', notes: '메모 {n}개', total: '기록 {n}개', other: '{label} {n}개' },
   quote: s => `‘${s}’`,
   joinList: a => a.join(', ')
 };
