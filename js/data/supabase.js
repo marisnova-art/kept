@@ -20,4 +20,14 @@ async function getSupabase() {
   return Sync.sb;
 }
 
-export { Conn, getSupabase };
+/* Sign-out that always ends the session on this device. supabase-js keeps the stored session when the server
+   call fails (offline, timeout), and the app would then sign straight back in on reload, so the local copy is
+   cleared too, and the stored token is removed as a last resort. */
+async function endSession() {
+  const sb = await getSupabase().catch(() => null);
+  const cap = p => Promise.race([p.catch(() => {}), new Promise(r => setTimeout(r, 4000))]);
+  if (sb) { await cap(sb.auth.signOut()); await cap(sb.auth.signOut({ scope: 'local' })); }
+  try { Object.keys(localStorage).filter(k => k === 'kept.auth' || k.startsWith('kept.auth-')).forEach(k => localStorage.removeItem(k)); } catch {}
+}
+
+export { Conn, endSession, getSupabase };

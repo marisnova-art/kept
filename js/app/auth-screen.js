@@ -14,11 +14,10 @@ function showAuth(mode = 'signin', allowBack = false, msg = '') {
   const a = $('#auth'); a.hidden = false;
   const titles = { signin: t('auth.welcome'), signup: t('auth.create'), reset: t('auth.resetTitle'), newpw: t('auth.newPwTitle') };
   const subs = { signin: t('auth.signinSub'), signup: t('auth.signupSub'), reset: t('auth.resetSub'), newpw: t('auth.newPwSub') };
-  a.innerHTML = `<div class="aurora auth-art" ${Aurora.attr()}>${Aurora.layers}<div style="display:flex;justify-content:space-between;align-items:center"><span class="wordmark" style="font-size:var(--t-h1)">kept<i></i></span>
+  a.innerHTML = `<div class="aurora auth-art" ${Aurora.attr()}>${Aurora.layers}<div class="auth-top"><span class="wordmark">kept<i></i></span>
       <button class="chip-t" data-auth-lang>${icon('globe')}<span>${LANG === 'ko' ? 'English' : '한국어'}</span></button></div>
-      <div><div class="cap" style="margin-bottom:14px">${esc(t('auth.kicker'))}</div><h1>${esc(t('auth.hero'))}</h1></div>
-      <div class="cap">${esc(t('auth.free'))}</div></div>
-    <div class="auth-form"><form id="authForm" novalidate>
+      <div class="auth-hero"><div class="cap kick">${esc(t('auth.kicker'))}</div><h1>${esc(t('auth.hero'))}</h1><div class="cap free">${esc(t('auth.free'))}</div></div></div>
+    <div class="auth-form"><form id="authForm" class="auth-${mode}" novalidate>
       <h2>${esc(titles[mode])}</h2><p class="sub">${esc(subs[mode])}</p>
       ${mode !== 'newpw' ? `<div class="field"><label for="aEmail">${esc(t('auth.email'))}</label><input class="input" id="aEmail" type="email" autocomplete="email" required maxlength="200"></div>` : ''}
       ${mode === 'signin' || mode === 'signup' || mode === 'newpw' ? `<div class="field"><label for="aPw">${esc(mode === 'newpw' ? t('auth.newPw') : t('auth.password'))}</label><input class="input" id="aPw" type="password" autocomplete="${mode === 'signin' ? 'current-password' : 'new-password'}" required minlength="8" maxlength="200"></div>` : ''}
@@ -27,7 +26,7 @@ function showAuth(mode = 'signin', allowBack = false, msg = '') {
       <div id="aMsg" class="note" ${msg ? '' : 'hidden'} style="margin-bottom:12px">${esc(msg)}</div>
       <button class="btn primary" type="submit" id="aSubmit">${esc({ signin: t('auth.signIn'), signup: t('auth.signUp'), reset: t('auth.sendLink'), newpw: t('auth.setPw') }[mode])}</button>
       <div class="auth-links">${mode === 'signin' ? `<button type="button" data-auth="signup">${esc(t('auth.toSignup'))}</button><button type="button" data-auth="reset">${esc(t('auth.forgot'))}</button>` : mode !== 'newpw' ? `<button type="button" data-auth="signin">${esc(t('auth.toSignin'))}</button>` : ''}</div>
-      ${mode !== 'newpw' ? `<div class="divider">${esc(t('auth.or'))}</div><button type="button" class="btn" data-auth="local">${icon('smartphone')}${esc(allowBack && S.db ? t('auth.back') : t('auth.local'))}</button><p style="font-size:var(--t-sub);color:var(--text-3);margin-top:10px">${esc(t('auth.localNote'))}</p>` : ''}
+      ${mode !== 'newpw' ? `<div class="divider">${esc(t('auth.or'))}</div><button type="button" class="btn" data-auth="local">${icon('smartphone')}${esc(allowBack && S.db ? t('auth.back') : t('auth.local'))}</button><p class="auth-note">${esc(t('auth.localNote'))}</p>` : ''}
     </form></div>`;
   const say = (m, kind = 'err') => { const n = $('#aMsg'); n.hidden = false; n.className = 'note ' + kind; n.textContent = m; };
   a.onclick = e => {

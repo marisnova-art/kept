@@ -30,9 +30,6 @@
   .settings-layout{grid-template-columns:1fr}
   .set-nav{display:none}
   .uses{grid-template-columns:1fr}
-  #auth{grid-template-columns:1fr;overflow:auto}
-  .auth-art{min-height:300px;margin:12px 12px 0;padding:24px}
-  .auth-form{padding:28px 20px 40px;justify-content:flex-start}
   .ed-panel{left:0;width:100vw;height:var(--vvh,100dvh);border-radius:0;border:0;top:var(--vvt,0px);bottom:auto;transform:none;animation:edInM .36s var(--ease);padding-top:env(safe-area-inset-top)}
   #editor.closing .ed-panel{animation:edOutM .26s var(--ease) forwards}
   .ed-inner{padding:0 18px}

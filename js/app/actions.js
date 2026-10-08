@@ -4,6 +4,7 @@ import { bellMenu, pickIconDialog, pwProblem, showShortcuts, toggleSidebar, type
 import { migrateLocal } from './session.js';
 import { cityLookup } from '../data/cities.js';
 import { CAT_COLORS, S, applyPrefs, catOf, deleteCategory, emit, live, purgeEntries, restoreEntries, saveCategory, saveEntries, saveEntry, savePrefs, trashEntries, typeList, typeOf } from '../data/store.js';
+import { endSession } from '../data/supabase.js';
 import { Sync } from '../data/sync.js';
 import { Composer } from '../editor/composer.js';
 import { Editor, haptic } from '../editor/editor.js';
@@ -129,7 +130,7 @@ const ACT = {
     const ok = await typedConfirm(t('set.deleteAcc'), t('set.deleteAccConfirm'), t('set.typeDelete')); if (!ok) return;
     const { error } = await Sync.sb.rpc('delete_my_account');
     if (error) { toast(t('err.server', { m: error.message }), { error: true }); return; }
-    await S.db.destroy(); await Sync.sb.auth.signOut().catch(() => {}); ls.del('kept.mode'); ls.del('kept.lastUser'); toast(t('set.accDeleted')); setTimeout(() => location.replace(location.pathname), 900);
+    await S.db.destroy(); await endSession(); ls.del('kept.mode'); ls.del('kept.lastUser'); toast(t('set.accDeleted')); setTimeout(() => location.replace(location.pathname + location.search), 900);
   },
   changePw: async () => {
     const pw = await dialog({ title: t('set.changePw'), html: `<div class="field"><label>${esc(t('auth.newPw'))}</label><input class="input" id="pw1" type="password" autocomplete="new-password" minlength="8"></div><div class="field"><label>${esc(t('auth.confirmPw'))}</label><input class="input" id="pw2" type="password" autocomplete="new-password"></div><div class="note" id="pwErr" hidden></div>`,
@@ -140,7 +141,7 @@ const ACT = {
     const dirty = [...S.entries.values()].filter(e => e._dirty).length;
     if (dirty && !await confirmDlg(t('auth.signOutDirty'), tn('auth.signOutDirtyBody', dirty), t('set.signOut'), true)) return;
     if (!dirty && !await confirmDlg(t('set.signOut'), t('auth.signOutBody'), t('set.signOut'))) return;
-    await Sync.sb?.auth.signOut().catch(() => {}); await S.db.destroy(); ls.del('kept.mode'); ls.del('kept.lastUser'); location.replace(location.pathname);
+    await endSession(); await S.db.destroy(); ls.del('kept.mode'); ls.del('kept.lastUser'); location.replace(location.pathname + location.search);
   },
   signIn: () => { ls.del('kept.mode'); showAuth('signin', true); },
   syncNow: () => { Sync.run(); toast(t('sync.syncing')); },
